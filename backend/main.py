@@ -8,7 +8,7 @@ from .routes import auth, tasks, ai, onboarding, profile, admin, messages
 
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
 
-app = FastAPI(title="PyLess API", version="1.0.0")
+app = FastAPI(title="PyLess API", version="1.0.0", description="Interactive Python learning platform. © 1998-2026 Nick Antonov / Borodachamba Studio. All rights reserved.")
 
 app.add_middleware(
     CORSMiddleware,
@@ -34,7 +34,7 @@ def startup():
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "1.0.0"}
+    return {"status": "ok", "version": "1.0.0", "copyright": "© 1998-2026 Nick Antonov / Borodachamba Studio. All rights reserved."}
 
 
 if os.path.exists(FRONTEND_DIR):

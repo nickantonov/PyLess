@@ -218,6 +218,9 @@ export default function AuthPage() {
             </button>
           </div>
         </div>
+        <div className="text-center mt-4 text-[10px]" style={{ color: 'var(--text-muted)' }}>
+          © 1998-2026 Nick Antonov / Borodachamba Studio. All rights reserved.
+        </div>
       </div>
     </div>
   )
