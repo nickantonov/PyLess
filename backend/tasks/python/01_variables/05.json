@@ -1,0 +1,19 @@
+{
+  "id": "py-01-05",
+  "module": "Variables",
+  "module_order": 1,
+  "title": "Рядки",
+  "difficulty": "easy",
+  "description": "Об'єднай два рядки `'Hello'` і `'Python'` з пробілом між ними.",
+  "starter_code": "# Об'єднай рядки\n",
+  "hints": [
+    "Оператор + з'єднує рядки"
+  ],
+  "tests": [
+    {
+      "input": "print('Hello' + ' ' + 'Python')",
+      "expected": "Hello Python"
+    }
+  ],
+  "explanation": "Рядки з'єднуються оператором +."
+}

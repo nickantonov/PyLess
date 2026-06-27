@@ -1,0 +1,19 @@
+{
+  "id": "py-03-01",
+  "module": "Conditions",
+  "module_order": 3,
+  "title": "Парне число",
+  "difficulty": "easy",
+  "description": "Перевір число `n = 42` — якщо воно парне, виведи `'Парне'`, інакше `'Непарне'`.",
+  "starter_code": "n = 42\n",
+  "hints": [
+    "Використай if/else та оператор %"
+  ],
+  "tests": [
+    {
+      "input": "n = 42\nif n % 2 == 0:\n    print('Парне')\nelse:\n    print('Непарне')",
+      "expected": "Парне"
+    }
+  ],
+  "explanation": "n % 2 == 0 означає що число парне."
+}

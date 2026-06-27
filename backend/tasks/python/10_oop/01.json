@@ -1,0 +1,19 @@
+{
+  "id": "py-10-01",
+  "module": "Oop",
+  "module_order": 10,
+  "title": "Простий клас",
+  "difficulty": "medium",
+  "description": "Створи клас `Dog` з конструктором (name) та методом `bark()` який повертає `'Гав!'`.",
+  "starter_code": "class Dog:\n    def __init__(self, name):\n        self.name = name\n    # твій код\n",
+  "hints": [
+    "def bark(self): return 'Гав!'"
+  ],
+  "tests": [
+    {
+      "input": "class Dog:\n    def __init__(self, name):\n        self.name = name\n    def bark(self):\n        return 'Гав!'\nd = Dog('Рекс')\nprint(d.name)\nprint(d.bark())",
+      "expected": "Рекс\nГав!"
+    }
+  ],
+  "explanation": "__init__ — конструктор класу."
+}

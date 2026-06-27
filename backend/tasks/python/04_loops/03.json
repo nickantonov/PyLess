@@ -1,0 +1,19 @@
+{
+  "id": "py-04-03",
+  "module": "Loops",
+  "module_order": 4,
+  "title": "Факторіал",
+  "difficulty": "medium",
+  "description": "Напиши функцію `factorial(n)` яка повертає факторіал числа n.",
+  "starter_code": "def factorial(n):\n    # твій код\n    pass\n",
+  "hints": [
+    "Факторіал 5 = 5 * 4 * 3 * 2 * 1 = 120"
+  ],
+  "tests": [
+    {
+      "input": "def factorial(n):\n    result = 1\n    for i in range(1, n + 1):\n        result *= i\n    return result\nprint(factorial(5))",
+      "expected": "120"
+    }
+  ],
+  "explanation": "Факторіал: n! = 1 * 2 * ... * n"
+}

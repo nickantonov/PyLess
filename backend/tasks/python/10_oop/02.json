@@ -1,0 +1,19 @@
+{
+  "id": "py-10-02",
+  "module": "Oop",
+  "module_order": 10,
+  "title": "Наслідування",
+  "difficulty": "hard",
+  "description": "Створи базовий клас `Animal` та клас `Cat(Animal)` з перевизначенням `speak()`.",
+  "starter_code": "class Animal:\n    def speak(self):\n        return '...'\n\nclass Cat(Animal):\n    # твій код\n    pass\n",
+  "hints": [
+    "Cat перевизначає speak()"
+  ],
+  "tests": [
+    {
+      "input": "class Animal:\n    def speak(self):\n        return '...'\n\nclass Cat(Animal):\n    def speak(self):\n        return 'Мяу!'\nprint(Cat().speak())",
+      "expected": "Мяу!"
+    }
+  ],
+  "explanation": "Наслідування: class Cat(Animal)."
+}

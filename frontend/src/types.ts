@@ -1,0 +1,89 @@
+export interface Task {
+  id: string
+  module: string
+  module_order: number
+  title: string
+  difficulty: 'easy' | 'medium' | 'hard'
+  description: string
+  starter_code: string
+  hints: (string | { level: number; text: string })[]
+  tests: TestDef[]
+  explanation?: string
+  status?: 'not_started' | 'attempted' | 'completed'
+  attempts?: number
+  type?: string
+  duration?: string
+  one_liner?: string
+  concept?: string
+  demo?: {
+    code: string
+    output: string
+    try_changes?: { change: string; new_output: string }[]
+    line_comments?: Record<string, string>
+  }
+  mini_task?: {
+    goal: string
+    starter: string
+    hints: string[]
+    validation?: any
+  }
+  task?: {
+    goal: string
+    starter: string
+    hints: string[]
+    tests: TestDef[]
+  }
+  review?: {
+    solutions: { code: string; comment: string }[]
+    takeaway: string
+  }
+}
+
+export interface TestDef {
+  input: string
+  expected: string
+}
+
+export interface TestResult {
+  passed: boolean
+  input: string
+  expected: string
+  got: string
+  error?: string
+}
+
+export interface User {
+  id: number
+  username: string
+  email: string
+  display_name: string
+  avatar_url: string
+  auth_provider: string
+  role: string
+  mentor_id: number
+  theme: string
+  editor_theme: string
+}
+
+export type AppTheme = 'dark' | 'light'
+
+export const MONACO_THEMES = [
+  'vs-dark', 'vs', 'hc-black',
+  'one-dark-pro', 'dracula', 'monokai', 'nord', 'github-dark',
+  'github-light', 'solarized-dark', 'solarized-light', 'tokyo-night',
+  'ayu-dark', 'ayu-mirage', 'cobalt2', 'material-theme',
+  'oceanic-next', 'summerfruit', 'zenburn', 'clouds-midnight',
+]
+
+export const MODULES = [
+  { order: 1, name: 'Змінні та типи', icon: '📦' },
+  { order: 2, name: 'Оператори', icon: '🔢' },
+  { order: 3, name: 'Умови', icon: '🔀' },
+  { order: 4, name: 'Цикли', icon: '🔄' },
+  { order: 5, name: 'Функції', icon: '⚡' },
+  { order: 6, name: 'Списки', icon: '📋' },
+  { order: 7, name: 'Словники', icon: '📚' },
+  { order: 8, name: 'Файли', icon: '📁' },
+  { order: 9, name: 'Винятки', icon: '⚠️' },
+  { order: 10, name: 'ООП', icon: '🏗️' },
+]

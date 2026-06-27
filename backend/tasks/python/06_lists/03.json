@@ -1,0 +1,19 @@
+{
+  "id": "py-06-03",
+  "module": "Lists",
+  "module_order": 6,
+  "title": "List comprehension",
+  "difficulty": "medium",
+  "description": "Створи список квадратів чисел від 0 до 9 через list comprehension.",
+  "starter_code": "# Квадрати через comprehension\n",
+  "hints": [
+    "[x*x for x in range(10)]"
+  ],
+  "tests": [
+    {
+      "input": "print([x*x for x in range(10)])",
+      "expected": "[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]"
+    }
+  ],
+  "explanation": "List comprehension: [вираз for змінна in ітерабельне]"
+}

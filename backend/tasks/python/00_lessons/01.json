@@ -1,0 +1,338 @@
+[
+  {
+    "id": "l-py-01-01",
+    "type": "lesson",
+    "duration": "2 хв",
+    "concept": "Перший рядок коду",
+    "one_liner": "print() виводить текст на екран — це все що потрібно для старту",
+    "demo": {
+      "code": "print(\"Привіт, світ!\")",
+      "output": "Привіт, світ!",
+      "try_changes": [
+        {
+          "change": "print(\"Привіт, мене звати Python\")",
+          "new_output": "Привіт, мене звати Python"
+        },
+        {
+          "change": "print(2 + 2)",
+          "new_output": "4"
+        }
+      ]
+    },
+    "mini_task": {
+      "goal": "Напиши print() зі своїм ім'ям",
+      "starter": "# Виведи своє ім'я\n",
+      "hints": [
+        "print(\"Твоє ім'я\")"
+      ],
+      "validation": {
+        "type": "output_not_empty"
+      }
+    },
+    "task": null,
+    "review": null
+  },
+  {
+    "id": "l-py-01-02",
+    "type": "lesson",
+    "duration": "3 хв",
+    "concept": "Змінні — контейнери для даних",
+    "one_liner": "Змінна зберігає значення під ім'ям, щоб використовувати потім",
+    "demo": {
+      "code": "name = \"Олексій\"\nage = 25\nprint(name)\nprint(age)",
+      "output": "Олексій\n25",
+      "try_changes": [
+        {
+          "change": "name = \"fox\"\nage = 30\nprint(name)\nprint(age)",
+          "new_output": "fox\n30"
+        },
+        {
+          "change": "x = 2 + 3\nprint(x)",
+          "new_output": "5"
+        }
+      ]
+    },
+    "mini_task": {
+      "goal": "Створи змінну `city` зі значенням 'Київ' і виведи її",
+      "starter": "# Створи змінну city\n# Виведи її\n",
+      "hints": [
+        "city = \"Київ\"",
+        "print(city)"
+      ],
+      "validation": {
+        "type": "output_contains",
+        "text": "Київ"
+      }
+    },
+    "task": {
+      "goal": "Створи дві змінні `first_name` та `last_name` і виведи повне ім'я в одному рядку",
+      "starter": "first_name = \"\"\nlast_name = \"\"\n# виведи повне ім'я\n",
+      "hints": [
+        "Заповни змінні: first_name = \"Іван\", last_name = \"Петренко\"",
+        "print(first_name + \" \" + last_name)"
+      ],
+      "tests": [
+        {
+          "input": "first_name = \"Іван\"\nlast_name = \"Петренко\"\nprint(first_name + \" \" + last_name)",
+          "expected": "Іван Петренко"
+        }
+      ]
+    },
+    "review": {
+      "solutions": [
+        {
+          "code": "print(first_name + \" \" + last_name)",
+          "comment": "З'єднуємо рядки оператором +"
+        },
+        {
+          "code": "print(f\"{first_name} {last_name}\")",
+          "comment": "f-рядок — зручніший спосіб (вивчимо пізніше)"
+        }
+      ],
+      "takeaway": "Змінні зберігають дані. Рядки з'єднуються через + або f-string."
+    }
+  },
+  {
+    "id": "l-py-01-03",
+    "type": "lesson",
+    "duration": "3 хв",
+    "concept": "Математика — числа та оператори",
+    "one_liner": "Python — це калькулятор: +, -, *, /, //, %, **",
+    "demo": {
+      "code": "print(10 + 3)   # додавання\nprint(10 - 3)   # віднімання\nprint(10 * 3)   # множення\nprint(10 / 3)   # ділення\nprint(10 // 3)  # цілочислове\nprint(10 % 3)   # залишок\nprint(2 ** 10)  # степінь",
+      "output": "13\n7\n30\n3.3333333333333335\n3\n1\n1024",
+      "try_changes": [
+        {
+          "change": "print(15 * 2)",
+          "new_output": "30"
+        },
+        {
+          "change": "print(17 % 5)",
+          "new_output": "2"
+        }
+      ]
+    },
+    "mini_task": {
+      "goal": "Порахуй: скільки секунд у годині? (60 * 60)",
+      "starter": "# Скільки секунд у годині?\n",
+      "hints": [
+        "60 * 60"
+      ],
+      "validation": {
+        "type": "output_contains",
+        "text": "3600"
+      }
+    },
+    "task": {
+      "goal": "Порахуй: якщо твій вік 25, скільки тобі буде через 10 років у секундах? (приблизно)",
+      "starter": "my_age = 25\nyears_ahead = 10\n# порахуй секунди\n",
+      "hints": [
+        "Спочатку порахуй роки: my_age + years_ahead",
+        "Потім дні: (my_age + years_ahead) * 365",
+        "Потім години, потім хвилини, потім секунди"
+      ],
+      "tests": [
+        {
+          "input": "my_age = 25\nyears_ahead = 10\nfuture_age = my_age + years_ahead\nseconds = future_age * 365 * 24 * 60 * 60\nprint(seconds)",
+          "expected": "1104844800"
+        }
+      ]
+    },
+    "review": {
+      "solutions": [
+        {
+          "code": "future_age * 365 * 24 * 60 * 60",
+          "comment": "Крок за кроком: роки → дні → години → хвилини → секунди"
+        },
+        {
+          "code": "future_age * 365.25 * 24 * 3600",
+          "comment": " враховуємо високосні роки (365.25) і 3600 секунд у годині"
+        }
+      ],
+      "takeaway": "Математика в Python працює як звичайний калькулятор. Оператори: + - * / // % **"
+    }
+  },
+  {
+    "id": "l-py-02-01",
+    "type": "lesson",
+    "duration": "5 хв",
+    "concept": "Умови — if / elif / else",
+    "one_liner": "Програма може вибирати: якщо умова правда — зроби щось, інакше — щось інше",
+    "demo": {
+      "code": "x = 5\n\nif x > 0:\n    print(\"Додатне\")\nelif x < 0:\n    print(\"Від'ємне\")\nelse:\n    print(\"Нуль\")",
+      "output": "Додатне",
+      "try_changes": [
+        {
+          "change": "x = -3\nif x > 0:\n    print(\"Додатне\")\nelif x < 0:\n    print(\"Від'ємне\")\nelse:\n    print(\"Нуль\")",
+          "new_output": "Від'ємне"
+        },
+        {
+          "change": "x = 0\nif x > 0:\n    print(\"Додатне\")\nelif x < 0:\n    print(\"Від'ємне\")\nelse:\n    print(\"Нуль\")",
+          "new_output": "Нуль"
+        }
+      ],
+      "line_comments": {
+        "3": "if — якщо",
+        "5": "elif — або якщо",
+        "7": "else — інакше"
+      }
+    },
+    "mini_task": {
+      "goal": "Зміни x так, щоб вивелось 'Нуль'",
+      "starter": "x = 5\nif x > 0:\n    print(\"Додатне\")\nelif x < 0:\n    print(\"Від'ємне\")\nelse:\n    print(\"Нуль\")",
+      "hints": [
+        "Постав x = 0"
+      ],
+      "validation": {
+        "type": "output_contains",
+        "text": "Нуль"
+      }
+    },
+    "task": {
+      "goal": "Напиши функцію describe_age(age), яка повертає: <13 — 'дитина', <18 — 'підліток', інакше — 'дорослий'",
+      "starter": "def describe_age(age):\n    # твій код\n    pass\n\ndescribe_age(10)\ndescribe_age(15)\ndescribe_age(25)",
+      "hints": [
+        "Спочатку перевір найменше: if age < 13:",
+        "Потім elif age < 18:",
+        "Потім else:"
+      ],
+      "tests": [
+        {
+          "input": "def describe_age(age):\n    if age < 13:\n        print('дитина')\n    elif age < 18:\n        print('підліток')\n    else:\n        print('дорослий')\ndescribe_age(10)\ndescribe_age(15)\ndescribe_age(25)",
+          "expected": "дитина\nпідліток\nдорослий"
+        }
+      ]
+    },
+    "review": {
+      "solutions": [
+        {
+          "code": "if age < 13:\n    print('дитина')\nelif age < 18:\n    print('підліток')\nelse:\n    print('дорослий')",
+          "comment": "Класичний if/elif/else — перевіряємо від найменшого"
+        },
+        {
+          "code": "labels = {range(0, 13): 'дитина', range(13, 18): 'підліток'}\n# ... складніший спосіб",
+          "comment": "Є й інші підходи, але if/elif — найзрозуміліший"
+        }
+      ],
+      "takeaway": "if перевіряє умову. elif — додаткова перевірка. else — якщо жодна не виконалась. Порядок має значення!"
+    }
+  },
+  {
+    "id": "l-py-02-02",
+    "type": "lesson",
+    "duration": "5 хв",
+    "concept": "Цикли — for та while",
+    "one_liner": "Цикл повторює код: for — для кожного елемента, while — поки умова правда",
+    "demo": {
+      "code": "for i in range(5):\n    print(f\"Крок {i}\")",
+      "output": "Крок 0\nКрок 1\nКрок 2\nКрок 3\nКрок 4",
+      "try_changes": [
+        {
+          "change": "for i in range(3):\n    print(f\"Привіт {i}\")",
+          "new_output": "Привіт 0\nПривіт 1\nПривіт 2"
+        },
+        {
+          "change": "for letter in \"Python\":\n    print(letter)",
+          "new_output": "P\ny\nt\nh\no\nn"
+        }
+      ]
+    },
+    "mini_task": {
+      "goal": "Зміни range щоб вивести числа від 0 до 9",
+      "starter": "for i in range(5):\n    print(i)",
+      "hints": [
+        "range(10) дає 0,1,2,...,9"
+      ],
+      "validation": {
+        "type": "output_lines",
+        "count": 10
+      }
+    },
+    "task": {
+      "goal": "Порахуй суму чисел від 1 до 100",
+      "starter": "total = 0\n# додай цикл\nprint(total)",
+      "hints": [
+        "for i in range(1, 101):",
+        "total += i"
+      ],
+      "tests": [
+        {
+          "input": "total = 0\nfor i in range(1, 101):\n    total += i\nprint(total)",
+          "expected": "5050"
+        }
+      ]
+    },
+    "review": {
+      "solutions": [
+        {
+          "code": "for i in range(1, 101):\n    total += i",
+          "comment": "Класичний цикл з лічильником"
+        },
+        {
+          "code": "print(sum(range(1, 101)))",
+          "comment": "sum() + range() — один рядок (Python-стиль!)"
+        },
+        {
+          "code": "print(100 * 101 // 2)",
+          "comment": "Формула Гауса: n*(n+1)/2 — математика швидша за цикл!"
+        }
+      ],
+      "takeaway": "for i in range(N) — повторю N разів. sum() складає всі елементи. Є завжди кілька способів!"
+    }
+  },
+  {
+    "id": "l-py-03-01",
+    "type": "lesson",
+    "duration": "5 хв",
+    "concept": "Функції — блоки коду",
+    "one_liner": "Функція — це іменований блок коду, який можна викликати знову і знову",
+    "demo": {
+      "code": "def greet(name):\n    print(f\"Привіт, {name}!\")\n\ngreet(\"Олексій\")\ngreet(\"Марія\")",
+      "output": "Привіт, Олексій!\nПривіт, Марія!",
+      "try_changes": [
+        {
+          "change": "def greet(name):\n    print(f\"Привіт, {name}! Як справи?\")\ngreet(\"fox\")",
+          "new_output": "Привіт, fox! Як справи?"
+        }
+      ]
+    },
+    "mini_task": {
+      "goal": "Створи функцію double(x), яка повертає x * 2",
+      "starter": "def double(x):\n    # твій код\n    pass\n\nprint(double(5))\nprint(double(10))",
+      "hints": [
+        "return x * 2"
+      ],
+      "validation": {
+        "type": "output_contains",
+        "text": "10"
+      }
+    },
+    "task": {
+      "goal": "Напиши функцію power(base, exp) яка повертає base в степені exp (за замовчуванням exp=2)",
+      "starter": "def power(base, exp=2):\n    # твій код\n    pass\n\nprint(power(3))     # має бути 9\nprint(power(2, 10)) # має бути 1024",
+      "hints": [
+        "return base ** exp",
+        "exp=2 — значення за замовчуванням"
+      ],
+      "tests": [
+        {
+          "input": "def power(base, exp=2):\n    return base ** exp\nprint(power(3))\nprint(power(2, 10))",
+          "expected": "9\n1024"
+        }
+      ]
+    },
+    "review": {
+      "solutions": [
+        {
+          "code": "def power(base, exp=2):\n    return base ** exp",
+          "comment": "Один рядок — просто і елегантно"
+        },
+        {
+          "code": "def power(base, exp=2):\n    result = 1\n    for i in range(exp):\n        result *= base\n    return result",
+          "comment": "Циклічний підхід — показує як працює степінь «під капотом»"
+        }
+      ],
+      "takeaway": "def створює функцію. return повертає значення. Аргументи за замовчуванням: param=value."
+    }
+  }
+]

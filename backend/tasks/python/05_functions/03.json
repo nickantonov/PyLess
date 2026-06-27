@@ -1,0 +1,19 @@
+{
+  "id": "py-05-03",
+  "module": "Functions",
+  "module_order": 5,
+  "title": "Лямбда",
+  "difficulty": "medium",
+  "description": "Створи лямбда-функцію `square` яка повертає квадрат числа.",
+  "starter_code": "square = lambda x: # твій код\n",
+  "hints": [
+    "Лямбда: lambda x: x * x"
+  ],
+  "tests": [
+    {
+      "input": "square = lambda x: x * x\nprint(square(5))",
+      "expected": "25"
+    }
+  ],
+  "explanation": "lambda — анонімна функція."
+}

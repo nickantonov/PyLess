@@ -1,0 +1,19 @@
+{
+  "id": "py-07-02",
+  "module": "Dicts",
+  "module_order": 7,
+  "title": "Множина",
+  "difficulty": "easy",
+  "description": "Знайди спільні елементи двох списків через множину.",
+  "starter_code": "a = [1, 2, 3, 4]\nb = [3, 4, 5, 6]\n",
+  "hints": [
+    "set() перетворює список на множину"
+  ],
+  "tests": [
+    {
+      "input": "a = [1, 2, 3, 4]\nb = [3, 4, 5, 6]\nprint(sorted(set(a) & set(b)))",
+      "expected": "[3, 4]"
+    }
+  ],
+  "explanation": "Оператор & — перетин множин."
+}

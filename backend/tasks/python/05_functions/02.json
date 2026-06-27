@@ -1,0 +1,19 @@
+{
+  "id": "py-05-02",
+  "module": "Functions",
+  "module_order": 5,
+  "title": "Аргументи за замовчуванням",
+  "difficulty": "medium",
+  "description": "Напиши функцію `power(base, exp=2)` яка повертає base в степені exp.",
+  "starter_code": "def power(base, exp=2):\n    # твій код\n    pass\n",
+  "hints": [
+    "exp=2 — значення за замовчуванням"
+  ],
+  "tests": [
+    {
+      "input": "def power(base, exp=2):\n    return base ** exp\nprint(power(3))\nprint(power(3, 3))",
+      "expected": "9\n27"
+    }
+  ],
+  "explanation": "Аргументи за замовчуванням використовуються якщо не передані."
+}

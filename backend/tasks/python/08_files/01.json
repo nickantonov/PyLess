@@ -1,0 +1,19 @@
+{
+  "id": "py-08-01",
+  "module": "Files",
+  "module_order": 8,
+  "title": "Запис у файл",
+  "difficulty": "easy",
+  "description": "Запиши рядок 'Hello File!' у файл `test.txt`.",
+  "starter_code": "# Запиши у файл\n",
+  "hints": [
+    "with open('test.txt', 'w') as f: f.write(...)"
+  ],
+  "tests": [
+    {
+      "input": "with open('test.txt', 'w') as f:\n    f.write('Hello File!')\nwith open('test.txt') as f:\n    print(f.read())",
+      "expected": "Hello File!"
+    }
+  ],
+  "explanation": "with open() автоматично закриває файл."
+}

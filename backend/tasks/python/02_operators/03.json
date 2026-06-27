@@ -1,0 +1,19 @@
+{
+  "id": "py-02-03",
+  "module": "Operators",
+  "module_order": 2,
+  "title": "Залишок",
+  "difficulty": "easy",
+  "description": "Знайди залишок від ділення 17 на 5.",
+  "starter_code": "# Залишок від ділення\n",
+  "hints": [
+    "Оператор % повертає залишок"
+  ],
+  "tests": [
+    {
+      "input": "print(17 % 5)",
+      "expected": "2"
+    }
+  ],
+  "explanation": "% — оператор модуля (залишок)."
+}

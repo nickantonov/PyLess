@@ -1,0 +1,19 @@
+{
+  "id": "py-03-03",
+  "module": "Conditions",
+  "module_order": 3,
+  "title": "Позитивне/негативне",
+  "difficulty": "easy",
+  "description": "Виведи 'позитивне' якщо x > 0, 'негативне' якщо x < 0, 'нуль' якщо x == 0.",
+  "starter_code": "x = -5\n",
+  "hints": [
+    "Порівняй x з нулем"
+  ],
+  "tests": [
+    {
+      "input": "x = -5\nif x > 0:\n    print('позитивне')\nelif x < 0:\n    print('негативне')\nelse:\n    print('нуль')",
+      "expected": "негативне"
+    }
+  ],
+  "explanation": "Порівняння: >, <, ==, !=, >=, <="
+}

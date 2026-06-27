@@ -1,0 +1,19 @@
+{
+  "id": "py-02-04",
+  "module": "Operators",
+  "module_order": 2,
+  "title": "Степінь",
+  "difficulty": "easy",
+  "description": "Піднеси 2 до степені 10.",
+  "starter_code": "# Степінь\n",
+  "hints": [
+    "Оператор ** підносить до степені"
+  ],
+  "tests": [
+    {
+      "input": "print(2 ** 10)",
+      "expected": "1024"
+    }
+  ],
+  "explanation": "** — оператор степені."
+}

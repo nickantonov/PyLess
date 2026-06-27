@@ -1,0 +1,19 @@
+{
+  "id": "py-07-01",
+  "module": "Dicts",
+  "module_order": 7,
+  "title": "Створення словника",
+  "difficulty": "easy",
+  "description": "Створи словник `person` з ключами 'name'='Іван' та 'age'=30.",
+  "starter_code": "# Створи словник\n",
+  "hints": [
+    "person = {'name': 'Іван', 'age': 30}"
+  ],
+  "tests": [
+    {
+      "input": "person = {'name': 'Іван', 'age': 30}\nprint(person['name'])",
+      "expected": "Іван"
+    }
+  ],
+  "explanation": "Словник: {ключ: значення}."
+}

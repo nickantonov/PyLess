@@ -1,0 +1,19 @@
+{
+  "id": "py-01-02",
+  "module": "Variables",
+  "module_order": 1,
+  "title": "Змінна name",
+  "difficulty": "easy",
+  "description": "Створи змінну `name` з рядком `'Python'` і виведи її.",
+  "starter_code": "# Створи змінну name\n",
+  "hints": [
+    "Змінна = значення: name = 'Python'"
+  ],
+  "tests": [
+    {
+      "input": "name = 'Python'\nprint(name)",
+      "expected": "Python"
+    }
+  ],
+  "explanation": "Змінні зберігають значення."
+}

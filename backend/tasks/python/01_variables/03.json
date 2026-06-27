@@ -1,0 +1,19 @@
+{
+  "id": "py-01-03",
+  "module": "Variables",
+  "module_order": 1,
+  "title": "Математика",
+  "difficulty": "easy",
+  "description": "Порахуй 15 + 27 і виведи результат.",
+  "starter_code": "# Порахуй суму\n",
+  "hints": [
+    "Скористайся оператором +"
+  ],
+  "tests": [
+    {
+      "input": "print(15 + 27)",
+      "expected": "42"
+    }
+  ],
+  "explanation": "Оператор + складає числа."
+}

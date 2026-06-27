@@ -1,0 +1,19 @@
+{
+  "id": "py-01-04",
+  "module": "Variables",
+  "module_order": 1,
+  "title": "Типи даних",
+  "difficulty": "easy",
+  "description": "Створи змінну `age` з числом 25 і виведи її тип за допомогою `type()`.",
+  "starter_code": "# Створи змінну age та виведи її тип\n",
+  "hints": [
+    "type(age) повертає тип змінної"
+  ],
+  "tests": [
+    {
+      "input": "age = 25\nprint(type(age))",
+      "expected": "<class 'int'>"
+    }
+  ],
+  "explanation": "type() показує тип змінної."
+}

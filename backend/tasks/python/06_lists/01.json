@@ -1,0 +1,19 @@
+{
+  "id": "py-06-01",
+  "module": "Lists",
+  "module_order": 6,
+  "title": "Створення списку",
+  "difficulty": "easy",
+  "description": "Створи список чисел [1, 2, 3, 4, 5] і виведи його довжину.",
+  "starter_code": "# Створи список та виведи довжину\n",
+  "hints": [
+    "len() повертає довжину списку"
+  ],
+  "tests": [
+    {
+      "input": "my_list = [1, 2, 3, 4, 5]\nprint(len(my_list))",
+      "expected": "5"
+    }
+  ],
+  "explanation": "len() — кількість елементів."
+}

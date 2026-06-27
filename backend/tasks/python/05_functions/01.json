@@ -1,0 +1,19 @@
+{
+  "id": "py-05-01",
+  "module": "Functions",
+  "module_order": 5,
+  "title": "Проста функція",
+  "difficulty": "easy",
+  "description": "Напиши функцію `greet(name)` яка повертає `'Привіт, {name}!'`.",
+  "starter_code": "def greet(name):\n    # твій код\n    pass\n",
+  "hints": [
+    "f-рядки: f'Привіт, {name}!'"
+  ],
+  "tests": [
+    {
+      "input": "def greet(name):\n    return f'Привіт, {name}!'\nprint(greet('Олексій'))",
+      "expected": "Привіт, Олексій!"
+    }
+  ],
+  "explanation": "return повертає значення з функції."
+}

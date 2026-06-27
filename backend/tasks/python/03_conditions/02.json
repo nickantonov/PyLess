@@ -1,0 +1,19 @@
+{
+  "id": "py-03-02",
+  "module": "Conditions",
+  "module_order": 3,
+  "title": "Вік",
+  "difficulty": "easy",
+  "description": "Напиши функцію `describe_age(age)`: якщо < 13 — 'дитина', < 18 — 'підліток', інакше 'дорослий'.",
+  "starter_code": "def describe_age(age):\n    # твій код\n    pass\n",
+  "hints": [
+    "Використай if/elif/else"
+  ],
+  "tests": [
+    {
+      "input": "def describe_age(age):\n    if age < 13:\n        print('дитина')\n    elif age < 18:\n        print('підліток')\n    else:\n        print('дорослий')\ndescribe_age(10)\ndescribe_age(15)\ndescribe_age(25)",
+      "expected": "дитина\nпідліток\nдорослий"
+    }
+  ],
+  "explanation": "elif — скорочення від 'else if'."
+}

@@ -1,0 +1,19 @@
+{
+  "id": "py-06-02",
+  "module": "Lists",
+  "module_order": 6,
+  "title": "Сlicing",
+  "difficulty": "easy",
+  "description": "Зі списку `nums = [10, 20, 30, 40, 50]` виведи елементи з індексу 1 по 3.",
+  "starter_code": "nums = [10, 20, 30, 40, 50]\n",
+  "hints": [
+    "Синтаксис: list[start:end]"
+  ],
+  "tests": [
+    {
+      "input": "nums = [10, 20, 30, 40, 50]\nprint(nums[1:4])",
+      "expected": "[20, 30, 40]"
+    }
+  ],
+  "explanation": "Slicing: nums[1:4] — елементи 1,2,3."
+}

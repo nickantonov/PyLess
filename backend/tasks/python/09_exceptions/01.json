@@ -1,0 +1,19 @@
+{
+  "id": "py-09-01",
+  "module": "Exceptions",
+  "module_order": 9,
+  "title": "Try/Except",
+  "difficulty": "easy",
+  "description": "Напиши код який ловить помилку ділення на нуль.",
+  "starter_code": "# Оброби помилку\n",
+  "hints": [
+    "try: ... except ZeroDivisionError:"
+  ],
+  "tests": [
+    {
+      "input": "try:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print('Помилка: ділення на нуль')",
+      "expected": "Помилка: ділення на нуль"
+    }
+  ],
+  "explanation": "try/except ловить винятки."
+}

@@ -1,0 +1,19 @@
+{
+  "id": "py-04-02",
+  "module": "Loops",
+  "module_order": 4,
+  "title": "Сума чисел",
+  "difficulty": "easy",
+  "description": "Порахуй суму чисел від 1 до 10 (включно).",
+  "starter_code": "# Порахуй суму\n",
+  "hints": [
+    "Скористайся циклом або функцією sum()"
+  ],
+  "tests": [
+    {
+      "input": "print(sum(range(1, 11)))",
+      "expected": "55"
+    }
+  ],
+  "explanation": "sum() складає всі елементи."
+}

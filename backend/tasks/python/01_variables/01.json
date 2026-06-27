@@ -1,0 +1,19 @@
+{
+  "id": "py-01-01",
+  "module": "Variables",
+  "module_order": 1,
+  "title": "Привіт, світ!",
+  "difficulty": "easy",
+  "description": "Напиши команду яка виводить текст `Hello, World!` на екран.",
+  "starter_code": "# Виведи Hello, World!\n",
+  "hints": [
+    "Використай функцію print()"
+  ],
+  "tests": [
+    {
+      "input": "print('Hello, World!')",
+      "expected": "Hello, World!"
+    }
+  ],
+  "explanation": "print() виводить текст на екран."
+}

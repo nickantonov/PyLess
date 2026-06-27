@@ -1,0 +1,19 @@
+{
+  "id": "py-02-01",
+  "module": "Operators",
+  "module_order": 2,
+  "title": "Ділення",
+  "difficulty": "easy",
+  "description": "Поділи 100 на 3 і виведи результат.",
+  "starter_code": "# Поділи 100 на 3\n",
+  "hints": [
+    "Оператор / для ділення"
+  ],
+  "tests": [
+    {
+      "input": "print(100 / 3)",
+      "expected": "33.333333333333336"
+    }
+  ],
+  "explanation": "/ дає результат з комою."
+}

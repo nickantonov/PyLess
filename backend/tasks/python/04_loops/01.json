@@ -1,0 +1,19 @@
+{
+  "id": "py-04-01",
+  "module": "Loops",
+  "module_order": 4,
+  "title": "Цикл for",
+  "difficulty": "easy",
+  "description": "Виведи числа від 0 до 4 кожне з нового рядка.",
+  "starter_code": "# Виведи числа 0-4\n",
+  "hints": [
+    "Використай range(5) та цикл for"
+  ],
+  "tests": [
+    {
+      "input": "for i in range(5):\n    print(i)",
+      "expected": "0\n1\n2\n3\n4"
+    }
+  ],
+  "explanation": "range(5) дає 0,1,2,3,4."
+}
