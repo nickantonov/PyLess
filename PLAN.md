@@ -12,7 +12,16 @@
 
 ---
 
-## Фаза 2: Кросплатформність
+## Фаза 2: Кросплатформність ✅
+- Linux PyInstaller build (28MB standalone binary)
+- `run_desktop.py` entry point
+
+## Фаза 3: PHP/MySQL версія ✅
+- Location: `/home/fox/DEPLOY/PyLess-php/`
+- PHP 8.1+ / MySQL 5.7+
+- All API endpoints matching Python version
+- Schema: 12 tables with InnoDB + utf8mb4
+- React SPA frontend (static build)
 
 ### Мета
 Самодостатні виконувані файли для Windows, macOS, Linux — без потреби встановлювати Python/Node.
