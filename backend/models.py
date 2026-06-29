@@ -1,3 +1,4 @@
+# Copyright (c) 1998-2026 Nick Antonov (nick.antonov1@gmail.com) / Borodachamba Studio. All rights reserved.
 from pydantic import BaseModel
 from typing import Optional, List
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+# Copyright (c) 1998-2026 Nick Antonov (nick.antonov1@gmail.com) / Borodachamba Studio. All rights reserved.
 # PyLess SQLite Backup Script
 # Run daily via cron: 0 2 * * * /path/to/backup.sh
 # Keeps last 7 backups

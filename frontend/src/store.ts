@@ -1,3 +1,4 @@
+// Copyright (c) 1998-2026 Nick Antonov (nick.antonov1@gmail.com) / Borodachamba Studio. All rights reserved.
 import { create } from 'zustand'
 import type { Task, TestResult, User, AppTheme } from './types'
 

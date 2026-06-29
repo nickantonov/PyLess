@@ -1,3 +1,4 @@
+# Copyright (c) 1998-2026 Nick Antonov (nick.antonov1@gmail.com) / Borodachamba Studio. All rights reserved.
 import sqlite3
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Header

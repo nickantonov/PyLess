@@ -1,3 +1,4 @@
+// Copyright (c) 1998-2026 Nick Antonov (nick.antonov1@gmail.com) / Borodachamba Studio. All rights reserved.
 import { useRef, useCallback, useState, useEffect } from 'react'
 import { useStore } from '../store'
 import CodeSandbox from './CodeSandbox'
