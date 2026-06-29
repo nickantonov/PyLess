@@ -11,9 +11,9 @@
 
 ## 📸 Скріншоти
 
-| Редактор | Адмін-панель | Відео-чат |
-|----------|-------------|-----------|
-| ![Editor](https://via.placeholder.com/400x250/1a1a2e/8b5cf6?text=Редактор+%E2%9C%85) | ![Admin](https://via.placeholder.com/400x250/1a1a2e/ec4899?text=Адмін+%E2%9C%85) | ![Video](https://via.placeholder.com/400x250/1a1a2e/06b6d4?text=Відео+%E2%9C%85) |
+| Редактор | Головна сторінка | Модулі |
+|----------|-----------------|--------|
+| ![Редактор](docs/screenshots/02-main.png) | ![Головна](docs/screenshots/01-auth.png) | ![Модулі](docs/screenshots/04-modules.png) |
 
 ---
 
