@@ -5,11 +5,17 @@ export default function Profile({ onClose }: { onClose?: () => void }) {
   const { profile, setProfile, leaderboard, setLeaderboard, dailyChallenge, setDailyChallenge, token, user, logout } = useStore()
   const [inviteCode, setInviteCode] = useState('')
   const [joinMsg, setJoinMsg] = useState('')
+  const [lbPeriod, setLbPeriod] = useState('all')
+  const [lbModule, setLbModule] = useState('')
 
   useEffect(() => {
-    fetch('/api/tasks/leaderboard/top').then((r) => r.json()).then(setLeaderboard).catch(() => {})
+    const params = new URLSearchParams()
+    if (lbPeriod !== 'all') params.set('period', lbPeriod)
+    if (lbModule) params.set('module', lbModule)
+    const qs = params.toString()
+    fetch(`/api/tasks/leaderboard/top${qs ? '?' + qs : ''}`).then((r) => r.json()).then(setLeaderboard).catch(() => {})
     fetch('/api/tasks/daily/challenge').then((r) => r.json()).then(setDailyChallenge).catch(() => {})
-  }, [])
+  }, [lbPeriod, lbModule])
 
   const handleLogout = () => {
     logout()
@@ -131,12 +137,20 @@ export default function Profile({ onClose }: { onClose?: () => void }) {
       <div>
         <h3 className="text-xs font-semibold mb-2" style={{ color: 'var(--text-muted)' }}>🏅 Бейджі ({badges.length})</h3>
         <div className="grid grid-cols-2 gap-1.5">
-          {badges.map((b: any) => (
-            <div key={b.id} className="p-2 rounded-xl glass-surface text-center">
-              <div className="text-lg mb-0.5">{b.name.split(' ')[0]}</div>
-              <div className="text-[9px] font-medium" style={{ color: 'var(--text-primary)' }}>{b.name.split(' ').slice(1).join(' ')}</div>
-            </div>
-          ))}
+          {badges.map((b: any) => {
+            const rarityColors: Record<string, string> = {
+              common: '#94a3b8', uncommon: '#22c55e', rare: '#3b82f6',
+              epic: '#a855f7', legendary: '#f59e0b',
+            }
+            const color = rarityColors[b.rarity] || '#94a3b8'
+            return (
+              <div key={b.id} className="p-2 rounded-xl glass-surface text-center" style={{ borderColor: `${color}33` }}>
+                <div className="text-lg mb-0.5">{b.name.split(' ')[0]}</div>
+                <div className="text-[9px] font-medium" style={{ color: 'var(--text-primary)' }}>{b.name.split(' ').slice(1).join(' ')}</div>
+                <div className="text-[8px] mt-0.5 font-bold uppercase" style={{ color }}>{b.rarity}</div>
+              </div>
+            )
+          })}
           {badges.length === 0 && (
             <div className="col-span-2 text-center py-3 text-[11px]" style={{ color: 'var(--text-muted)' }}>
               Виконуй завдання щоб отримати бейджі
@@ -147,6 +161,18 @@ export default function Profile({ onClose }: { onClose?: () => void }) {
 
       <div>
         <h3 className="text-xs font-semibold mb-2" style={{ color: 'var(--text-muted)' }}>🏆 Рейтинг</h3>
+        <div className="flex gap-1 mb-2">
+          {['all', 'day', 'week'].map(p => (
+            <button key={p} onClick={() => setLbPeriod(p)}
+              className="px-2 py-0.5 rounded-md text-[10px] font-medium transition-all"
+              style={{
+                background: lbPeriod === p ? 'var(--accent)' : 'var(--bg-surface)',
+                color: lbPeriod === p ? '#fff' : 'var(--text-muted)',
+              }}>
+              {p === 'all' ? 'Все' : p === 'day' ? 'День' : 'Тиждень'}
+            </button>
+          ))}
+        </div>
         <div className="space-y-1">
           {leaderboard.slice(0, 5).map((entry: any) => (
             <div key={entry.rank} className="flex items-center gap-2 p-2 rounded-xl glass-surface text-xs">
@@ -162,6 +188,26 @@ export default function Profile({ onClose }: { onClose?: () => void }) {
               Поки порожньо
             </div>
           )}
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-xs font-semibold mb-2" style={{ color: 'var(--text-muted)' }}>📊 Статистика</h3>
+        <div className="grid grid-cols-2 gap-1.5">
+          {[
+            { label: 'Стрибок', value: streak.best, icon: '🔥' },
+            { label: 'Комбо', value: combo.best, icon: '⚡' },
+            { label: 'Рівень', value: level.level, icon: level.icon },
+            { label: 'XP', value: level.xp, icon: '💎' },
+          ].map(s => (
+            <div key={s.label} className="p-2 rounded-xl glass-surface flex items-center gap-2">
+              <span className="text-sm">{s.icon}</span>
+              <div>
+                <div className="text-[10px] font-bold" style={{ color: 'var(--text-primary)' }}>{s.value}</div>
+                <div className="text-[8px]" style={{ color: 'var(--text-muted)' }}>{s.label}</div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 

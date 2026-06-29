@@ -5,12 +5,16 @@
 
 ---
 
-## Поточний статус: v1.5 — freeCodeCamp Redesign
+## Поточний статус: v1.8 — Production Ready
 - Backend: FastAPI + SQLite + Groq AI + Settings API + lifespan + rate limiting
 - Frontend: React + TypeScript + Vite + Monaco + Pyodide + CodeSandbox
-- 63 задачі: 47 Python + 4 HTML + 4 CSS + 4 JavaScript + 4 React + GUI + CLI
+- 77 задач: 47 Python + 4 HTML + 4 CSS + 4 JavaScript + 4 React + GUI + CLI
 - Multi-runtime: Python→Pyodide, HTML/CSS/JS/React→iframe sandbox
 - Split-view: задача зліва, редактор справа (freeCodeCamp style)
+- Tests: 19 backend API tests (pytest)
+- CI/CD: GitHub Actions
+- Production: Docker Compose + Nginx (SSL, rate limiting)
+- Backup: SQLite daily backup script
 
 ---
 
@@ -29,46 +33,41 @@
 - Invite code flow, Settings API, Admin dashboard
 
 ## Фаза 5: Безпека + Product-Quality ✅
-- CORS: configurable via CORS_ORIGINS env var
-- JWT: auto-generated secret, stored in settings DB
-- lifespan context manager (deprecated @app.on_event removed)
+- CORS configurable via CORS_ORIGINS env var
+- JWT auto-generated secret, stored in settings DB
+- lifespan context manager
 - Message validation (max 2000 chars)
 - AI rate limiting (10 req/min per IP)
 - OAuth state: 15min expiry + cleanup
 - Health check: DB size, user count, uptime, tasks completed
-- Content: 63 задачі, demo/review на більшості Python задач
 
 ## Фаза 6: freeCodeCamp Redesign ✅
 - Split-view layout: задача зліва (40%), редактор справа (60%)
-- Left pane: instructions, hints (progressive reveal), output/test results
-- Right pane: Monaco editor + CodeSandbox (for non-Python tasks)
-- Persistent action bar: Run + Tests buttons
-- Test results inline in left pane
-- Hints with progressive reveal (show one at a time)
+- Left pane: instructions, progressive hints, output/test results
+- Right pane: Monaco editor + CodeSandbox
+- Progressive hint reveal
+
+## Фаза 7: Контент + Gamification ✅
+- 77 задач (+14 new: Conditions, Functions, Lists, Dicts, Files)
+- Speed badges: bronze (<5min), silver (<3min), gold (<1min), diamond (<30s)
+- Marathon badge: 10 tasks/day
+- All-modules badge: completed at least one in each module
+- Frontend tracks task start time
+
+## Фаза 8: DevOps + Production ✅
+- 19 backend API tests (pytest)
+- GitHub Actions CI/CD (test → build Docker)
+- Production Docker Compose + Nginx (SSL, rate limiting, gzip, security headers)
+- SQLite backup script (daily, keeps 7 days)
 
 ---
 
-## Фаза 7: Контент + Gamification (планована)
-- [ ] Більше задач в кожному модулі (ціль: 10+ на модуль)
-- [ ] Щоденні челенджі з таймером
-- [ ] Ачівки за швидкість розв'язання
-- [ ] Публічний профіль з бейджами
-- [ ] Лідерборд з фільтрами (за модулем, за період)
-
-## Фаза 8: DevOps + Production (планована)
-- [ ] GitHub Actions CI/CD
-- [ ] Automated tests (backend + frontend)
-- [ ] Docker Compose production (Nginx + SSL)
-- [ ] Backup strategy для SQLite
-- [ ] Моніторинг (uptime, помилки)
-
----
-
-## Timeline
-1. **Фаза 2** ✅: PyInstaller + Docker
-2. **Фаза 3** ✅: PHP/MySQL версія
-3. **Фаза 4** ✅: Multi-runtime модулі
-4. **Фаза 5** ✅: Безпека + Product-Quality
-5. **Фаза 6** ✅: freeCodeCamp Redesign
-6. **Фаза 7** 🔵: Контент + Gamification
-7. **Фаза 8** 🔵: DevOps + Production
+## Git History
+- `c468b85` — MVP v1.0
+- `ac7613c` — Copyrights
+- `74c7c65` — Roadmap
+- `e5eb367` — Phase 2: PyInstaller
+- `16c64c6` — Phase 2+3: Docker + PHP/MySQL
+- `939ebd2` — Phase 4-6: Multi-runtime, Security, Redesign
+- `0857df5` — Phase 7: Content + Gamification
+- `70e79ad` — Phase 8: DevOps + Production

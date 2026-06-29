@@ -1,9 +1,33 @@
+import { useState, useEffect } from 'react'
 import { useStore } from '../store'
 
 const API = ''
 
+function CountdownTimer() {
+  const [timeLeft, setTimeLeft] = useState('')
+
+  useEffect(() => {
+    const update = () => {
+      const now = new Date()
+      const tomorrow = new Date(now)
+      tomorrow.setDate(tomorrow.getDate() + 1)
+      tomorrow.setHours(0, 0, 0, 0)
+      const diff = tomorrow.getTime() - now.getTime()
+      const h = Math.floor(diff / 3600000)
+      const m = Math.floor((diff % 3600000) / 60000)
+      const s = Math.floor((diff % 60000) / 1000)
+      setTimeLeft(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`)
+    }
+    update()
+    const id = setInterval(update, 1000)
+    return () => clearInterval(id)
+  }, [])
+
+  return <span className="font-mono text-[10px] tabular-nums" style={{ color: 'var(--accent-light)' }}>{timeLeft}</span>
+}
+
 export default function Sidebar() {
-  const { tasks, currentTask, setCurrentTask } = useStore()
+  const { tasks, currentTask, setCurrentTask, dailyChallenge } = useStore()
 
   const lessons = tasks.filter((t) => t.type === 'lesson')
   const exercises = tasks.filter((t) => t.type !== 'lesson')
@@ -44,6 +68,25 @@ export default function Sidebar() {
 
   return (
     <aside className="w-72 flex-shrink-0 glass flex flex-col overflow-hidden" style={{ borderRight: '1px solid var(--border)' }}>
+      {/* Daily Challenge */}
+      {dailyChallenge && (
+        <div className="p-3" style={{ borderBottom: '1px solid var(--border)', background: 'rgba(139,92,246,0.08)' }}>
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--accent-light)' }}>🔥 Щоденний челлендж</span>
+            <CountdownTimer />
+          </div>
+          <button
+            onClick={() => handleSelect(dailyChallenge.task_id)}
+            className="w-full text-left p-2 rounded-lg text-xs flex items-center gap-2 transition-all"
+            style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
+          >
+            <span className="w-6 h-6 rounded-md flex items-center justify-center text-xs" style={{ background: 'var(--gradient-1)' }}>⭐</span>
+            <span className="flex-1 font-medium" style={{ color: 'var(--text-primary)' }}>Виконай завдання</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full font-bold" style={{ background: 'rgba(245,158,11,0.2)', color: '#f59e0b' }}>+{dailyChallenge.bonus_xp} XP</span>
+          </button>
+        </div>
+      )}
+
       {/* Progress */}
       <div className="p-4" style={{ borderBottom: '1px solid var(--border)' }}>
         <div className="flex items-center justify-between mb-2">

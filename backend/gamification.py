@@ -227,18 +227,33 @@ def get_daily_challenge(db: sqlite3.Connection) -> dict:
     return {"task_id": task_id, "bonus_xp": 150, "date": today}
 
 
-def get_leaderboard(db: sqlite3.Connection, limit: int = 10) -> list:
-    rows = db.execute("""
+def get_leaderboard(db: sqlite3.Connection, limit: int = 10, period: str = "all", module: str = "") -> list:
+    where = ""
+    params = []
+
+    if period == "day":
+        where = "AND x.created_at >= date('now')"
+    elif period == "week":
+        where = "AND x.created_at >= date('now', '-7 days')"
+
+    module_join = ""
+    if module:
+        module_join = "JOIN progress p ON u.id = p.user_id AND p.status = 'completed'"
+        where += " AND p.task_id LIKE ?"
+        params.append(f"%-{module}-%")
+
+    rows = db.execute(f"""
         SELECT u.id, u.username, u.display_name,
                COALESCE(SUM(x.amount), 0) as total_xp,
                COALESCE(s.current_streak, 0) as streak
         FROM users u
-        LEFT JOIN xp_log x ON u.id = x.user_id
+        LEFT JOIN xp_log x ON u.id = x.user_id {where}
         LEFT JOIN streaks s ON u.id = s.user_id
+        {module_join}
         GROUP BY u.id
         ORDER BY total_xp DESC
         LIMIT ?
-    """, (limit,)).fetchall()
+    """, (*params, limit)).fetchall()
     result = []
     for i, row in enumerate(rows):
         result.append({

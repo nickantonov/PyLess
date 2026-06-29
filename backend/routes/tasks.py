@@ -188,8 +188,9 @@ def daily_challenge(db: sqlite3.Connection = Depends(get_db)):
 
 
 @router.get("/leaderboard/top")
-def leaderboard(db: sqlite3.Connection = Depends(get_db)):
-    return get_leaderboard(db)
+def leaderboard(period: str = "all", module: str = "",
+                db: sqlite3.Connection = Depends(get_db)):
+    return get_leaderboard(db, period=period, module=module)
 
 
 @router.get("/profile/{user_id}")
