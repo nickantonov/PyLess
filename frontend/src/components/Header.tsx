@@ -2,14 +2,10 @@ import { useState, useEffect } from 'react'
 import { useStore } from '../store'
 import { MONACO_THEMES } from '../types'
 import Profile from './Profile'
-import AdminDashboard from './AdminDashboard'
-import ChatPanel from './ChatPanel'
 
 export default function Header() {
   const { theme, setTheme, editorTheme, setEditorTheme, toggleSidebar, toggleAi, tasks, profile, setProfile, token, user, logout } = useStore()
   const [showProfile, setShowProfile] = useState(false)
-  const [showAdmin, setShowAdmin] = useState(false)
-  const [showChat, setShowChat] = useState(false)
   const completed = tasks.filter((t) => t.status === 'completed').length
 
   const isAdmin = user?.role === 'admin' || user?.role === 'mentor'
@@ -75,13 +71,13 @@ export default function Header() {
       </button>
 
       {isAdmin && (
-        <button onClick={() => setShowAdmin(true)} className="btn-ghost !py-2 !px-3 !text-xs !rounded-xl flex items-center gap-1.5" style={{ borderColor: 'var(--accent)', color: 'var(--accent-light)' }}>
+        <button onClick={() => useStore.setState({ showAdmin: true })} className="btn-ghost !py-2 !px-3 !text-xs !rounded-xl flex items-center gap-1.5" style={{ borderColor: 'var(--accent)', color: 'var(--accent-light)' }}>
           👑 {user?.role === 'admin' ? 'Адмін' : 'Ментор'}
         </button>
       )}
 
       {token && (
-        <button onClick={() => setShowChat(true)} className="btn-ghost !py-2 !px-3 !text-xs !rounded-xl flex items-center gap-1.5">
+        <button onClick={() => useStore.setState({ showChat: true })} className="btn-ghost !py-2 !px-3 !text-xs !rounded-xl flex items-center gap-1.5">
           💬 Чат
         </button>
       )}
@@ -100,9 +96,6 @@ export default function Header() {
           </div>
         )}
       </div>
-
-      {showAdmin && <AdminDashboard onClose={() => setShowAdmin(false)} />}
-      {showChat && <ChatPanel onClose={() => setShowChat(false)} />}
     </header>
   )
 }
