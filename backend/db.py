@@ -121,6 +121,18 @@ def init_db():
         except sqlite3.OperationalError:
             pass
 
+    # Add group_id to existing tables
+    for table, col_type in [
+        ("invite_codes", "INTEGER DEFAULT 0"),
+        ("custom_tasks", "INTEGER DEFAULT 0"),
+        ("task_assignments", "INTEGER DEFAULT 0"),
+        ("video_rooms", "INTEGER DEFAULT 0"),
+    ]:
+        try:
+            conn.execute(f"ALTER TABLE {table} ADD COLUMN group_id {col_type}")
+        except sqlite3.OperationalError:
+            pass
+
     conn.executescript("""
         CREATE TABLE IF NOT EXISTS invite_codes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -211,6 +223,26 @@ def init_db():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (room_id) REFERENCES video_rooms(id),
             FOREIGN KEY (uploader_id) REFERENCES users(id)
+        );
+
+        CREATE TABLE IF NOT EXISTS groups (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            creator_id INTEGER NOT NULL,
+            description TEXT DEFAULT '',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (creator_id) REFERENCES users(id)
+        );
+
+        CREATE TABLE IF NOT EXISTS group_members (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            group_id INTEGER NOT NULL,
+            user_id INTEGER NOT NULL,
+            role TEXT DEFAULT 'student',
+            joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (group_id) REFERENCES groups(id),
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            UNIQUE(group_id, user_id)
         );
     """)
     conn.close()

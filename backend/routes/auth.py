@@ -224,16 +224,28 @@ def update_settings(theme: Optional[str] = None, editor_theme: Optional[str] = N
     return _user_dict(updated)
 
 
+def _get_google_config(db: sqlite3.Connection) -> dict:
+    client_id = db.execute("SELECT value FROM settings WHERE key = 'google_client_id'").fetchone()
+    client_secret = db.execute("SELECT value FROM settings WHERE key = 'google_client_secret'").fetchone()
+    redirect_uri = db.execute("SELECT value FROM settings WHERE key = 'google_redirect_uri'").fetchone()
+    return {
+        "client_id": (client_id["value"] if client_id and client_id["value"] else GOOGLE_CLIENT_ID),
+        "client_secret": (client_secret["value"] if client_secret and client_secret["value"] else GOOGLE_CLIENT_SECRET),
+        "redirect_uri": (redirect_uri["value"] if redirect_uri and redirect_uri["value"] else GOOGLE_REDIRECT_URI),
+    }
+
+
 @router.get("/google")
-def google_login():
-    if not GOOGLE_CLIENT_ID:
-        raise HTTPException(503, "Google OAuth not configured. Set GOOGLE_CLIENT_ID.")
+def google_login(db: sqlite3.Connection = Depends(get_db)):
+    config = _get_google_config(db)
+    if not config["client_id"]:
+        raise HTTPException(503, "Google OAuth not configured. Set GOOGLE_CLIENT_ID in admin settings.")
     state = secrets.token_urlsafe(32)
     _state_store[state] = {"created": datetime.utcnow().isoformat()}
     _cleanup_expired_states()
     url = (
         f"https://accounts.google.com/o/oauth2/v2/auth?"
-        f"client_id={GOOGLE_CLIENT_ID}&redirect_uri={GOOGLE_REDIRECT_URI}"
+        f"client_id={config['client_id']}&redirect_uri={config['redirect_uri']}"
         f"&response_type=code&scope=openid%20email%20profile&state={state}&access_type=offline&prompt=consent"
     )
     return RedirectResponse(url)
@@ -258,11 +270,12 @@ def google_callback(code: str = "", state: str = "", db: sqlite3.Connection = De
     if (datetime.utcnow() - created).total_seconds() > 900:
         raise HTTPException(400, "OAuth state expired, try again")
 
+    config = _get_google_config(db)
     token_resp = httpx.post("https://oauth2.googleapis.com/token", data={
         "code": code,
-        "client_id": GOOGLE_CLIENT_ID,
-        "client_secret": GOOGLE_CLIENT_SECRET,
-        "redirect_uri": GOOGLE_REDIRECT_URI,
+        "client_id": config["client_id"],
+        "client_secret": config["client_secret"],
+        "redirect_uri": config["redirect_uri"],
         "grant_type": "authorization_code",
     }, timeout=15)
     if token_resp.status_code != 200:

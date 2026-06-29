@@ -494,6 +494,68 @@ export default function AdminDashboard({ onClose }: { onClose: () => void }) {
                   />
                 </div>
 
+                <div className="p-4 rounded-xl glass-surface">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm" style={{ background: 'linear-gradient(135deg, #4285f4, #34a853)' }}>
+                      <span className="text-sm font-bold text-white">G</span>
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold">Google OAuth</div>
+                      <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Вхід через Google акаунт</div>
+                    </div>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full ml-auto" style={{
+                      background: settings.google_client_id ? 'rgba(34,197,94,0.2)' : 'rgba(245,158,11,0.2)',
+                      color: settings.google_client_id ? 'var(--success)' : 'var(--warning)',
+                    }}>
+                      {settings.google_client_id ? '✅ Активний' : '⚠️ Не налаштовано'}
+                    </span>
+                  </div>
+                  <div className="space-y-2">
+                    <div>
+                      <label className="block text-[10px] font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Google Client ID</label>
+                      <input
+                        type="text"
+                        value={settings.google_client_id || ''}
+                        onChange={e => setSettings({ ...settings, google_client_id: e.target.value })}
+                        placeholder="xxx.apps.googleusercontent.com"
+                        className="w-full px-3 py-2 rounded-xl text-xs font-mono"
+                        style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Google Client Secret</label>
+                      <input
+                        type="password"
+                        value={settings.google_client_secret || ''}
+                        onChange={e => setSettings({ ...settings, google_client_secret: e.target.value })}
+                        placeholder="GOCSPX-..."
+                        className="w-full px-3 py-2 rounded-xl text-xs font-mono"
+                        style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Redirect URI</label>
+                      <input
+                        type="text"
+                        value={settings.google_redirect_uri || ''}
+                        onChange={e => setSettings({ ...settings, google_redirect_uri: e.target.value })}
+                        placeholder="https://borodachamba.pp.ua/api/auth/google/callback"
+                        className="w-full px-3 py-2 rounded-xl text-xs font-mono"
+                        style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}
+                      />
+                    </div>
+                    <div className="p-2 rounded-lg text-[10px]" style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)' }}>
+                      <div style={{ color: 'var(--accent-light)' }}>Інструкція:</div>
+                      <ol className="list-decimal list-inside mt-1 space-y-0.5" style={{ color: 'var(--text-secondary)' }}>
+                        <li>Перейди на <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noreferrer" className="underline" style={{ color: 'var(--accent-light)' }}>console.cloud.google.com</a></li>
+                        <li>Створи OAuth 2.0 Client ID (Web application)</li>
+                        <li>Додай Authorized redirect URI: <code className="px-1 rounded" style={{ background: 'rgba(255,255,255,0.1)' }}>{settings.google_redirect_uri || 'https://borodachamba.pp.ua/api/auth/google/callback'}</code></li>
+                        <li>Скопіюй Client ID та Secret сюди</li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="flex items-center gap-3">
                   <button onClick={saveSettings} disabled={settingsSaving}
                     className="btn-primary !text-xs !py-2 !px-6 !rounded-xl">
