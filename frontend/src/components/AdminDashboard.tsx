@@ -102,7 +102,7 @@ export default function AdminDashboard({ onClose }: { onClose: () => void }) {
   )
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)' }}>
+    <div className="fixed inset-0 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', zIndex: 9999 }}>
       <div className="w-full max-w-5xl max-h-[90vh] glass rounded-2xl overflow-hidden flex flex-col" style={{ border: '1px solid var(--border)' }}>
         <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
           <div className="flex items-center gap-3">

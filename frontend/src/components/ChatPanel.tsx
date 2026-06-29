@@ -86,7 +86,7 @@ export default function ChatPanel({ onClose }: { onClose: () => void }) {
   const isMentor = user?.role === 'admin' || user?.role === 'mentor'
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)' }}>
+    <div className="fixed inset-0 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', zIndex: 9999 }}>
       <div className="w-full max-w-3xl h-[70vh] glass rounded-2xl overflow-hidden flex" style={{ border: '1px solid var(--border)' }}>
         {/* Contacts list */}
         <div className="w-64 flex-shrink-0 flex flex-col" style={{ borderRight: '1px solid var(--border)' }}>
