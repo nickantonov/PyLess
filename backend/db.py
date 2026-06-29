@@ -160,5 +160,33 @@ def init_db():
             value TEXT NOT NULL DEFAULT '',
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+
+        CREATE TABLE IF NOT EXISTS custom_tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            creator_id INTEGER NOT NULL,
+            title TEXT NOT NULL,
+            description TEXT NOT NULL DEFAULT '',
+            starter_code TEXT NOT NULL DEFAULT '',
+            hints TEXT NOT NULL DEFAULT '[]',
+            tests TEXT NOT NULL DEFAULT '[]',
+            difficulty TEXT NOT NULL DEFAULT 'medium',
+            language TEXT NOT NULL DEFAULT 'python',
+            explanation TEXT NOT NULL DEFAULT '',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (creator_id) REFERENCES users(id)
+        );
+
+        CREATE TABLE IF NOT EXISTS task_assignments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            task_id INTEGER NOT NULL,
+            creator_id INTEGER NOT NULL,
+            student_id INTEGER,
+            all_students INTEGER DEFAULT 0,
+            due_date TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (task_id) REFERENCES custom_tasks(id),
+            FOREIGN KEY (creator_id) REFERENCES users(id),
+            FOREIGN KEY (student_id) REFERENCES users(id)
+        );
     """)
     conn.close()

@@ -1,0 +1,21 @@
+{
+  "id": "py-17-03",
+  "module": "Files Adv",
+  "module_order": 17,
+  "language": "python",
+  "title": "pathlib — сучасна робота з файлами",
+  "difficulty": "medium",
+  "description": "Використай pathlib для зручної роботи з файловими шляхами.",
+  "starter_code": "from pathlib import Path\n\n# Створення шляху\ndata_dir = Path('data')\ndata_dir.mkdir(exist_ok=True)\n\n# Запис файлу\n(data_dir / 'config.json').write_text('{\"debug\": true}')\n\n# Читання\ncontent = (data_dir / 'config.json').read_text()\nprint(content)\n\n# Список файлів\nfor f in data_dir.iterdir():\n    print(f'{f.name} ({f.stat().st_size} bytes)')",
+  "hints": [
+    "Path('dir/file') — створює об'єкт шляху",
+    ".mkdir(exist_ok=True) — створює директорію",
+    ".write_text() / .read_text() — зручний запис/читання",
+    ".iterdir() — ітерація по файлах"
+  ],
+  "tests": [
+    {"input": "from pathlib import Path; p=Path('.'); print(type(p).__name__)", "expected": "PosixPath"}
+  ],
+  "explanation": "pathlib — ООП підхід до файлових шляхів, зручніший за os.path.",
+  "one_liner": "pathlib робить роботу з файлами об'єктно-орієнтованою"
+}

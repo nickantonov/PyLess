@@ -1,0 +1,21 @@
+{
+  "id": "py-20-03",
+  "module": "DB Queries",
+  "module_order": 20,
+  "language": "python",
+  "title": "JOIN — об'єднання таблиць",
+  "difficulty": "hard",
+  "description": "Об'єднай дані з двох таблиць за допомогою JOIN.",
+  "starter_code": "import sqlite3\n\nconn = sqlite3.connect(':memory:')\ncur = conn.cursor()\n\ncur.execute('CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)')\ncur.execute('CREATE TABLE orders (id INTEGER PRIMARY KEY, user_id INTEGER, product TEXT, amount INTEGER)')\n\nfor name in ['Іван', 'Оксана', 'Петро']:\n    cur.execute('INSERT INTO users (name) VALUES (?)', (name,))\nfor uid, prod, amt in [(1, 'Ноутбук', 1), (1, 'Мишка', 2), (2, 'Стіл', 1)]:\n    cur.execute('INSERT INTO orders (user_id, product, amount) VALUES (?, ?, ?)', (uid, prod, amt))\nconn.commit()\n\nprint('=== Замовлення з іменами ===')\nfor row in cur.execute('SELECT u.name, o.product, o.amount FROM orders o JOIN users u ON o.user_id = u.id ORDER BY u.name'):\n    print(f'{row[0]}: {row[1]} x{row[2]}')",
+  "hints": [
+    "JOIN ... ON table1.col = table2.col — об'єднання",
+    "LEFT JOIN — всі з лівої + збіги з правої",
+    "INNER JOIN — тільки збіги",
+    "AS — псевдонім для таблиці/колонки"
+  ],
+  "tests": [
+    {"input": "import sqlite3; conn=sqlite3.connect(':memory:'); c=conn.cursor(); c.execute('CREATE TABLE a(id INTEGER PRIMARY KEY, v TEXT)'); c.execute('CREATE TABLE b(id INTEGER PRIMARY KEY, aid INTEGER, x INTEGER)'); c.execute('INSERT INTO a(v) VALUES(?)',('hello',)); c.execute('INSERT INTO b(aid,x) VALUES(?,?)',(1,42)); conn.commit(); r=c.execute('SELECT a.v,b.x FROM b JOIN a ON b.aid=a.id').fetchone(); print(r)", "expected": "('hello', 42)"}
+  ],
+  "explanation": "JOIN об'єднує рядки з різних таблиць за спільним стовпцем.",
+  "one_liner": "JOIN ON col = col — зв'язує таблиці"
+}

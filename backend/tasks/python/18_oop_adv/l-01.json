@@ -1,0 +1,11 @@
+{
+  "id": "l-py-18-01",
+  "module": "OOP Adv",
+  "module_order": 18,
+  "type": "lesson",
+  "language": "python",
+  "title": "Декоратори класів",
+  "description": "Декоратори класів дозволяють модифікувати поведінку класів без зміни їхнього коду. classmethod, staticmethod, property — вбудовані декоратори.",
+  "hints": [],
+  "tests": []
+}

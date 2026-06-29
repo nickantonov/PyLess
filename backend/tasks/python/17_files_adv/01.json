@@ -1,0 +1,20 @@
+{
+  "id": "py-17-01",
+  "module": "Files Adv",
+  "module_order": 17,
+  "language": "python",
+  "title": "JSON читання та запис",
+  "difficulty": "easy",
+  "description": "Створи JSON файл з даними користувача та прочитай його.",
+  "starter_code": "import json\n\nuser = {\n    'name': 'Іван',\n    'age': 25,\n    'skills': ['Python', 'SQL', 'Git']\n}\n\n# Запис у JSON файл\nwith open('user.json', 'w') as f:\n    json.dump(user, f, indent=2, ensure_ascii=False)\n\n# Читання\nwith open('user.json') as f:\n    data = json.load(f)\n    print(f\"Ім'я: {data['name']}\")\n    print(f\"Навички: {', '.join(data['skills'])}\")",
+  "hints": [
+    "json.dump(obj, file) — записує об'єкт у файл",
+    "json.load(file) — читає об'єкт з файлу",
+    "json.dumps() / json.loads() — робота з рядками"
+  ],
+  "tests": [
+    {"input": "import json; d={'a':1}; print(type(d).__name__)", "expected": "dict"}
+  ],
+  "explanation": "json модуль автоматично перетворює Python dict/list на JSON і навпаки.",
+  "one_liner": "json.dump/load — запис/читання JSON файлів"
+}

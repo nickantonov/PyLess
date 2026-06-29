@@ -1,0 +1,20 @@
+{
+  "id": "py-17-02",
+  "module": "Files Adv",
+  "module_order": 17,
+  "language": "python",
+  "title": "Робота з CSV",
+  "difficulty": "medium",
+  "description": "Прочитай CSV файл та знайди середній бал студентів.",
+  "starter_code": "import csv\nimport io\n\ndata = '''name,score,grade\nІван,85,A\nОксана,92,A\nПетро,78,B\nМарія,95,A'''\n\nreader = csv.DictReader(io.StringIO(data))\nscores = []\nfor row in reader:\n    scores.append(int(row['score']))\n    print(f\"{row['name']}: {row['score']} ({row['grade']})\")\n\nprint(f'\\nСередній бал: {sum(scores)/len(scores):.1f}')",
+  "hints": [
+    "csv.DictReader — читає CSV з заголовками як ключі",
+    "io.StringIO — перетворює рядок на файлоподібний об'єкт",
+    "Або: with open('data.csv') as f: reader = csv.DictReader(f)"
+  ],
+  "tests": [
+    {"input": "import csv,io; data='a,b\\n1,2\\n3,4'; rows=list(csv.DictReader(io.StringIO(data))); print(len(rows))", "expected": "2"}
+  ],
+  "explanation": "csv модуль автоматично парсить CSV файли з заголовками.",
+  "one_liner": "csv.DictReader зручний для читання табличних даних"
+}

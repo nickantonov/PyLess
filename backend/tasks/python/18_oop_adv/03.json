@@ -1,0 +1,21 @@
+{
+  "id": "py-18-03",
+  "module": "OOP Adv",
+  "module_order": 18,
+  "language": "python",
+  "title": "Контекстний менеджер",
+  "difficulty": "hard",
+  "description": "Створи контекстний менеджер для автоматичного закриття з'єднання.",
+  "starter_code": "class DatabaseConnection:\n    def __init__(self, db_name):\n        self.db_name = db_name\n        self.conn = None\n\n    def __enter__(self):\n        print(f'Відкриваю з\\'єднання з {self.db_name}')\n        self.conn = f'Connection({self.db_name})'\n        return self.conn\n\n    def __exit__(self, exc_type, exc_val, exc_tb):\n        print(f'Закриваю з\\'єднання з {self.db_name}')\n        self.conn = None\n        return False\n\nwith DatabaseConnection('mydb.db') as conn:\n    print(f'Працюю з {conn}')\nprint('З\\'єднання закрито')",
+  "hints": [
+    "__enter__ — викликається при вході в with",
+    "__exit__ — викликається при виході з with",
+    "__exit__ отримує інформацію про помилку",
+    "return False — не приховує винятки"
+  ],
+  "tests": [
+    {"input": "class C:\n    def __enter__(self): return 'ok'\n    def __exit__(self,*a): return False\nwith C() as x: print(x)", "expected": "ok"}
+  ],
+  "explanation": "Контекстний менеджер гарантує прибирання ресурсів (файли, з'єднання, блокування).",
+  "one_liner": "__enter__/__exit__ = автоматичне відкриття/закриття ресурсів"
+}

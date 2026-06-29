@@ -1,0 +1,11 @@
+{
+  "id": "l-py-17-01",
+  "module": "Files Adv",
+  "module_order": 17,
+  "type": "lesson",
+  "language": "python",
+  "title": "Робота з JSON",
+  "description": "JSON — найпопулярніший формат обміну даними. Python має вбудований модуль json для читання та запису JSON файлів.",
+  "hints": [],
+  "tests": []
+}

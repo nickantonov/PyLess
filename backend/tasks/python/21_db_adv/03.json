@@ -1,0 +1,21 @@
+{
+  "id": "py-21-03",
+  "module": "DB Adv",
+  "module_order": 21,
+  "language": "python",
+  "title": "Індекси та оптимізація",
+  "difficulty": "hard",
+  "description": "Створи індекси для прискорення запитів та проаналізуй їх ефективність.",
+  "starter_code": "import sqlite3\nimport time\n\nconn = sqlite3.connect(':memory:')\ncur = conn.cursor()\n\ncur.execute('CREATE TABLE logs (id INTEGER PRIMARY KEY, user_id INTEGER, action TEXT, timestamp TEXT)')\n\n# Вставка 10000 записів\nimport random\nfor i in range(10000):\n    cur.execute('INSERT INTO logs (user_id, action, timestamp) VALUES (?, ?, ?)',\n                (random.randint(1, 100), 'click', f'2024-01-{random.randint(1,31):02d}'))\nconn.commit()\n\n# Без індексу\nstart = time.time()\nfor _ in range(100):\n    cur.execute('SELECT COUNT(*) FROM logs WHERE user_id = 42').fetchone()\nno_index = time.time() - start\n\n# З індексом\ncur.execute('CREATE INDEX idx_user ON logs(user_id)')\nstart = time.time()\nfor _ in range(100):\n    cur.execute('SELECT COUNT(*) FROM logs WHERE user_id = 42').fetchone()\nwith_index = time.time() - start\n\nprint(f'Без індексу: {no_index:.4f}с')\nprint(f'З індексом: {with_index:.4f}с')\nprint(f'Прискорення: {no_index/with_index:.1f}x')",
+  "hints": [
+    "CREATE INDEX idx_name ON table(col) — створення індексу",
+    "Індекс прискорює WHERE та JOIN по індексованому стовпцю",
+    "EXPLAIN QUERY PLAN — аналіз виконання запиту",
+    "Індекси уповільнюють INSERT/UPDATE"
+  ],
+  "tests": [
+    {"input": "import sqlite3; conn=sqlite3.connect(':memory:'); c=conn.cursor(); c.execute('CREATE TABLE t(id INTEGER PRIMARY KEY, v INTEGER)'); c.execute('CREATE INDEX idx_v ON t(v)'); r=c.execute(\"SELECT name FROM sqlite_master WHERE type='index'\").fetchall(); print(len(r))", "expected": "1"}
+  ],
+  "explanation": "Індекси — структури даних для прискорення пошуку. Аналогія: зміст книги.",
+  "one_liner": "CREATE INDEX прискорює SELECT, але уповільнює INSERT"
+}

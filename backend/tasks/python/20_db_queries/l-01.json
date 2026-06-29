@@ -1,0 +1,11 @@
+{
+  "id": "l-py-20-01",
+  "module": "DB Queries",
+  "module_order": 20,
+  "type": "lesson",
+  "language": "python",
+  "title": "Запити SQL",
+  "description": "SQL запити дозволяють фільтрувати, сортувати, групувати та об'єднувати дані в базі.",
+  "hints": [],
+  "tests": []
+}

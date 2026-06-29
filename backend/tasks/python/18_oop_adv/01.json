@@ -1,0 +1,20 @@
+{
+  "id": "py-18-01",
+  "module": "OOP Adv",
+  "module_order": 18,
+  "language": "python",
+  "title": "property декоратор",
+  "difficulty": "medium",
+  "description": "Створи клас з property для безпечного доступу до атрибутів.",
+  "starter_code": "class Temperature:\n    def __init__(self, celsius=0):\n        self._celsius = celsius\n\n    @property\n    def celsius(self):\n        return self._celsius\n\n    @celsius.setter\n    def celsius(self, value):\n        if value < -273.15:\n            raise ValueError('Температура не може бути нижче абсолютного нуля')\n        self._celsius = value\n\n    @property\n    def fahrenheit(self):\n        return self._celsius * 9/5 + 32\n\nt = Temperature(100)\nprint(f'{t.celsius}°C = {t.fahrenheit}°F')\nt.celsius = 0\nprint(f'{t.celsius}°C = {t.fahrenheit}°F')",
+  "hints": [
+    "@property — перетворює метод на властивість",
+    "@name.setter — дозволяє встановлювати значення",
+    "Захист від некоректних значень"
+  ],
+  "tests": [
+    {"input": "class T:\n    def __init__(self,v): self._v=v\n    @property\n    def v(self): return self._v\nt=T(42); print(t.v)", "expected": "42"}
+  ],
+  "explanation": "property дозволяє контролювати доступ до атрибутів через методи.",
+  "one_liner": "property = getter/setter для атрибутів"
+}

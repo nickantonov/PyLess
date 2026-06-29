@@ -1,0 +1,20 @@
+{
+  "id": "py-18-02",
+  "module": "OOP Adv",
+  "module_order": 18,
+  "language": "python",
+  "title": "classmethod та staticmethod",
+  "difficulty": "medium",
+  "description": "Використай classmethod для фабричного методу та staticmethod для утиліти.",
+  "starter_code": "class Date:\n    def __init__(self, year, month, day):\n        self.year = year\n        self.month = month\n        self.day = day\n\n    @classmethod\n    def from_string(cls, date_str):\n        year, month, day = map(int, date_str.split('-'))\n        return cls(year, month, day)\n\n    @staticmethod\n    def is_valid(year, month, day):\n        return 1 <= month <= 12 and 1 <= day <= 31\n\n    def __str__(self):\n        return f'{self.year}-{self.month:02d}-{self.day:02d}'\n\nd = Date.from_string('2024-12-25')\nprint(d)\nprint(Date.is_valid(2024, 13, 1))",
+  "hints": [
+    "@classmethod — перший аргумент cls (клас), не self",
+    "@staticmethod — не приймає ні self, ні cls",
+    "classmethod часто використовується як фабрика"
+  ],
+  "tests": [
+    {"input": "class A:\n    @classmethod\n    def create(cls): return cls()\n    @staticmethod\n    def help(): return 'help'\nprint(A.help())", "expected": "help"}
+  ],
+  "explanation": "classmethod працює з класом, staticmethod — незалежна утиліта всередині класу.",
+  "one_liner": "classmethod = фабрика, staticmethod = утиліта"
+}

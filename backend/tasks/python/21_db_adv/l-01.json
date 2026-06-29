@@ -1,0 +1,11 @@
+{
+  "id": "l-py-21-01",
+  "module": "DB Adv",
+  "module_order": 21,
+  "type": "lesson",
+  "language": "python",
+  "title": "Просунуті теми БД",
+  "description": "Індекси, транзакції, підзапити та ORM — просунуті теми для роботи з базами даних.",
+  "hints": [],
+  "tests": []
+}

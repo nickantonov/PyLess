@@ -79,13 +79,34 @@ def list_tasks(authorization: Optional[str] = Header(None), db: sqlite3.Connecti
             (uid, task["id"]),
         ).fetchone()
         item["status"] = row["status"] if row else "not_started"
+
         item["attempts"] = row["attempts"] if row else 0
         result.append(item)
+
+    if authorization:
+        custom = db.execute("""
+            SELECT ct.*, ta.due_date FROM task_assignments ta
+            JOIN custom_tasks ct ON ta.task_id = ct.id
+            WHERE (ta.student_id = ? OR ta.all_students = 1)
+            AND ct.id NOT IN (SELECT CAST(SUBSTR(task_id, 8) AS INTEGER) FROM progress WHERE user_id = ? AND task_id LIKE 'custom-%')
+        """, (uid, uid)).fetchall()
+        for c in custom:
+            result.append({
+                "id": f"custom-{c['id']}",
+                "module": "Від викладача",
+                "module_order": 99,
+                "title": c["title"],
+                "difficulty": c["difficulty"],
+                "type": "custom",
+                "language": c["language"],
+                "status": "not_started",
+            })
+
     return result
 
 
 @router.get("/{task_id}")
-def get_task(task_id: str):
+def get_task(task_id: str, db: sqlite3.Connection = Depends(get_db)):
     for task in ALL_TASKS:
         if task["id"] == task_id:
             result = dict(task)
@@ -97,6 +118,30 @@ def get_task(task_id: str):
                         if exercise.get(key):
                             result[key] = exercise[key]
             return result
+
+    if task_id.startswith("custom-"):
+        try:
+            ct_id = int(task_id[7:])
+        except ValueError:
+            raise HTTPException(404, "Task not found")
+        row = db.execute("SELECT * FROM custom_tasks WHERE id = ?", (ct_id,)).fetchone()
+        if not row:
+            raise HTTPException(404, "Custom task not found")
+        return {
+            "id": f"custom-{row['id']}",
+            "module": "Від викладача",
+            "module_order": 99,
+            "title": row["title"],
+            "description": row["description"],
+            "starter_code": row["starter_code"],
+            "hints": json.loads(row["hints"]),
+            "tests": json.loads(row["tests"]),
+            "difficulty": row["difficulty"],
+            "language": row["language"],
+            "explanation": row["explanation"],
+            "type": "custom",
+        }
+
     raise HTTPException(404, "Task not found")
 
 

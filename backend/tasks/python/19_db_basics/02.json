@@ -1,0 +1,21 @@
+{
+  "id": "py-19-02",
+  "module": "DB Basics",
+  "module_order": 19,
+  "language": "python",
+  "title": "INSERT та SELECT",
+  "difficulty": "easy",
+  "description": "Додай дані в таблицю та прочитай їх.",
+  "starter_code": "import sqlite3\n\nconn = sqlite3.connect(':memory:')\ncur = conn.cursor()\n\ncur.execute('CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)')\n\n# INSERT\ncur.execute('INSERT INTO users (name, age) VALUES (?, ?)', ('Іван', 25))\ncur.execute('INSERT INTO users (name, age) VALUES (?, ?)', ('Оксана', 30))\ncur.execute('INSERT INTO users (name, age) VALUES (?, ?)', ('Петро', 22))\nconn.commit()\n\n# SELECT\ncur.execute('SELECT * FROM users')\nfor row in cur.fetchall():\n    print(row)\n\nconn.close()",
+  "hints": [
+    "INSERT INTO table (cols) VALUES (?, ?) — безпечне вставка",
+    "? — параметризовані запити (захист від SQL injection)",
+    "fetchall() — отримати всі рядки",
+    "fetchone() — отримати один рядок"
+  ],
+  "tests": [
+    {"input": "import sqlite3; conn=sqlite3.connect(':memory:'); c=conn.cursor(); c.execute('CREATE TABLE t(id INTEGER PRIMARY KEY, v TEXT)'); c.execute('INSERT INTO t(v) VALUES(?)',('a',)); conn.commit(); print(c.execute('SELECT v FROM t').fetchone()[0])", "expected": "a"}
+  ],
+  "explanation": "INSERT додає дані, SELECT читає. Завжди використовуй ? для параметрів.",
+  "one_liner": "INSERT INTO ... VALUES (?) — додавання, SELECT * FROM — читання"
+}

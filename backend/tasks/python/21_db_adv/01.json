@@ -1,0 +1,21 @@
+{
+  "id": "py-21-01",
+  "module": "DB Adv",
+  "module_order": 21,
+  "language": "python",
+  "title": "Транзакції",
+  "difficulty": "medium",
+  "description": "Використай транзакції для безпечного переказу коштів між рахунками.",
+  "starter_code": "import sqlite3\n\nconn = sqlite3.connect(':memory:')\ncur = conn.cursor()\n\ncur.execute('CREATE TABLE accounts (id INTEGER PRIMARY KEY, name TEXT, balance REAL)')\ncur.execute('INSERT INTO accounts (name, balance) VALUES (?, ?)', ('Іван', 1000))\ncur.execute('INSERT INTO accounts (name, balance) VALUES (?, ?)', ('Оксана', 500))\nconn.commit()\n\ndef transfer(conn, from_id, to_id, amount):\n    try:\n        conn.execute('BEGIN')\n        balance = conn.execute('SELECT balance FROM accounts WHERE id = ?', (from_id,)).fetchone()[0]\n        if balance < amount:\n            raise ValueError('Недостатньо коштів')\n        conn.execute('UPDATE accounts SET balance = balance - ? WHERE id = ?', (amount, from_id))\n        conn.execute('UPDATE accounts SET balance = balance + ? WHERE id = ?', (amount, to_id))\n        conn.commit()\n        print(f'Переказ {amount} виконано')\n    except Exception as e:\n        conn.rollback()\n        print(f'Помилка: {e}')\n\ntransfer(conn, 1, 2, 300)\nfor row in conn.execute('SELECT name, balance FROM accounts'):\n    print(f'{row[0]}: {row[1]}')",
+  "hints": [
+    "BEGIN — початок транзакції",
+    "commit() — зберігає зміни",
+    "rollback() — скасовує зміни при помилці",
+    "try/except для обробки помилок"
+  ],
+  "tests": [
+    {"input": "import sqlite3; conn=sqlite3.connect(':memory:'); c=conn.cursor(); c.execute('CREATE TABLE t(id INTEGER PRIMARY KEY, v INTEGER)'); c.execute('INSERT INTO t(v) VALUES(?)',(100,)); conn.commit(); conn.execute('BEGIN'); conn.execute('UPDATE t SET v=v-30 WHERE id=1'); conn.commit(); print(conn.execute('SELECT v FROM t').fetchone()[0])", "expected": "70"}
+  ],
+  "explanation": "Транзакція — група операцій, які виконуються разом або не виконуються взагалі.",
+  "one_liner": "BEGIN → операції → commit()/rollback()"
+}

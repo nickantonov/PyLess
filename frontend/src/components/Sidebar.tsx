@@ -49,6 +49,11 @@ export default function Sidebar() {
     { order: 14, name: 'React', icon: '⚛️', color: '#61dafb' },
     { order: 15, name: 'GUI (tkinter)', icon: '🖥️', color: '#3776ab' },
     { order: 16, name: 'CLI', icon: '💻', color: '#4eaa25' },
+    { order: 17, name: 'Файли (просунуті)', icon: '📂', color: '#06b6d4' },
+    { order: 18, name: 'OOP (просунуті)', icon: '🏗️', color: '#a855f7' },
+    { order: 19, name: 'БД: Основи', icon: '🗄️', color: '#3b82f6' },
+    { order: 20, name: 'БД: Запити', icon: '🔍', color: '#22c55e' },
+    { order: 21, name: 'БД: Просунуте', icon: '⚡', color: '#f59e0b' },
   ]
 
   const groupedExercises = modules.map((mod) => ({

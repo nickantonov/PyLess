@@ -95,6 +95,11 @@ export const MODULES = [
   { order: 14, name: 'React', icon: '⚛️' },
   { order: 15, name: 'GUI (tkinter)', icon: '🖥️' },
   { order: 16, name: 'CLI', icon: '💻' },
+  { order: 17, name: 'Файли (просунуті)', icon: '📂' },
+  { order: 18, name: 'OOP (просунуті)', icon: '🏗️' },
+  { order: 19, name: 'БД: Основи', icon: '🗄️' },
+  { order: 20, name: 'БД: Запити', icon: '🔍' },
+  { order: 21, name: 'БД: Просунуте', icon: '⚡' },
 ]
 
 export const LANGUAGE_LABELS: Record<TaskLanguage, string> = {

@@ -1,0 +1,11 @@
+{
+  "id": "l-py-19-01",
+  "module": "DB Basics",
+  "module_order": 19,
+  "type": "lesson",
+  "language": "python",
+  "title": "Основи SQLite",
+  "description": "SQLite — вбудована легка база даних. Не потребує сервера, дані зберігаються в одному файлі. Ідеальна для навчання та невеликих проєктів.",
+  "hints": [],
+  "tests": []
+}

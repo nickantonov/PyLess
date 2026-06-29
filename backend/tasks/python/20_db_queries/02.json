@@ -1,0 +1,20 @@
+{
+  "id": "py-20-02",
+  "module": "DB Queries",
+  "module_order": 20,
+  "language": "python",
+  "title": "GROUP BY та агрегатні функції",
+  "difficulty": "medium",
+  "description": "Використай GROUP BY для підрахунку та агрегації даних.",
+  "starter_code": "import sqlite3\n\nconn = sqlite3.connect(':memory:')\ncur = conn.cursor()\n\ncur.execute('CREATE TABLE orders (id INTEGER PRIMARY KEY, product TEXT, amount INTEGER, date TEXT)')\norders = [('Ноутбук', 1, '2024-01'), ('Мишка', 3, '2024-01'), ('Ноутбук', 2, '2024-02'), ('Клавіатура', 5, '2024-02')]\nfor p, a, d in orders:\n    cur.execute('INSERT INTO orders (product, amount, date) VALUES (?, ?, ?)', (p, a, d))\nconn.commit()\n\n# COUNT\nprint(f'Всього замовлень: {cur.execute(\"SELECT COUNT(*) FROM orders\").fetchone()[0]}')\n\n# SUM\nprint(f'Загальна кількість: {cur.execute(\"SELECT SUM(amount) FROM orders\").fetchone()[0]}')\n\n# GROUP BY\nprint('\\n=== По продуктах ===')\nfor row in cur.execute('SELECT product, SUM(amount) as total FROM orders GROUP BY product ORDER BY total DESC'):\n    print(f'{row[0]}: {row[1]} шт')",
+  "hints": [
+    "COUNT(*), SUM(), AVG(), MIN(), MAX() — агрегатні функції",
+    "GROUP BY col — групування",
+    "HAVING — фільтрація після групування"
+  ],
+  "tests": [
+    {"input": "import sqlite3; conn=sqlite3.connect(':memory:'); c=conn.cursor(); c.execute('CREATE TABLE t(id INTEGER PRIMARY KEY, g TEXT, v INTEGER)'); [c.execute('INSERT INTO t(g,v) VALUES(?,?)',(k,v)) for k,v in [('a',1),('a',2),('b',3)]]; conn.commit(); r=c.execute('SELECT g,SUM(v) FROM t GROUP BY g ORDER BY g').fetchall(); print(r)", "expected": "[('a', 3), ('b', 3)]"}
+  ],
+  "explanation": "GROUP BY групує рядки для агрегації. HAVING фільтрує групи.",
+  "one_liner": "GROUP BY + SUM/COUNT = статистика по групах"
+}

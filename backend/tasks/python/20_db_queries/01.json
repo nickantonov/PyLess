@@ -1,0 +1,21 @@
+{
+  "id": "py-20-01",
+  "module": "DB Queries",
+  "module_order": 20,
+  "language": "python",
+  "title": "WHERE та ORDER BY",
+  "difficulty": "easy",
+  "description": "Фільтруй та сортуй дані за допомогою WHERE та ORDER BY.",
+  "starter_code": "import sqlite3\n\nconn = sqlite3.connect(':memory:')\ncur = conn.cursor()\n\ncur.execute('CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT, price REAL, category TEXT)')\nfor name, price, cat in [('Ноутбук', 25000, 'tech'), ('Мишка', 500, 'tech'), ('Стілець', 3000, 'furniture'), ('Стіл', 8000, 'furniture')]:\n    cur.execute('INSERT INTO products (name, price, category) VALUES (?, ?, ?)', (name, price, cat))\nconn.commit()\n\n# WHERE\nprint('=== Техніка ===')\nfor row in cur.execute('SELECT name, price FROM products WHERE category = ?', ('tech',)):\n    print(row)\n\n# ORDER BY\nprint('\\n=== Дорожчі спочатку ===')\nfor row in cur.execute('SELECT name, price FROM products ORDER BY price DESC'):\n    print(row)",
+  "hints": [
+    "WHERE col = value — фільтрація",
+    "WHERE price > 1000 — порівняння",
+    "ORDER BY col ASC/DESC — сортування",
+    "WHERE col IN (v1, v2) — кілька значень"
+  ],
+  "tests": [
+    {"input": "import sqlite3; conn=sqlite3.connect(':memory:'); c=conn.cursor(); c.execute('CREATE TABLE t(id INTEGER PRIMARY KEY, v INTEGER)'); [c.execute('INSERT INTO t(v) VALUES(?)',(i,)) for i in [3,1,2]]; conn.commit(); r=c.execute('SELECT v FROM t ORDER BY v').fetchall(); print(r)", "expected": "[(1,), (2,), (3,)]"}
+  ],
+  "explanation": "WHERE фільтрує рядки, ORDER BY сортує результат.",
+  "one_liner": "WHERE = фільтр, ORDER BY = сортування"
+}

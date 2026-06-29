@@ -1,0 +1,20 @@
+{
+  "id": "py-19-03",
+  "module": "DB Basics",
+  "module_order": 19,
+  "language": "python",
+  "title": "UPDATE та DELETE",
+  "difficulty": "easy",
+  "description": "Онови та видали дані в таблиці.",
+  "starter_code": "import sqlite3\n\nconn = sqlite3.connect(':memory:')\ncur = conn.cursor()\n\ncur.execute('CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, active INTEGER DEFAULT 1)')\ncur.execute('INSERT INTO users (name) VALUES (?)', ('Іван',))\ncur.execute('INSERT INTO users (name) VALUES (?)', ('Оксана',))\ncur.execute('INSERT INTO users (name) VALUES (?)', ('Петро',))\nconn.commit()\n\n# UPDATE\ncur.execute('UPDATE users SET active = 0 WHERE name = ?', ('Петро',))\nconn.commit()\n\n# DELETE\ncur.execute('DELETE FROM users WHERE active = 0')\nconn.commit()\n\ncur.execute('SELECT * FROM users')\nprint(cur.fetchall())",
+  "hints": [
+    "UPDATE table SET col = val WHERE condition — оновлення",
+    "DELETE FROM table WHERE condition — видалення",
+    "Завжди використовуй WHERE для UPDATE/DELETE!"
+  ],
+  "tests": [
+    {"input": "import sqlite3; conn=sqlite3.connect(':memory:'); c=conn.cursor(); c.execute('CREATE TABLE t(id INTEGER PRIMARY KEY, v TEXT)'); c.execute('INSERT INTO t(v) VALUES(?)',('a',)); conn.commit(); c.execute('UPDATE t SET v=? WHERE id=1',('b',)); conn.commit(); print(c.execute('SELECT v FROM t').fetchone()[0])", "expected": "b"}
+  ],
+  "explanation": "UPDATE змінює дані, DELETE видаляє. WHERE визначає які рядки.",
+  "one_liner": "UPDATE/DELETE без WHERE = змінить/видалить ВСІ рядки!"
+}

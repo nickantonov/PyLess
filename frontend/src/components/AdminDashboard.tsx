@@ -5,14 +5,19 @@ const API = ''
 
 export default function AdminDashboard({ onClose }: { onClose: () => void }) {
   const { token, user } = useStore()
-  const [tab, setTab] = useState<'overview' | 'students' | 'invites' | 'settings' | 'student-detail'>('overview')
+  const [tab, setTab] = useState<'overview' | 'students' | 'invites' | 'tasks' | 'settings' | 'student-detail'>('overview')
   const [stats, setStats] = useState<any>(null)
   const [students, setStudents] = useState<any[]>([])
   const [invites, setInvites] = useState<any[]>([])
+  const [customTasks, setCustomTasks] = useState<any[]>([])
   const [selectedStudent, setSelectedStudent] = useState<any>(null)
   const [noteText, setNoteText] = useState('')
   const [newInviteUses, setNewInviteUses] = useState(50)
   const [settings, setSettings] = useState<Record<string, string>>({})
+  const [newTask, setNewTask] = useState({ title: '', description: '', starter_code: '', hints: '', tests_input: '', tests_expected: '', difficulty: 'medium', language: 'python' })
+  const [assignMode, setAssignMode] = useState<'all' | 'specific'>('all')
+  const [assignStudents, setAssignStudents] = useState<number[]>([])
+  const [taskMsg, setTaskMsg] = useState('')
   const [settingsSaving, setSettingsSaving] = useState(false)
   const [settingsMsg, setSettingsMsg] = useState('')
 
@@ -38,12 +43,53 @@ export default function AdminDashboard({ onClose }: { onClose: () => void }) {
     }).catch(() => {})
   }, [token])
 
+  const loadCustomTasks = useCallback(() => {
+    fetch(`${API}/api/tasks/custom`, { headers }).then(r => r.json()).then(setCustomTasks).catch(() => {})
+  }, [token])
+
   useEffect(() => {
     if (tab === 'overview') loadStats()
     if (tab === 'students') loadStudents()
     if (tab === 'invites') loadInvites()
     if (tab === 'settings') loadSettings()
-  }, [tab, loadStats, loadStudents, loadInvites, loadSettings])
+    if (tab === 'tasks') loadCustomTasks()
+  }, [tab, loadStats, loadStudents, loadInvites, loadSettings, loadCustomTasks])
+
+  const createTask = async () => {
+    if (!newTask.title.trim()) return
+    const tests = []
+    if (newTask.tests_input && newTask.tests_expected) {
+      tests.push({ input: newTask.tests_input, expected: newTask.tests_expected })
+    }
+    const resp = await fetch(`${API}/api/tasks/custom`, {
+      method: 'POST',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: newTask.title,
+        description: newTask.description,
+        starter_code: newTask.starter_code,
+        hints: newTask.hints ? newTask.hints.split('\n').filter(Boolean) : [],
+        tests,
+        difficulty: newTask.difficulty,
+        language: newTask.language,
+        assign_to: assignMode === 'all' ? ['all'] : assignStudents.map(String),
+      }),
+    })
+    const data = await resp.json()
+    if (data.ok) {
+      setTaskMsg('✅ Завдання створено!')
+      setNewTask({ title: '', description: '', starter_code: '', hints: '', tests_input: '', tests_expected: '', difficulty: 'medium', language: 'python' })
+      setAssignMode('all')
+      setAssignStudents([])
+      loadCustomTasks()
+      setTimeout(() => setTaskMsg(''), 2000)
+    }
+  }
+
+  const deleteTask = async (id: number) => {
+    await fetch(`${API}/api/tasks/custom/${id}`, { method: 'DELETE', headers })
+    loadCustomTasks()
+  }
 
   const loadStudentDetail = async (id: number) => {
     const resp = await fetch(`${API}/api/admin/student/${id}`, { headers })
@@ -117,6 +163,7 @@ export default function AdminDashboard({ onClose }: { onClose: () => void }) {
             { id: 'overview', label: '📊 Огляд' },
             { id: 'students', label: '👥 Учні' },
             { id: 'invites', label: '🔗 Запрошення' },
+            { id: 'tasks', label: '📝 Завдання' },
             ...(isAdmin ? [{ id: 'settings', label: '⚙️ Налаштування' }] : []),
           ].map(t => (
             <button key={t.id} onClick={() => setTab(t.id as any)}
@@ -280,6 +327,109 @@ export default function AdminDashboard({ onClose }: { onClose: () => void }) {
                   <p>2. Надайте код учню: "При вході натисни 'Приєднатися до ментора' і введи код"</p>
                   <p>3. Учень стає вашим підопічним і з'являється у вашому кабінеті</p>
                 </div>
+              </div>
+            </>
+          )}
+
+          {tab === 'tasks' && (
+            <>
+              <div className="max-w-2xl space-y-4">
+                <div className="p-4 rounded-xl glass-surface">
+                  <h3 className="text-sm font-bold mb-3">📝 Створити завдання</h3>
+                  <div className="space-y-3">
+                    <input value={newTask.title} onChange={e => setNewTask({ ...newTask, title: e.target.value })}
+                      placeholder="Назва завдання" className="w-full px-3 py-2 rounded-xl text-xs"
+                      style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }} />
+                    <textarea value={newTask.description} onChange={e => setNewTask({ ...newTask, description: e.target.value })}
+                      placeholder="Опис (що потрібно зробити)" rows={2} className="w-full px-3 py-2 rounded-xl text-xs resize-none"
+                      style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }} />
+                    <textarea value={newTask.starter_code} onChange={e => setNewTask({ ...newTask, starter_code: e.target.value })}
+                      placeholder="Початковий код" rows={4} className="w-full px-3 py-2 rounded-xl text-xs font-mono resize-none"
+                      style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }} />
+                    <textarea value={newTask.hints} onChange={e => setNewTask({ ...newTask, hints: e.target.value })}
+                      placeholder="Підказки (кожна з нового рядка)" rows={2} className="w-full px-3 py-2 rounded-xl text-xs resize-none"
+                      style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }} />
+                    <div className="grid grid-cols-2 gap-2">
+                      <input value={newTask.tests_input} onChange={e => setNewTask({ ...newTask, tests_input: e.target.value })}
+                        placeholder="Вхідні дані тесту" className="px-3 py-2 rounded-xl text-xs"
+                        style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }} />
+                      <input value={newTask.tests_expected} onChange={e => setNewTask({ ...newTask, tests_expected: e.target.value })}
+                        placeholder="Очікуваний вивід" className="px-3 py-2 rounded-xl text-xs"
+                        style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }} />
+                    </div>
+                    <div className="flex gap-2">
+                      <select value={newTask.difficulty} onChange={e => setNewTask({ ...newTask, difficulty: e.target.value })}
+                        className="px-3 py-2 rounded-xl text-xs" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}>
+                        <option value="easy">Легке</option>
+                        <option value="medium">Середнє</option>
+                        <option value="hard">Складне</option>
+                      </select>
+                      <select value={newTask.language} onChange={e => setNewTask({ ...newTask, language: e.target.value })}
+                        className="px-3 py-2 rounded-xl text-xs" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}>
+                        <option value="python">Python</option>
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                        <option value="javascript">JavaScript</option>
+                      </select>
+                    </div>
+
+                    <div className="p-3 rounded-xl" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
+                      <div className="text-[10px] font-semibold mb-2" style={{ color: 'var(--text-muted)' }}>Призначити:</div>
+                      <div className="flex gap-2 mb-2">
+                        <button onClick={() => setAssignMode('all')}
+                          className="px-3 py-1 rounded-lg text-[10px] font-medium"
+                          style={{ background: assignMode === 'all' ? 'var(--accent)' : 'var(--bg-panel)', color: assignMode === 'all' ? '#fff' : 'var(--text-muted)' }}>
+                          Всім учням
+                        </button>
+                        <button onClick={() => setAssignMode('specific')}
+                          className="px-3 py-1 rounded-lg text-[10px] font-medium"
+                          style={{ background: assignMode === 'specific' ? 'var(--accent)' : 'var(--bg-panel)', color: assignMode === 'specific' ? '#fff' : 'var(--text-muted)' }}>
+                          Конкретним
+                        </button>
+                      </div>
+                      {assignMode === 'specific' && (
+                        <div className="max-h-32 overflow-y-auto space-y-1">
+                          {students.map(s => (
+                            <label key={s.id} className="flex items-center gap-2 text-[10px] cursor-pointer">
+                              <input type="checkbox" checked={assignStudents.includes(s.id)}
+                                onChange={e => setAssignStudents(prev => e.target.checked ? [...prev, s.id] : prev.filter(id => id !== s.id))} />
+                              {s.display_name || s.username}
+                            </label>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button onClick={createTask} className="btn-primary !text-xs !py-2 !px-4 !rounded-xl">
+                        Створити завдання
+                      </button>
+                      {taskMsg && <span className="text-xs" style={{ color: taskMsg.startsWith('✅') ? 'var(--success)' : 'var(--error)' }}>{taskMsg}</span>}
+                    </div>
+                  </div>
+                </div>
+
+                {customTasks.length > 0 && (
+                  <div className="p-4 rounded-xl glass-surface">
+                    <h3 className="text-sm font-bold mb-3">📋 Створені завдання ({customTasks.length})</h3>
+                    <div className="space-y-2">
+                      {customTasks.map(t => (
+                        <div key={t.id} className="flex items-center gap-3 p-3 rounded-xl" style={{ background: 'var(--bg-panel)', border: '1px solid var(--border)' }}>
+                          <span className={`badge badge-${t.difficulty}`}>{t.difficulty}</span>
+                          <div className="flex-1">
+                            <div className="text-xs font-semibold">{t.title}</div>
+                            <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
+                              {t.assignments?.some((a: any) => a.all_students) ? 'Всім учням' : `${t.assignments?.length || 0} учням`}
+                            </div>
+                          </div>
+                          <button onClick={() => deleteTask(t.db_id)} className="text-[10px] px-2 py-1 rounded-lg" style={{ color: 'var(--error)' }}>
+                            Видалити
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </>
           )}
