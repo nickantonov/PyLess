@@ -1,0 +1,21 @@
+{
+  "id": "py-22-02",
+  "module": "API",
+  "module_order": 22,
+  "language": "python",
+  "title": "POST запити та відправка даних",
+  "difficulty": "medium",
+  "description": "Відправ дані на API за допомогою POST запиту.",
+  "starter_code": "import requests\nimport json\n\n# POST запит з JSON тілом\nnew_post = {\n    'title': 'Мій пост',\n    'body': 'Це тестовий контент',\n    'userId': 1\n}\n\nresponse = requests.post(\n    'https://jsonplaceholder.typicode.com/posts',\n    json=new_post\n)\n\nprint(f'Статус: {response.status_code}')\nresult = response.json()\nprint(f'Створено з ID: {result[\"id\"]}')\nprint(f'Заголовок: {result[\"title\"]}')",
+  "hints": [
+    "requests.post(url, json=data) — POST з JSON",
+    "requests.post(url, data='...') — POST з текстом",
+    "201 = Created — успішне створення",
+    "json= автоматично встановлює Content-Type"
+  ],
+  "tests": [
+    {"input": "import requests; r=requests.post('https://jsonplaceholder.typicode.com/posts',json={'title':'test','body':'test','userId':1}); print(r.status_code)", "expected": "201"}
+  ],
+  "explanation": "POST відправляє дані серверу. json= зручний спосіб відправки JSON.",
+  "one_liner": "requests.post(url, json=data) — створи ресурс"
+}

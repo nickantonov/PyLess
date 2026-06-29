@@ -1,0 +1,11 @@
+{
+  "id": "l-py-22-01",
+  "module": "API",
+  "module_order": 22,
+  "type": "lesson",
+  "language": "python",
+  "title": "Основи REST API",
+  "description": "REST API — це спосіб комунікації між сервером та клієнтом через HTTP запити. GET — отримати дані, POST — створити, PUT — оновити, DELETE — видалити.",
+  "hints": [],
+  "tests": []
+}

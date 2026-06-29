@@ -1,0 +1,21 @@
+{
+  "id": "py-22-03",
+  "module": "API",
+  "module_order": 22,
+  "language": "python",
+  "title": "Параметри запиту та помилки",
+  "difficulty": "medium",
+  "description": "Використовуй параметри URL та обробляй помилки API.",
+  "starter_code": "import requests\n\n# Параметри запиту\nparams = {'userId': 1}\nresp = requests.get('https://jsonplaceholder.typicode.com/posts', params=params)\nposts = resp.json()\nprint(f'Постів користувача 1: {len(posts)}')\n\n# Обробка помилок\ntry:\n    resp = requests.get('https://jsonplaceholder.typicode.com/nonexistent', timeout=5)\n    resp.raise_for_status()\nexcept requests.exceptions.HTTPError as e:\n    print(f'HTTP помилка: {e}')\nexcept requests.exceptions.ConnectionError:\n    print('Помилка з\\'єднання')\nexcept requests.exceptions.Timeout:\n    print('Час вичерпано')",
+  "hints": [
+    "params={'key': 'value'} — додає ?key=value до URL",
+    ".raise_for_status() — генерує виняток при помилці",
+    "timeout= — максимальний час очікування",
+    "HTTPError, ConnectionError, Timeout — типи помилок"
+  ],
+  "tests": [
+    {"input": "import requests; r=requests.get('https://jsonplaceholder.typicode.com/posts',params={'userId':1}); print(len(r.json()))", "expected": "10"}
+  ],
+  "explanation": "Параметри фільтрують дані на сервері. Обробка помилок робить код надійним.",
+  "one_liner": "params={} для фільтрів, raise_for_status() для помилок"
+}

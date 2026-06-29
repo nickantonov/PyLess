@@ -1,0 +1,21 @@
+{
+  "id": "py-22-04",
+  "module": "API",
+  "module_order": 22,
+  "language": "python",
+  "title": "Побудова свого API",
+  "difficulty": "hard",
+  "description": "Створи простий REST API на Flask/FastAPI для CRUD операцій.",
+  "starter_code": "from fastapi import FastAPI\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n# Дані в пам'яті\nitems = []\ncounter = 0\n\nclass Item(BaseModel):\n    name: str\n    description: str = ''\n    price: float\n\n@app.get('/items')\ndef list_items():\n    return items\n\n@app.post('/items')\ndef create_item(item: Item):\n    global counter\n    counter += 1\n    new_item = {'id': counter, **item.dict()}\n    items.append(new_item)\n    return new_item\n\n@app.get('/items/{item_id}')\ndef get_item(item_id: int):\n    for item in items:\n        if item['id'] == item_id:\n            return item\n    return {'error': 'Not found'}\n\n@app.delete('/items/{item_id}')\ndef delete_item(item_id: int):\n    global items\n    items = [i for i in items if i['id'] != item_id]\n    return {'ok': True}\n\nprint('API створено!')\nprint('Endpoints: GET /items, POST /items, GET /items/{id}, DELETE /items/{id}')",
+  "hints": [
+    "@app.get() — реєструє GET маршрут",
+    "@app.post() — реєструє POST маршрут",
+    "Pydantic BaseModel — валідація даних",
+    "Path параметри: /items/{id}"
+  ],
+  "tests": [
+    {"input": "from pydantic import BaseModel; class Item(BaseModel): name: str; price: float; i=Item(name='test',price=1.0); print(i.name)", "expected": "test"}
+  ],
+  "explanation": "REST API: GET (читати), POST (створювати), PUT (оновлювати), DELETE (видаляти).",
+  "one_liner": "FastAPI + Pydantic = швидке створення API"
+}

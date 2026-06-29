@@ -1,0 +1,21 @@
+{
+  "id": "py-22-01",
+  "module": "API",
+  "module_order": 22,
+  "language": "python",
+  "title": "GET запити з requests",
+  "difficulty": "easy",
+  "description": "Використай бібліотеку requests для отримання даних з API.",
+  "starter_code": "import requests\n\n# GET запит\ndata = requests.get('https://jsonplaceholder.typicode.com/posts/1')\nprint(f'Статус: {data.status_code}')\nprint(f'Заголовки: {dict(data.headers)[:100]}')\n\n# JSON відповідь\npost = data.json()\nprint(f'\\nЗаголовок: {post[\"title\"]}')\nprint(f'Тіло: {post[\"body\"][:50]}...')",
+  "hints": [
+    "requests.get(url) — GET запит",
+    ".status_code — код відповіді (200 = OK)",
+    ".json() — парсинг JSON відповіді",
+    ".text — текст відповіді"
+  ],
+  "tests": [
+    {"input": "import requests; r=requests.get('https://jsonplaceholder.typicode.com/posts/1'); print(r.status_code)", "expected": "200"}
+  ],
+  "explanation": "requests — найпопулярніша бібліотека для HTTP запитів у Python.",
+  "one_liner": "requests.get(url).json() — отримай JSON з API"
+}

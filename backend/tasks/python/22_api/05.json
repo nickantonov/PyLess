@@ -1,0 +1,21 @@
+{
+  "id": "py-22-05",
+  "module": "API",
+  "module_order": 22,
+  "language": "python",
+  "title": "Асинхронні запити",
+  "difficulty": "hard",
+  "description": "Використай httpx для асинхронних HTTP запитів.",
+  "starter_code": "import asyncio\nimport httpx\n\nasync def fetch_post(client, post_id):\n    resp = await client.get(f'https://jsonplaceholder.typicode.com/posts/{post_id}')\n    return resp.json()\n\nasync def main():\n    async with httpx.AsyncClient() as client:\n        # Паралельне завантаження\n        tasks = [fetch_post(client, i) for i in range(1, 6)]\n        results = await asyncio.gather(*tasks)\n        for r in results:\n            print(f'#{r[\"id\"]}: {r[\"title\"][:30]}')\n\nasyncio.run(main())",
+  "hints": [
+    "httpx.AsyncClient() — асинхронний клієнт",
+    "await — очікування результату",
+    "asyncio.gather() — паралельне виконання",
+    "async with — контекстний менеджер"
+  ],
+  "tests": [
+    {"input": "import asyncio; async def f(): return 42; print(asyncio.run(f()))", "expected": "42"}
+  ],
+  "explanation": "Асинхронні запити дозволяють завантажувати кілька URL паралельно.",
+  "one_liner": "httpx + asyncio = паралельні HTTP запити"
+}

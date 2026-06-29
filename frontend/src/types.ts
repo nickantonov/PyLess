@@ -100,6 +100,7 @@ export const MODULES = [
   { order: 19, name: 'БД: Основи', icon: '🗄️' },
   { order: 20, name: 'БД: Запити', icon: '🔍' },
   { order: 21, name: 'БД: Просунуте', icon: '⚡' },
+  { order: 22, name: 'API', icon: '🌐' },
 ]
 
 export const LANGUAGE_LABELS: Record<TaskLanguage, string> = {
