@@ -14,7 +14,6 @@ from ..models import UserCreate, UserLogin, UserResponse
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
-SECRET_KEY = os.environ.get("JWT_SECRET", "pylesss-secret-change-in-production-2024")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_DAYS = 30
 
@@ -27,17 +26,36 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 _state_store: dict[str, dict] = {}
 
 
-def create_token(user_id: int) -> str:
+def _get_secret_key(db: sqlite3.Connection) -> str:
+    env_key = os.environ.get("JWT_SECRET", "")
+    if env_key:
+        return env_key
+    row = db.execute("SELECT value FROM settings WHERE key = 'jwt_secret'").fetchone()
+    if row and row["value"]:
+        return row["value"]
+    new_key = secrets.token_hex(32)
+    db.execute(
+        "INSERT INTO settings (key, value, updated_at) VALUES ('jwt_secret', ?, CURRENT_TIMESTAMP) "
+        "ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+        (new_key,),
+    )
+    db.commit()
+    return new_key
+
+
+def create_token(user_id: int, db: sqlite3.Connection) -> str:
+    secret = _get_secret_key(db)
     expire = datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)
-    return jwt.encode({"sub": str(user_id), "exp": expire}, SECRET_KEY, algorithm=ALGORITHM)
+    return jwt.encode({"sub": str(user_id), "exp": expire}, secret, algorithm=ALGORITHM)
 
 
 def get_current_user(authorization: Optional[str] = Header(None), db: sqlite3.Connection = Depends(get_db)):
     if not authorization:
         raise HTTPException(401, "Not authenticated")
     token = authorization.replace("Bearer ", "")
+    secret = _get_secret_key(db)
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, secret, algorithms=[ALGORITHM])
         user_id = int(payload["sub"])
     except (JWTError, KeyError):
         raise HTTPException(401, "Invalid token")
@@ -76,13 +94,36 @@ def register(data: UserCreate, db: sqlite3.Connection = Depends(get_db)):
     db.commit()
     user = db.execute("SELECT * FROM users WHERE username = ?", (data.username,)).fetchone()
     _ensure_user_rows(db, user["id"])
-    token = create_token(user["id"])
-    return {"token": token, "user": _user_dict(user)}
+
+    invite_code = getattr(data, 'invite_code', None) or ""
+    mentor_id = 0
+    if invite_code:
+        invite = db.execute("SELECT * FROM invite_codes WHERE code = ? AND active = 1", (invite_code,)).fetchone()
+        if invite and invite["uses"] < invite["max_uses"]:
+            if invite["expires_at"]:
+                from datetime import datetime
+                try:
+                    exp = datetime.fromisoformat(invite["expires_at"])
+                    if datetime.utcnow() <= exp:
+                        mentor_id = invite["mentor_id"]
+                except (ValueError, TypeError):
+                    mentor_id = invite["mentor_id"]
+            else:
+                mentor_id = invite["mentor_id"]
+            if mentor_id:
+                db.execute("UPDATE users SET mentor_id = ? WHERE id = ?", (mentor_id, user["id"]))
+                db.execute("UPDATE invite_codes SET uses = uses + 1 WHERE id = ?", (invite["id"],))
+                db.commit()
+                user = db.execute("SELECT * FROM users WHERE id = ?", (user["id"],)).fetchone()
+
+    token = create_token(user["id"], db)
+    return {"token": token, "user": _user_dict(user), "mentor_id": mentor_id}
 
 
 @router.post("/join")
-def join_with_code(code: str = "", authorization: Optional[str] = Header(None),
+def join_with_code(body: dict = {}, authorization: Optional[str] = Header(None),
                    db: sqlite3.Connection = Depends(get_db)):
+    code = body.get("code", "")
     if not code:
         raise HTTPException(400, "Invite code required")
 
@@ -119,13 +160,48 @@ def join_with_code(code: str = "", authorization: Optional[str] = Header(None),
     return {"ok": True, "user": _user_dict(updated), "mentor_id": invite["mentor_id"]}
 
 
+@router.get("/invite/{code}")
+def validate_invite(code: str, db: sqlite3.Connection = Depends(get_db)):
+    invite = db.execute(
+        "SELECT * FROM invite_codes WHERE code = ? AND active = 1", (code,)
+    ).fetchone()
+    if not invite:
+        return {"valid": False, "error": "Код запрошення недійсний"}
+
+    if invite["expires_at"]:
+        from datetime import datetime
+        try:
+            exp = datetime.fromisoformat(invite["expires_at"])
+            if datetime.utcnow() > exp:
+                return {"valid": False, "error": "Код запрошення прострочений"}
+        except (ValueError, TypeError):
+            pass
+
+    if invite["uses"] >= invite["max_uses"]:
+        return {"valid": False, "error": "Код запрошення вичерпаний"}
+
+    mentor = db.execute("SELECT id, display_name, avatar_url FROM users WHERE id = ?",
+                        (invite["mentor_id"],)).fetchone()
+    if not mentor:
+        return {"valid": False, "error": "Ментор не знайдений"}
+
+    return {
+        "valid": True,
+        "mentor": {
+            "id": mentor["id"],
+            "display_name": mentor["display_name"],
+            "avatar_url": mentor["avatar_url"] or "",
+        },
+    }
+
+
 @router.post("/login")
 def login(data: UserLogin, db: sqlite3.Connection = Depends(get_db)):
     user = db.execute("SELECT * FROM users WHERE (username = ? OR email = ?) AND auth_provider = 'email'",
                        (data.username, data.username)).fetchone()
     if not user or not user["password_hash"] or not pwd_context.verify(data.password, user["password_hash"]):
         raise HTTPException(401, "Invalid credentials")
-    token = create_token(user["id"])
+    token = create_token(user["id"], db)
     return {"token": token, "user": _user_dict(user)}
 
 
@@ -154,6 +230,7 @@ def google_login():
         raise HTTPException(503, "Google OAuth not configured. Set GOOGLE_CLIENT_ID.")
     state = secrets.token_urlsafe(32)
     _state_store[state] = {"created": datetime.utcnow().isoformat()}
+    _cleanup_expired_states()
     url = (
         f"https://accounts.google.com/o/oauth2/v2/auth?"
         f"client_id={GOOGLE_CLIENT_ID}&redirect_uri={GOOGLE_REDIRECT_URI}"
@@ -162,11 +239,24 @@ def google_login():
     return RedirectResponse(url)
 
 
+def _cleanup_expired_states():
+    now = datetime.utcnow()
+    expired = [k for k, v in _state_store.items()
+               if (now - datetime.fromisoformat(v["created"])).total_seconds() > 900]
+    for k in expired:
+        _state_store.pop(k, None)
+
+
 @router.get("/google/callback")
 def google_callback(code: str = "", state: str = "", db: sqlite3.Connection = Depends(get_db)):
     if not code:
         raise HTTPException(400, "Missing authorization code")
-    _state_store.pop(state, None)
+    state_data = _state_store.pop(state, None)
+    if not state_data:
+        raise HTTPException(400, "Invalid or expired OAuth state")
+    created = datetime.fromisoformat(state_data["created"])
+    if (datetime.utcnow() - created).total_seconds() > 900:
+        raise HTTPException(400, "OAuth state expired, try again")
 
     token_resp = httpx.post("https://oauth2.googleapis.com/token", data={
         "code": code,
@@ -218,7 +308,7 @@ def google_callback(code: str = "", state: str = "", db: sqlite3.Connection = De
             db.execute("UPDATE users SET avatar_url = ? WHERE id = ?", (avatar_url, user["id"]))
             db.commit()
 
-    token = create_token(user["id"])
+    token = create_token(user["id"], db)
     frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:8000")
     return RedirectResponse(f"{frontend_url}/?token={token}")
 

@@ -1,0 +1,11 @@
+{
+  "id": "l-wd-14-01",
+  "module": "React",
+  "module_order": 14,
+  "language": "react",
+  "type": "lesson",
+  "title": "Основи React",
+  "description": "React — JavaScript бібліотека для створення UI. Компоненти, JSX, стан (state), властивості (props).",
+  "hints": [],
+  "tests": []
+}

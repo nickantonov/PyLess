@@ -1,0 +1,34 @@
+{
+  "id": "wd-12-02",
+  "module": "CSS",
+  "module_order": 12,
+  "language": "css",
+  "title": "Класи та ID",
+  "difficulty": "medium",
+  "description": "Використай класи для стилізації елементів: зроби червоний текст для .error та зелений для .success.",
+  "starter_code": ".error {\n  color: red;\n  font-weight: bold;\n}\n\n.success {\n  color: green;\n  font-weight: bold;\n}",
+  "hints": [
+    ".className — селектор класу",
+    "#idName — селектор ID",
+    "Класи можна використовувати багато разів, ID — лише один"
+  ],
+  "tests": [
+    { "input": ".error|color|red", "expected": "red" },
+    { "input": ".success|color|rgb(0, 128, 0)", "expected": "rgb(0, 128, 0)" }
+  ],
+  "explanation": "Класи (.) застосовуються до груп елементів, ID (#) — до унікального елемента.",
+  "one_liner": "Класи та ID дозволяють цільово стилізувати елементи",
+  "demo": {
+    "code": ".card {\n  border: 1px solid #ccc;\n  border-radius: 8px;\n  padding: 16px;\n  margin: 8px 0;\n}\n\n.card-title {\n  font-size: 18px;\n  font-weight: bold;\n  margin-bottom: 8px;\n}\n\n#main-header {\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  color: white;\n  padding: 20px;\n}",
+    "output": "Картка з рамкою, заголовок картки жирний, головний заголовок з градієнтом"
+  },
+  "review": {
+    "solutions": [
+      {
+        "code": ".error { color: red; font-weight: bold; }\n.success { color: green; font-weight: bold; }",
+        "comment": "Два класи з різними кольорами"
+      }
+    ],
+    "takeaway": "Класи — для повторного використання, ID — для унікальних елементів."
+  }
+}

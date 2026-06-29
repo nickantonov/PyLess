@@ -1,0 +1,33 @@
+{
+  "id": "wd-13-02",
+  "module": "JavaScript",
+  "module_order": 13,
+  "language": "javascript",
+  "title": "Функції",
+  "difficulty": "medium",
+  "description": "Створи функцію greet(name), яка повертає 'Привіт, {name}!'. Виведи результат.",
+  "starter_code": "function greet(name) {\n  return 'Привіт, ' + name + '!';\n}\n\nconsole.log(greet('Світ'));",
+  "hints": [
+    "function назва(параметри) { тіло }",
+    "return повертає значення",
+    "Шаблонні рядки: `Привіт, ${name}!`"
+  ],
+  "tests": [
+    { "input": "function greet(n){return 'Привіт, '+n+'!';}console.log(greet('Світ'));", "expected": "Привіт, Світ!" }
+  ],
+  "explanation": "Функції — блоки коду, які можна викликати багато разів.",
+  "one_liner": "Функції організовують код та дозволяють повторне використання",
+  "demo": {
+    "code": "function add(a, b) {\n  return a + b;\n}\n\nfunction multiply(a, b) {\n  return a * b;\n}\n\nconsole.log('2 + 3 =', add(2, 3));\nconsole.log('4 × 5 =', multiply(4, 5));",
+    "output": "2 + 3 = 5\n4 × 5 = 20"
+  },
+  "review": {
+    "solutions": [
+      {
+        "code": "function greet(name) {\n  return `Привіт, ${name}!`;\n}\nconsole.log(greet('Світ'));",
+        "comment": "Шаблонні рядки з ${} — зручніший спосіб"
+      }
+    ],
+    "takeaway": "Функція приймає вхідні дані (параметри) та повертає результат (return)."
+  }
+}

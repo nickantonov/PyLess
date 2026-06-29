@@ -5,13 +5,16 @@ const API = ''
 
 export default function AdminDashboard({ onClose }: { onClose: () => void }) {
   const { token, user } = useStore()
-  const [tab, setTab] = useState<'overview' | 'students' | 'invites' | 'student-detail'>('overview')
+  const [tab, setTab] = useState<'overview' | 'students' | 'invites' | 'settings' | 'student-detail'>('overview')
   const [stats, setStats] = useState<any>(null)
   const [students, setStudents] = useState<any[]>([])
   const [invites, setInvites] = useState<any[]>([])
   const [selectedStudent, setSelectedStudent] = useState<any>(null)
   const [noteText, setNoteText] = useState('')
   const [newInviteUses, setNewInviteUses] = useState(50)
+  const [settings, setSettings] = useState<Record<string, string>>({})
+  const [settingsSaving, setSettingsSaving] = useState(false)
+  const [settingsMsg, setSettingsMsg] = useState('')
 
   const headers: Record<string, string> = token ? { 'Authorization': `Bearer ${token}` } : {}
 
@@ -27,11 +30,20 @@ export default function AdminDashboard({ onClose }: { onClose: () => void }) {
     fetch(`${API}/api/admin/invites`, { headers }).then(r => r.json()).then(setInvites).catch(() => {})
   }, [token])
 
+  const loadSettings = useCallback(() => {
+    fetch(`${API}/api/settings/`, { headers }).then(r => r.json()).then((data: any[]) => {
+      const map: Record<string, string> = {}
+      data.forEach((s: any) => { map[s.key] = s.value })
+      setSettings(map)
+    }).catch(() => {})
+  }, [token])
+
   useEffect(() => {
     if (tab === 'overview') loadStats()
     if (tab === 'students') loadStudents()
     if (tab === 'invites') loadInvites()
-  }, [tab, loadStats, loadStudents, loadInvites])
+    if (tab === 'settings') loadSettings()
+  }, [tab, loadStats, loadStudents, loadInvites, loadSettings])
 
   const loadStudentDetail = async (id: number) => {
     const resp = await fetch(`${API}/api/admin/student/${id}`, { headers })
@@ -62,6 +74,27 @@ export default function AdminDashboard({ onClose }: { onClose: () => void }) {
     loadStudents()
   }
 
+  const saveSettings = async () => {
+    setSettingsSaving(true)
+    setSettingsMsg('')
+    try {
+      const resp = await fetch(`${API}/api/settings/`, {
+        method: 'POST',
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings),
+      })
+      if (resp.ok) {
+        setSettingsMsg('✅ Збережено!')
+        setTimeout(() => setSettingsMsg(''), 2000)
+      } else {
+        setSettingsMsg('❌ Помилка збереження')
+      }
+    } catch {
+      setSettingsMsg('❌ Помилка з\'єднання')
+    }
+    setSettingsSaving(false)
+  }
+
   const isAdmin = user?.role === 'admin'
 
   const card = (children: React.ReactNode) => (
@@ -84,6 +117,7 @@ export default function AdminDashboard({ onClose }: { onClose: () => void }) {
             { id: 'overview', label: '📊 Огляд' },
             { id: 'students', label: '👥 Учні' },
             { id: 'invites', label: '🔗 Запрошення' },
+            ...(isAdmin ? [{ id: 'settings', label: '⚙️ Налаштування' }] : []),
           ].map(t => (
             <button key={t.id} onClick={() => setTab(t.id as any)}
               className="px-4 py-2 rounded-lg text-xs font-semibold transition-all"
@@ -245,6 +279,81 @@ export default function AdminDashboard({ onClose }: { onClose: () => void }) {
                   <p>1. Створіть запрошення з лімітом використань</p>
                   <p>2. Надайте код учню: "При вході натисни 'Приєднатися до ментора' і введи код"</p>
                   <p>3. Учень стає вашим підопічним і з'являється у вашому кабінеті</p>
+                </div>
+              </div>
+            </>
+          )}
+
+          {tab === 'settings' && isAdmin && (
+            <>
+              <div className="max-w-lg space-y-4">
+                <div className="p-4 rounded-xl glass-surface">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm" style={{ background: 'var(--gradient-1)' }}>🤖</div>
+                    <div>
+                      <div className="text-sm font-semibold">Groq AI API</div>
+                      <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Ключ для AI-тутора (llama-3.3-70b-versatile)</div>
+                    </div>
+                  </div>
+                  <input
+                    type="password"
+                    value={settings.groq_api_key || ''}
+                    onChange={e => setSettings({ ...settings, groq_api_key: e.target.value })}
+                    placeholder="gsk_..."
+                    className="w-full px-3 py-2 rounded-xl text-xs font-mono"
+                    style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}
+                  />
+                  <div className="text-[10px] mt-1" style={{ color: 'var(--text-muted)' }}>
+                    Отримати: <a href="https://console.groq.com/keys" target="_blank" rel="noreferrer" style={{ color: 'var(--accent-light)' }}>console.groq.com/keys</a>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-xl glass-surface">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm" style={{ background: 'var(--gradient-2)' }}>🌐</div>
+                    <div>
+                      <div className="text-sm font-semibold">Назва сайту</div>
+                      <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Відображається в заголовку</div>
+                    </div>
+                  </div>
+                  <input
+                    type="text"
+                    value={settings.site_name || ''}
+                    onChange={e => setSettings({ ...settings, site_name: e.target.value })}
+                    placeholder="PyLess"
+                    className="w-full px-3 py-2 rounded-xl text-xs"
+                    style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}
+                  />
+                </div>
+
+                <div className="p-4 rounded-xl glass-surface">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm" style={{ background: 'var(--gradient-2)' }}>📝</div>
+                    <div>
+                      <div className="text-sm font-semibold">Опис сайту</div>
+                      <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>META description</div>
+                    </div>
+                  </div>
+                  <textarea
+                    value={settings.site_description || ''}
+                    onChange={e => setSettings({ ...settings, site_description: e.target.value })}
+                    placeholder="Interactive Python learning platform"
+                    rows={2}
+                    className="w-full px-3 py-2 rounded-xl text-xs resize-none"
+                    style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}
+                  />
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button onClick={saveSettings} disabled={settingsSaving}
+                    className="btn-primary !text-xs !py-2 !px-6 !rounded-xl">
+                    {settingsSaving ? '⏳ Збереження...' : '💾 Зберегти'}
+                  </button>
+                  {settingsMsg && (
+                    <span className="text-xs" style={{ color: settingsMsg.startsWith('✅') ? 'var(--success)' : 'var(--error)' }}>
+                      {settingsMsg}
+                    </span>
+                  )}
                 </div>
               </div>
             </>

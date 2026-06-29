@@ -1,0 +1,34 @@
+{
+  "id": "wd-12-03",
+  "module": "CSS",
+  "module_order": 12,
+  "language": "css",
+  "title": "Flexbox макет",
+  "difficulty": "hard",
+  "description": "Створи горизонтальний макет з трьох колонок використовуючи Flexbox.",
+  "starter_code": ".container {\n  display: flex;\n  gap: 16px;\n  padding: 16px;\n}\n\n.column {\n  flex: 1;\n  padding: 20px;\n  background: #f0f0f0;\n  border-radius: 8px;\n  text-align: center;\n}",
+  "hints": [
+    "display: flex — вмикає Flexbox",
+    "flex: 1 — елемент займає рівну частину",
+    "gap — відстань між елементами"
+  ],
+  "tests": [
+    { "input": ".container|display|flex", "expected": "flex" },
+    { "input": ".column|flex-grow|1", "expected": "1" }
+  ],
+  "explanation": "Flexbox — потужний інструмент для створення гнучких макетів.",
+  "one_liner": "Flexbox дозволяє легко створювати адаптивні макети",
+  "demo": {
+    "code": ".flex-demo {\n  display: flex;\n  gap: 12px;\n  padding: 16px;\n}\n\n.flex-demo > div {\n  flex: 1;\n  padding: 24px;\n  background: linear-gradient(135deg, #667eea, #764ba2);\n  color: white;\n  border-radius: 12px;\n  text-align: center;\n  font-weight: bold;\n}",
+    "output": "Три рівні колонки з градієнтним фоном"
+  },
+  "review": {
+    "solutions": [
+      {
+        "code": ".container { display: flex; gap: 16px; }\n.column { flex: 1; padding: 20px; }",
+        "comment": "Flex контейнер з трьома рівними колонками"
+      }
+    ],
+    "takeaway": "Flexbox робить горизонтальні макети простими. flex: 1 ділить простір порівну."
+  }
+}

@@ -1,3 +1,5 @@
+export type TaskLanguage = 'python' | 'html' | 'css' | 'javascript' | 'react'
+
 export interface Task {
   id: string
   module: string
@@ -12,6 +14,7 @@ export interface Task {
   status?: 'not_started' | 'attempted' | 'completed'
   attempts?: number
   type?: string
+  language?: TaskLanguage
   duration?: string
   one_liner?: string
   concept?: string
@@ -86,4 +89,26 @@ export const MODULES = [
   { order: 8, name: 'Файли', icon: '📁' },
   { order: 9, name: 'Винятки', icon: '⚠️' },
   { order: 10, name: 'ООП', icon: '🏗️' },
+  { order: 11, name: 'HTML', icon: '🌐' },
+  { order: 12, name: 'CSS', icon: '🎨' },
+  { order: 13, name: 'JavaScript', icon: '📜' },
+  { order: 14, name: 'React', icon: '⚛️' },
+  { order: 15, name: 'GUI (tkinter)', icon: '🖥️' },
+  { order: 16, name: 'CLI', icon: '💻' },
 ]
+
+export const LANGUAGE_LABELS: Record<TaskLanguage, string> = {
+  python: 'Python',
+  html: 'HTML',
+  css: 'CSS',
+  javascript: 'JavaScript',
+  react: 'React',
+}
+
+export const LANGUAGE_MONACO_MAP: Record<TaskLanguage, string> = {
+  python: 'python',
+  html: 'html',
+  css: 'css',
+  javascript: 'javascript',
+  react: 'javascript',
+}

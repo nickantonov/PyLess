@@ -1,0 +1,24 @@
+{
+  "id": "wd-16-03",
+  "module": "CLI",
+  "module_order": 16,
+  "language": "python",
+  "title": "os та pathlib",
+  "difficulty": "medium",
+  "description": "Створи скрипт, який список файли в поточній директорії.",
+  "starter_code": "import os\n\nfiles = os.listdir('.')\nprint(f'Файлів у поточній директорії: {len(files)}')\nfor f in sorted(files)[:5]:\n    size = os.path.getsize(f) if os.path.isfile(f) else 0\n    print(f'  {f} ({size} байт)')",
+  "hints": [
+    "os.listdir('.') — список файлів у поточній директорії",
+    "os.path.isfile() — перевіряє чи це файл",
+    "os.path.getsize() — розмір файлу в байтах",
+    "pathlib.Path — сучасніший API"
+  ],
+  "tests": [
+    {
+      "input": "import os; files = os.listdir('.'); print(f'Файлів: {len(files)}')",
+      "expected": "Файлів:"
+    }
+  ],
+  "explanation": "os та pathlib — модулі для роботи з файловою системою.",
+  "one_liner": "os та pathlib дають доступ до файлової системи"
+}

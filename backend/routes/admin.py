@@ -238,10 +238,14 @@ def admin_stats(authorization: Optional[str] = Header(None), db: sqlite3.Connect
 
     total_tasks_done = db.execute(
         "SELECT COUNT(*) as c FROM progress WHERE status = 'completed'"
+        + (" AND user_id IN (SELECT id FROM users WHERE mentor_id = ?)" if role != "admin" else ""),
+        (admin["id"],) if role != "admin" else ()
     ).fetchone()["c"]
 
     active_today = db.execute(
         "SELECT COUNT(DISTINCT user_id) as c FROM progress WHERE completed_at >= date('now')"
+        + (" AND user_id IN (SELECT id FROM users WHERE mentor_id = ?)" if role != "admin" else ""),
+        (admin["id"],) if role != "admin" else ()
     ).fetchone()["c"]
 
     total_invites = db.execute(

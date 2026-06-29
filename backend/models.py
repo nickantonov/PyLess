@@ -7,6 +7,7 @@ class UserCreate(BaseModel):
     email: str
     password: str
     display_name: Optional[str] = ""
+    invite_code: Optional[str] = ""
 
 
 class UserLogin(BaseModel):

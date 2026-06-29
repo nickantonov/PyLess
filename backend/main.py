@@ -1,18 +1,29 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import os
 from .db import init_db
-from .routes import auth, tasks, ai, onboarding, profile, admin, messages
+from .routes import auth, tasks, ai, onboarding, profile, admin, messages, settings
 
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
 
-app = FastAPI(title="PyLess API", version="1.0.0", description="Interactive Python learning platform. © 1998-2026 Nick Antonov / Borodachamba Studio. All rights reserved.")
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
+
+
+app = FastAPI(title="PyLess API", version="1.0.0",
+              description="Interactive Python learning platform. © 1998-2026 Nick Antonov / Borodachamba Studio. All rights reserved.",
+              lifespan=lifespan)
+
+ALLOWED_ORIGINS = os.environ.get("CORS_ORIGINS", "").split(",") if os.environ.get("CORS_ORIGINS") else ["*"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -25,16 +36,37 @@ app.include_router(onboarding.router)
 app.include_router(profile.router)
 app.include_router(admin.router)
 app.include_router(messages.router)
+app.include_router(settings.router)
 
 
-@app.on_event("startup")
-def startup():
-    init_db()
+import time
+
+_start_time = time.time()
 
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "1.0.0", "copyright": "© 1998-2026 Nick Antonov / Borodachamba Studio. All rights reserved."}
+    import sqlite3
+    from .db import DB_PATH
+    result = {
+        "status": "ok",
+        "version": "1.0.0",
+        "uptime_seconds": int(time.time() - _start_time),
+        "copyright": "© 1998-2026 Nick Antonov / Borodachamba Studio. All rights reserved.",
+    }
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        db_size = os.path.getsize(DB_PATH) if os.path.exists(DB_PATH) else 0
+        users = conn.execute("SELECT COUNT(*) as c FROM users").fetchone()["c"]
+        tasks_done = conn.execute("SELECT COUNT(*) as c FROM progress WHERE status='completed'").fetchone()["c"]
+        conn.close()
+        result["db_size_mb"] = round(db_size / 1024 / 1024, 2)
+        result["total_users"] = users
+        result["tasks_completed"] = tasks_done
+    except Exception:
+        result["db_error"] = True
+    return result
 
 
 if os.path.exists(FRONTEND_DIR):

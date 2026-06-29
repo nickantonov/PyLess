@@ -1,13 +1,38 @@
 import os
+import time
 import httpx
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, Request
+import sqlite3
 
 from ..models import AIRequest
+from ..db import get_db
 
 router = APIRouter(prefix="/api/ai", tags=["ai"])
 
-GROQ_KEY = os.environ.get("GROQ_API_KEY", "")
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
+
+_rate_limits: dict[str, list[float]] = {}
+RATE_LIMIT_WINDOW = 60
+RATE_LIMIT_MAX = 10
+
+
+def _check_rate_limit(request: Request) -> bool:
+    ip = request.client.host if request.client else "unknown"
+    now = time.time()
+    if ip not in _rate_limits:
+        _rate_limits[ip] = []
+    _rate_limits[ip] = [t for t in _rate_limits[ip] if now - t < RATE_LIMIT_WINDOW]
+    if len(_rate_limits[ip]) >= RATE_LIMIT_MAX:
+        return False
+    _rate_limits[ip].append(now)
+    return True
+
+
+def _get_groq_key(db: sqlite3.Connection) -> str:
+    row = db.execute("SELECT value FROM settings WHERE key = 'groq_api_key'").fetchone()
+    if row and row["value"]:
+        return row["value"]
+    return os.environ.get("GROQ_API_KEY", "")
 
 TUTOR_SYSTEM = """Ти — Python-викладач в системі навчання PyLess.
 
@@ -21,9 +46,12 @@ TUTOR_SYSTEM = """Ти — Python-викладач в системі навча�
 
 
 @router.post("/chat")
-async def ai_chat(req: AIRequest):
-    if not GROQ_KEY:
-        return {"reply": "⚠️ AI не налаштований. Додайте GROQ_API_KEY."}
+async def ai_chat(req: AIRequest, request: Request, db: sqlite3.Connection = Depends(get_db)):
+    if not _check_rate_limit(request):
+        return {"reply": "⏳ Забагато запитів. Зачекай хвилину."}
+    groq_key = _get_groq_key(db)
+    if not groq_key:
+        return {"reply": "⚠️ AI не налаштований. Додайте GROQ_API_KEY в налаштуваннях."}
 
     messages = [{"role": "system", "content": TUTOR_SYSTEM}]
     user_msg = req.message
@@ -36,7 +64,7 @@ async def ai_chat(req: AIRequest):
     try:
         async with httpx.AsyncClient(timeout=30) as client:
             resp = await client.post(GROQ_URL,
-                headers={"Authorization": f"Bearer {GROQ_KEY}", "Content-Type": "application/json"},
+                headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
                 json={"model": "llama-3.3-70b-versatile", "messages": messages, "max_tokens": 500, "temperature": 0.7})
             if resp.status_code == 429:
                 return {"reply": "🤖 AI тимчасово недоступний (ліміт). Спробуй через хвилину."}
@@ -49,13 +77,16 @@ async def ai_chat(req: AIRequest):
 
 
 @router.post("/hint")
-async def ai_hint(task_id: str):
-    if not GROQ_KEY:
-        return {"reply": "⚠️ AI не налаштований."}
+async def ai_hint(task_id: str, request: Request, db: sqlite3.Connection = Depends(get_db)):
+    if not _check_rate_limit(request):
+        return {"reply": "⏳ Забагато запитів. Зачекай хвилину."}
+    groq_key = _get_groq_key(db)
+    if not groq_key:
+        return {"reply": "⚠️ AI не налаштований. Додайте GROQ_API_KEY в налаштуваннях."}
     try:
         async with httpx.AsyncClient(timeout=15) as client:
             resp = await client.post(GROQ_URL,
-                headers={"Authorization": f"Bearer {GROQ_KEY}"},
+                headers={"Authorization": f"Bearer {groq_key}"},
                 json={"model": "llama-3.3-70b-versatile", "messages": [
                     {"role": "system", "content": "Давай короткі підказки для Python-завдань. Не розкривай рішення."},
                     {"role": "user", "content": f"Дай підказку для: {task_id}"}

@@ -1,0 +1,34 @@
+{
+  "id": "wd-11-03",
+  "module": "HTML",
+  "module_order": 11,
+  "language": "html",
+  "title": "Посилання та зображення",
+  "difficulty": "medium",
+  "description": "Додай посилання <a> та зображення <img> на сторінку.",
+  "starter_code": "<a href=\"https://google.com\">Google</a>\n<img src=\"https://via.placeholder.com/150\" alt=\"Зображення\">",
+  "hints": [
+    "<a href='url'>текст</a> — посилання",
+    "<img src='url' alt='опис'> — зображення (самозакривається!)",
+    "Alt текст показується якщо зображення не завантажилось"
+  ],
+  "tests": [
+    { "input": "a", "expected": "a element" },
+    { "input": "img", "expected": "img element" }
+  ],
+  "explanation": "<a> створює посилання, <img> — вставляє зображення. Обидва мають атрибути.",
+  "one_liner": "Посилання та зображення — основні елементи будь-якої веб-сторінки",
+  "demo": {
+    "code": "<h1>Мій сайт</h1>\n<a href=\"https://google.com\">Перейти до Google</a>\n<br><br>\n<img src=\"https://via.placeholder.com/200\" alt=\"Приклад зображення\">",
+    "output": "Сторінка з заголовком, посиланням та зображенням"
+  },
+  "review": {
+    "solutions": [
+      {
+        "code": "<a href=\"https://google.com\">Google</a>\n<img src=\"image.png\" alt=\"Лого\">",
+        "comment": "Посилання з href атрибутом та зображення з src та alt"
+      }
+    ],
+    "takeaway": "HTML-теги мають атрибути: href для посилань, src та alt для зображень."
+  }
+}

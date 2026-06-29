@@ -1,0 +1,24 @@
+{
+  "id": "wd-15-02",
+  "module": "GUI",
+  "module_order": 15,
+  "language": "python",
+  "title": "Віджети tkinter",
+  "difficulty": "medium",
+  "description": "Додай до вікна мітку (Label), поле введення (Entry) та кнопку (Button).",
+  "starter_code": "import tkinter as tk\n\nroot = tk.Tk()\nroot.title('Форма')\nroot.geometry('300x150')\n\nlabel = tk.Label(root, text='Введіть ім\\'я:')\nlabel.pack(pady=5)\n\nentry = tk.Entry(root)\nentry.pack(pady=5)\n\ndef on_click():\n    name = entry.get()\n    label.config(text=f'Привіт, {name}!')\n\nbtn = tk.Button(root, text='Привітати', command=on_click)\nbtn.pack(pady=5)\n\nroot.mainloop()",
+  "hints": [
+    "Label — мітка з текстом",
+    "Entry — поле для введення тексту",
+    "Button — кнопка з callback функцією",
+    "pack() — розміщує віджет у вікні"
+  ],
+  "tests": [
+    {
+      "input": "import tkinter as tk",
+      "expected": "ok"
+    }
+  ],
+  "explanation": "tkinter має базові віджети: Label, Entry, Button, Text, Listbox та ін.",
+  "one_liner": "Віджети — будівельні блоки GUI: мітки, поля, кнопки"
+}

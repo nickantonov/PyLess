@@ -15,5 +15,20 @@
       "expected": "Іван"
     }
   ],
-  "explanation": "Словник: {ключ: значення}."
+  "explanation": "Словник: {ключ: значення}.",
+  "one_liner": "Словник зберігає дані як пари ключ-значення",
+  "demo": {
+    "code": "person = {'name': 'Іван', 'age': 30, 'city': 'Київ'}\nprint(person)\nprint(person['name'])\n\n# Додавання\nperson['email'] = 'ivan@example.com'\nprint(person)\n\n# Перевірка ключа\nif 'age' in person:\n    print(f'Вік: {person[\"age\"]}')",
+    "output": "{'name': 'Іван', 'age': 30, 'city': 'Київ'}\nІван\n{'name': 'Іван', 'age': 30, 'city': 'Київ', 'email': 'ivan@example.com'}\nВік: 30",
+    "try_changes": [
+      {"change": "person = {'name': 'Оксана', 'age': 25}", "new_output": "Змінив ім'я та вік"},
+      {"change": "person = {'name': 'Іван', 'age': 30, 'hobby': 'Python'}", "new_output": "Додав хобі"}
+    ]
+  },
+  "review": {
+    "solutions": [
+      {"code": "person = {'name': 'Іван', 'age': 30}", "comment": "Простий словник з двома парами"}
+    ],
+    "takeaway": "Словники — універсальна структура даних. Ключі мають бути хешованими (рядки, числа, кортежі)."
+  }
 }

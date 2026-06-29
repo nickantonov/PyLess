@@ -1,0 +1,34 @@
+{
+  "id": "wd-12-01",
+  "module": "CSS",
+  "module_order": 12,
+  "language": "css",
+  "title": "Селектори CSS",
+  "difficulty": "easy",
+  "description": "Зміни колір тексту h1 на червоний та фон p на світло-сірий.",
+  "starter_code": "h1 {\n  color: red;\n}\n\np {\n  background-color: lightgray;\n  padding: 10px;\n}",
+  "hints": [
+    "Селектор елемента: назва_тега { властивість: значення; }",
+    "color — колір тексту",
+    "background-color — колір фону"
+  ],
+  "tests": [
+    { "input": "h1|color|red", "expected": "red" },
+    { "input": "p|background-color|rgb(211, 211, 211)", "expected": "rgb(211, 211, 211)" }
+  ],
+  "explanation": "CSS-селектори визначають до яких елементів застосовуються стилі. Простий селектор — назва тега.",
+  "one_liner": "CSS-селектори визначають до яких HTML-елементів застосовуються стилі",
+  "demo": {
+    "code": "h1 {\n  color: blue;\n  font-size: 24px;\n}\n\np {\n  color: gray;\n  line-height: 1.6;\n}\n\n.highlight {\n  background-color: yellow;\n  padding: 5px;\n}",
+    "output": "Заголовок синій, параграф сірий, елемент з класом highlight — жовтий фон"
+  },
+  "review": {
+    "solutions": [
+      {
+        "code": "h1 { color: red; }\np { background-color: lightgray; }",
+        "comment": "Прямі селектори тегів"
+      }
+    ],
+    "takeaway": "Селектор тега застосовує стилі до ВСІХ елементів цього типу на сторінці."
+  }
+}

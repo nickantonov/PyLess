@@ -1,0 +1,33 @@
+{
+  "id": "wd-13-01",
+  "module": "JavaScript",
+  "module_order": 13,
+  "language": "javascript",
+  "title": "Змінні та типи",
+  "difficulty": "easy",
+  "description": "Оголоси змінні name (string) та age (number) та виведи їх через console.log.",
+  "starter_code": "const name = 'Іван';\nconst age = 25;\n\nconsole.log(name, age);",
+  "hints": [
+    "const для незмінної змінної",
+    "let для змінної",
+    "console.log() виводить в консоль"
+  ],
+  "tests": [
+    { "input": "const name='Іван';const age=25;console.log(name,age);", "expected": "Іван 25" }
+  ],
+  "explanation": "JavaScript має типи: string, number, boolean, object, undefined, null.",
+  "one_liner": "Змінні зберігають дані. const/let оголошують змінні в JavaScript.",
+  "demo": {
+    "code": "const name = 'Оксана';\nconst age = 22;\nconst isStudent = true;\n\nconsole.log('Ім\\'я:', name);\nconsole.log('Вік:', age);\nconsole.log('Студент:', isStudent);",
+    "output": "Ім'я: Оксана\nВік: 22\nСтудент: true"
+  },
+  "review": {
+    "solutions": [
+      {
+        "code": "const name = 'Іван';\nconst age = 25;\nconsole.log(name, age);",
+        "comment": "Оголосили дві змінні та вивели"
+      }
+    ],
+    "takeaway": "string — рядки в лапках, number — числа без лапок, boolean — true/false."
+  }
+}

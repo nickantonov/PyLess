@@ -99,6 +99,8 @@ def send_message(other_user_id: int, body: dict = {},
     text = body.get("text", "")
     if not text.strip():
         raise HTTPException(400, "Empty message")
+    if len(text) > 2000:
+        raise HTTPException(400, "Message too long (max 2000 characters)")
 
     user = get_current_user(authorization, db)
     _validate_conversation(user["id"], other_user_id, db)
@@ -126,7 +128,7 @@ def unread_count(other_user_id: int,
         "SELECT COUNT(*) as c FROM messages WHERE from_user_id = ? AND to_user_id = ? AND read = 0",
         (other_user_id, user["id"])
     ).fetchone()
-    return {"count": row["count"]}
+    return {"count": row["c"]}
 
 
 def _validate_conversation(user_id: int, other_user_id: int, db: sqlite3.Connection):

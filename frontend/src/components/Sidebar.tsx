@@ -19,6 +19,12 @@ export default function Sidebar() {
     { order: 8, name: 'Файли', icon: '📁', color: '#84cc16' },
     { order: 9, name: 'Винятки', icon: '⚠️', color: '#f97316' },
     { order: 10, name: 'ООП', icon: '🏗️', color: '#a855f7' },
+    { order: 11, name: 'HTML', icon: '🌐', color: '#e44d26' },
+    { order: 12, name: 'CSS', icon: '🎨', color: '#1572b6' },
+    { order: 13, name: 'JavaScript', icon: '📜', color: '#f7df1e' },
+    { order: 14, name: 'React', icon: '⚛️', color: '#61dafb' },
+    { order: 15, name: 'GUI (tkinter)', icon: '🖥️', color: '#3776ab' },
+    { order: 16, name: 'CLI', icon: '💻', color: '#4eaa25' },
   ]
 
   const groupedExercises = modules.map((mod) => ({

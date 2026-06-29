@@ -1,0 +1,20 @@
+{
+  "id": "py-09-02",
+  "module": "Exceptions",
+  "module_order": 9,
+  "title": "Обробка помилок",
+  "difficulty": "medium",
+  "description": "Напиши код з try/except/else/finally для безпечного ділення.",
+  "starter_code": "def safe_divide(a, b):\n    try:\n        result = a / b\n    except ZeroDivisionError:\n        print('Помилка: ділення на нуль!')\n        return None\n    except TypeError:\n        print('Помилка: неправильний тип!')\n        return None\n    else:\n        print(f'Результат: {result}')\n        return result\n    finally:\n        print('Операція завершена')\n\nprint(safe_divide(10, 2))\nprint(safe_divide(10, 0))",
+  "hints": [
+    "try — блок коду що може викликати помилку",
+    "except — обробка конкретної помилки",
+    "else — виконується якщо помилки не було",
+    "finally — виконується завжди"
+  ],
+  "tests": [
+    {"input": "print('Результат: 5.0')", "expected": "Результат: 5.0"}
+  ],
+  "explanation": "try/except/else/finally — повний цикл обробки помилок.",
+  "one_liner": "Обробка помилок робить код стійким до несподіваних ситуацій"
+}

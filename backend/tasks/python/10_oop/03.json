@@ -1,0 +1,19 @@
+{
+  "id": "py-10-03",
+  "module": "Oop",
+  "module_order": 10,
+  "title": "Наслідування",
+  "difficulty": "hard",
+  "description": "Створи базовий клас Animal та похідний Dog з перевизначенням методу.",
+  "starter_code": "class Animal:\n    def __init__(self, name, sound):\n        self.name = name\n        self.sound = sound\n\n    def speak(self):\n        return f'{self.name} каже {self.sound}!'\n\n    def __str__(self):\n        return f'{self.__class__.__name__}: {self.name}'\n\nclass Dog(Animal):\n    def __init__(self, name, breed):\n        super().__init__(name, 'Гав')\n        self.breed = breed\n\n    def fetch(self, item):\n        return f'{self.name} приніс {item}'\n\nrex = Dog('Рекс', 'Лабрадор')\nprint(rex.speak())\nprint(rex.fetch('м'яч'))\nprint(rex)",
+  "hints": [
+    "class Child(Parent) — наслідування",
+    "super().__init__() — виклик батьківського конструктора",
+    "Можна перевизначати методи дочірнього класу"
+  ],
+  "tests": [
+    {"input": "class Animal:\n    def __init__(self,name,sound): self.name=name; self.sound=sound\n    def speak(self): return f'{self.name} каже {self.sound}!'\nclass Dog(Animal):\n    def __init__(self,name,breed): super().__init__(name,'Гав'); self.breed=breed\nrex=Dog('Рекс','Лабрадор')\nprint(rex.speak())", "expected": "Рекс каже Гав!"}
+  ],
+  "explanation": "Наслідування дозволяє створювати нові класи на основі існуючих, додаючи або змінюючи поведінку.",
+  "one_liner": "Наслідування: Dog IS-A Animal з додатковими можливостями"
+}

@@ -1,0 +1,24 @@
+{
+  "id": "wd-16-02",
+  "module": "CLI",
+  "module_order": 16,
+  "language": "python",
+  "title": "argparse",
+  "difficulty": "medium",
+  "description": "Використай argparse для створення CLI з опціями --name та --count.",
+  "starter_code": "import argparse\n\nparser = argparse.ArgumentParser(description='Простий CLI інструмент')\nparser.add_argument('--name', default='World', help='Ім\\'я для привітання')\nparser.add_argument('--count', type=int, default=1, help='Кількість привітань')\n\nargs = parser.parse_args()\n\nfor i in range(args.count):\n    print(f'{i+1}. Привіт, {args.name}!')",
+  "hints": [
+    "argparse — стандартна бібліотека для CLI",
+    "add_argument() додає опцію",
+    "--name — опціональний аргумент",
+    "type=int — приведення типу"
+  ],
+  "tests": [
+    {
+      "input": "import argparse; parser = argparse.ArgumentParser(); parser.add_argument('--name', default='World'); args = parser.parse_args([]); print(f'Привіт, {args.name}!')",
+      "expected": "Привіт, World!"
+    }
+  ],
+  "explanation": "argparse автоматично створює help, валідує аргументи та генерує помилки.",
+  "one_liner": "argparse — професійний спосіб створення CLI в Python"
+}

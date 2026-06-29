@@ -1,0 +1,11 @@
+{
+  "id": "l-wd-12-01",
+  "module": "CSS",
+  "module_order": 12,
+  "language": "css",
+  "type": "lesson",
+  "title": "Основи CSS",
+  "description": "CSS (Cascading Style Sheets) — мова стилів для оформлення HTML-сторінок. CSS визначає кольори, шрифти, розміри, макет та анімації.",
+  "hints": [],
+  "tests": []
+}

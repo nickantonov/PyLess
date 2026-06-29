@@ -1,0 +1,11 @@
+{
+  "id": "l-wd-16-01",
+  "module": "CLI",
+  "module_order": 16,
+  "language": "python",
+  "type": "lesson",
+  "title": "CLI інструменти в Python",
+  "description": "CLI (Command Line Interface) — інтерфейс командного рядка. sys.argv, argparse, os, pathlib для створення скриптів та інструментів.",
+  "hints": [],
+  "tests": []
+}

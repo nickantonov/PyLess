@@ -2,7 +2,8 @@ import sqlite3
 import os
 from contextlib import contextmanager
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "pylesss.db")
+DB_DIR = os.environ.get("DB_DIR", os.path.dirname(__file__))
+DB_PATH = os.path.join(DB_DIR, "pylesss.db")
 
 
 def get_db():
@@ -152,6 +153,12 @@ def init_db():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (from_user_id) REFERENCES users(id),
             FOREIGN KEY (to_user_id) REFERENCES users(id)
+        );
+
+        CREATE TABLE IF NOT EXISTS settings (
+            key TEXT PRIMARY KEY,
+            value TEXT NOT NULL DEFAULT '',
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     """)
     conn.close()

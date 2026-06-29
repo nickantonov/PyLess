@@ -1,0 +1,33 @@
+{
+  "id": "wd-14-03",
+  "module": "React",
+  "module_order": 14,
+  "language": "react",
+  "title": "Списки та ключі",
+  "difficulty": "medium",
+  "description": "Створи компонент TodoList, який рендерить список задач з можливістю додавання.",
+  "starter_code": "function TodoList() {\n  const [todos, setTodos] = React.useState([\n    { id: 1, text: 'Вивчити React', done: false },\n    { id: 2, text: 'Створити проєкт', done: false }\n  ]);\n  const [input, setInput] = React.useState('');\n\n  const addTodo = () => {\n    if (input.trim()) {\n      setTodos([...todos, { id: Date.now(), text: input, done: false }]);\n      setInput('');\n    }\n  };\n\n  return (\n    <div style={{ padding: '20px' }}>\n      <h2>📝 Список справ</h2>\n      <div>\n        <input value={input} onChange={e => setInput(e.target.value)} placeholder=\"Нова задача...\" />\n        <button onClick={addTodo}>Додати</button>\n      </div>\n      <ul>\n        {todos.map(todo => (\n          <li key={todo.id} style={{ textDecoration: todo.done ? 'line-through' : 'none' }}>\n            {todo.text}\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+  "hints": [
+    ".map() перетворює масив на JSX елементи",
+    "key — обов'язковий атрибут для списків",
+    "[...array, newItem] — додає елемент в кінець масиву"
+  ],
+  "tests": [
+    { "input": "rendered", "expected": "rendered" }
+  ],
+  "explanation": "Для рендерингу списків використовують .map() з унікальним key.",
+  "one_liner": "Списки в React рендеряться через .map() з обов'язковим key",
+  "demo": {
+    "code": "function TodoList() {\n  const [todos, setTodos] = React.useState([\n    { id: 1, text: 'Купити молоко', done: false },\n    { id: 2, text: 'Написати код', done: true }\n  ]);\n\n  const toggle = (id) => {\n    setTodos(todos.map(t => t.id === id ? {...t, done: !t.done} : t));\n  };\n\n  return (\n    <div style={{ padding: '20px' }}>\n      <h2>📝 Список справ</h2>\n      {todos.map(todo => (\n        <div key={todo.id} onClick={() => toggle(todo.id)} style={{\n          padding: '8px', margin: '4px 0',\n          background: todo.done ? '#d4edda' : '#fff3cd',\n          borderRadius: '4px', cursor: 'pointer'\n        }}>\n          {todo.done ? '✅' : '⬜'} {todo.text}\n        </div>\n      ))}\n    </div>\n  );\n}",
+    "output": "Список з задачами, клік перемикає стан"
+  },
+  "review": {
+    "solutions": [
+      {
+        "code": "{todos.map(todo => (\n  <li key={todo.id}>{todo.text}</li>\n))}",
+        "comment": ".map() з key для рендерингу списку"
+      }
+    ],
+    "takeaway": "key допомагає React ефективно оновлювати список. Використовуй унікальний id."
+  }
+}

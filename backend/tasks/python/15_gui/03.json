@@ -1,0 +1,24 @@
+{
+  "id": "wd-15-03",
+  "module": "GUI",
+  "module_order": 15,
+  "language": "python",
+  "title": "Геометрія pack/grid",
+  "difficulty": "medium",
+  "description": "Використай pack() та grid() для розміщення віджетів у вікні.",
+  "starter_code": "import tkinter as tk\n\nroot = tk.Tk()\nroot.title('Калькулятор')\nroot.geometry('250x300')\n\nentry = tk.Entry(root, font=('Arial', 20), justify='right')\nentry.grid(row=0, column=0, columnspan=4, padx=5, pady=5, sticky='we')\n\nbuttons = ['7','8','9','/',\n           '4','5','6','*',\n           '1','2','3','-',\n           'C','0','=','+']\n\nfor i, btn in enumerate(buttons):\n    r, c = divmod(i, 4)\n    tk.Button(root, text=btn, font=('Arial', 14),\n              command=lambda b=btn: entry.insert(tk.END, b) if b != '=' else None\n    ).grid(row=r+1, column=c, padx=2, pady=2, sticky='nsew')\n\nfor i in range(4):\n    root.grid_columnconfigure(i, weight=1)\n\nroot.mainloop()",
+  "hints": [
+    "pack() — просте розміщення зверху вниз",
+    "grid() — таблиця з рядками та стовпцями",
+    "sticky='we' — розтягує елемент по ширині",
+    "columnspan — об'єднує стовпці"
+  ],
+  "tests": [
+    {
+      "input": "import tkinter as tk",
+      "expected": "ok"
+    }
+  ],
+  "explanation": "pack() і grid() — два основних менеджера геометрії в tkinter.",
+  "one_liner": "pack() для простого розміщення, grid() для таблиць"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "py-08-02",
+  "module": "Files",
+  "module_order": 8,
+  "title": "Запис у файл",
+  "difficulty": "medium",
+  "description": "Створи файл з даними та прочитай його назад.",
+  "starter_code": "# Запиши текст у файл\nwith open('data.txt', 'w') as f:\n    f.write('Привіт, файл!')\n\n# Прочитай назад\nwith open('data.txt', 'r') as f:\n    content = f.read()\n    print(content)",
+  "hints": [
+    "open('file', 'w') — відкриває для запису (створює новий)",
+    "open('file', 'r') — відкриває для читання",
+    "with — автоматично закриває файл"
+  ],
+  "tests": [
+    {"input": "print('Привіт, файл!')", "expected": "Привіт, файл!"}
+  ],
+  "explanation": "with open() автоматично закриває файл після роботи. Режими: 'r' (читання), 'w' (запис), 'a' (додавання).",
+  "one_liner": "with open() — безпечний спосіб роботи з файлами"
+}

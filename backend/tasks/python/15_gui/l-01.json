@@ -1,0 +1,11 @@
+{
+  "id": "l-wd-15-01",
+  "module": "GUI",
+  "module_order": 15,
+  "language": "python",
+  "type": "lesson",
+  "title": "Python GUI з tkinter",
+  "description": "tkinter — стандартна бібліотека Python для створення графічних інтерфейсів. Вікна, віджети, обробка подій.",
+  "hints": [],
+  "tests": []
+}

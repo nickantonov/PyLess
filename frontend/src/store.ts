@@ -142,10 +142,14 @@ export const useStore = create<Store>((set, get) => ({
   register: async (username, email, password, displayName) => {
     set({ authLoading: true, authError: null })
     try {
+      const path = window.location.pathname
+      const match = path.match(/\/invite\/(.+)/)
+      const inviteCode = match ? decodeURIComponent(match[1]) : ''
+
       const resp = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password, display_name: displayName }),
+        body: JSON.stringify({ username, email, password, display_name: displayName, invite_code: inviteCode }),
       })
       const data = await resp.json()
       if (!resp.ok) {

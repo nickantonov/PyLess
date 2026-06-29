@@ -1,0 +1,33 @@
+{
+  "id": "wd-14-01",
+  "module": "React",
+  "module_order": 14,
+  "language": "react",
+  "title": "Перший компонент",
+  "difficulty": "easy",
+  "description": "Створи React компонент App, який рендерить заголовок та параграф.",
+  "starter_code": "function App() {\n  return (\n    <div>\n      <h1>Привіт, React!</h1>\n      <p>Це мій перший компонент</p>\n    </div>\n  );\n}",
+  "hints": [
+    "Компонент — функція, що повертає JSX",
+    "JSX — HTML-подібний синтаксис у JavaScript",
+    "ReactDOM.createRoot рендерить компонент в DOM"
+  ],
+  "tests": [
+    { "input": "function App(){return <div><h1>Привіт, React!</h1><p>Це мій перший компонент</p></div>}", "expected": "rendered" }
+  ],
+  "explanation": "React компоненти — це функції, що повертають JSX (HTML у JavaScript).",
+  "one_liner": "React компоненти — будівельні блоки UI",
+  "demo": {
+    "code": "function App() {\n  return (\n    <div style={{ padding: '20px' }}>\n      <h1 style={{ color: '#667eea' }}>🐍 PyLess</h1>\n      <p>Навчайся програмувати з нами!</p>\n      <button onClick={() => alert('Привіт!')}>Натисни мене</button>\n    </div>\n  );\n}",
+    "output": "Сторінка з заголовком, описом та кнопкою"
+  },
+  "review": {
+    "solutions": [
+      {
+        "code": "function App() {\n  return (\n    <div>\n      <h1>Привіт, React!</h1>\n      <p>Це мій перший компонент</p>\n    </div>\n  );\n}",
+        "comment": "Простий компонент з JSX"
+      }
+    ],
+    "takeaway": "Компонент — це функція з назвою з великої літери, що повертає JSX."
+  }
+}

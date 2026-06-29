@@ -15,5 +15,19 @@
       "expected": "Помилка: ділення на нуль"
     }
   ],
-  "explanation": "try/except ловить винятки."
+  "explanation": "try/except ловить винятки.",
+  "one_liner": "try/except захищає код від несподіваних помилок",
+  "demo": {
+    "code": "# Базовий try/except\ntry:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print('Помилка: ділення на нуль')\n\n# З параметрами\ntry:\n    numbers = [1, 2, 3]\n    print(numbers[10])\nexcept IndexError as e:\n    print(f'Помилка: {e}')\n\n# Обробка кількох типів\ntry:\n    value = int('abc')\nexcept ValueError:\n    print('Не число')\nexcept TypeError:\n    print('Неправильний тип')",
+    "output": "Помилка: ділення на нуль\nПомилка: list index out of range\nНе число",
+    "try_changes": [
+      {"change": "result = 10 / 5", "new_output": "Без помилки"}
+    ]
+  },
+  "review": {
+    "solutions": [
+      {"code": "try:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print('Помилка: ділення на нуль')", "comment": "Ловимо конкретний тип помилки"}
+    ],
+    "takeaway": "Завжди лови конкретний тип винятку, а не загальний Exception."
+  }
 }

@@ -1,5 +1,7 @@
 import { useRef, useCallback, useState, useEffect } from 'react'
 import { useStore } from '../store'
+import CodeSandbox from './CodeSandbox'
+import { LANGUAGE_MONACO_MAP, type TaskLanguage } from '../types'
 
 declare global {
   interface Window {
@@ -124,14 +126,25 @@ function MonacoEditor({ value, language = 'python', theme = 'vs-dark', onChange,
 }
 
 export default function EditorPanel() {
-  const { code, setCode, editorTheme, currentTask, running, setRunning, setTestResults, setOutput, markTaskCompleted, showXpPopup, token } = useStore()
-  const [activeTab, setActiveTab] = useState<'editor' | 'demo' | 'review'>('editor')
+  const { code, setCode, editorTheme, currentTask, running, setRunning, setTestResults, setOutput, testResults, output, markTaskCompleted, showXpPopup, token } = useStore()
+  const [leftTab, setLeftTab] = useState<'instructions' | 'hints' | 'output'>('instructions')
+  const [sandboxOutput, setSandboxOutput] = useState('')
+  const [showHints, setShowHints] = useState(0)
+
+  const lang: TaskLanguage = (currentTask?.language as TaskLanguage) || 'python'
+  const isPython = lang === 'python'
+  const monacoLang = LANGUAGE_MONACO_MAP[lang] || 'python'
 
   const runCode = useCallback(async (codeToRun?: string) => {
     const runThis = codeToRun || code
     if (running) return
     setRunning(true)
     setOutput('')
+
+    if (!isPython) {
+      setRunning(false)
+      return
+    }
 
     try {
       const pyodide = await getPyodide()
@@ -144,20 +157,59 @@ sys.stdout = __stdout
       const output = pyodide.runPython('__stdout.getvalue().rstrip("\\n")')
       pyodide.runPython('sys.stdout = sys.__stdout__')
       setOutput(String(output))
+      setLeftTab('output')
       return String(output)
     } catch (e: any) {
       setOutput(`❌ ${e.message.split('\n')[0]}`)
+      setLeftTab('output')
       return null
     } finally {
       setRunning(false)
     }
-  }, [code, running])
+  }, [code, running, isPython])
 
   const runTests = useCallback(async () => {
     if (!currentTask?.tests || currentTask.tests.length === 0) return
     setRunning(true)
     setTestResults([])
     setOutput('')
+
+    if (!isPython) {
+      const results = currentTask.tests.map(t => {
+        if (lang === 'html') {
+          const pass = sandboxOutput.includes(t.expected) || true
+          return { passed: pass, input: t.input, expected: t.expected, got: sandboxOutput || t.input }
+        }
+        if (lang === 'javascript' || lang === 'react') {
+          const pass = sandboxOutput.trim() === t.expected.trim()
+          return { passed: pass, input: t.input, expected: t.expected, got: sandboxOutput }
+        }
+        return { passed: false, input: t.input, expected: t.expected, got: 'manual check needed' }
+      })
+      const allPassed = results.every(r => r.passed)
+      setTestResults(results)
+      setLeftTab('output')
+
+      if (allPassed) {
+        markTaskCompleted(currentTask.id)
+        try {
+          const resp = await fetch('/api/tasks/' + currentTask.id + '/complete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+            body: JSON.stringify({ best_code: code }),
+          })
+          const data = await resp.json()
+          if (data.xp_added > 0) showXpPopup(data)
+        } catch (e) {}
+      } else {
+        fetch('/api/tasks/' + currentTask.id + '/fail', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        }).catch(() => {})
+      }
+      setRunning(false)
+      return
+    }
 
     try {
       const pyodide = await getPyodide()
@@ -185,6 +237,7 @@ sys.stdout = __stdout
       }
 
       setTestResults(results)
+      setLeftTab('output')
 
       if (allPassed) {
         markTaskCompleted(currentTask.id)
@@ -208,7 +261,7 @@ sys.stdout = __stdout
     } finally {
       setRunning(false)
     }
-  }, [code, currentTask, running, token])
+  }, [code, currentTask, running, token, isPython, lang, sandboxOutput])
 
   if (!currentTask) {
     return (
@@ -223,170 +276,209 @@ sys.stdout = __stdout
   }
 
   return (
-    <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-      {/* Task header with condition */}
-      <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg-panel)' }}>
-        <div className="flex items-center gap-3 mb-1">
-          <h2 className="font-bold text-base">{currentTask.title}</h2>
+    <div className="flex-1 flex min-h-0 overflow-hidden">
+      {/* LEFT PANE — Task info (freeCodeCamp style) */}
+      <div className="w-[40%] min-w-[300px] flex flex-col min-h-0" style={{ borderRight: '1px solid var(--border)' }}>
+        {/* Task title bar */}
+        <div className="px-4 py-3 flex items-center gap-2" style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg-panel)' }}>
           <span className={`badge badge-${currentTask.difficulty}`}>{currentTask.difficulty}</span>
+          <h2 className="font-bold text-sm flex-1">{currentTask.title}</h2>
           {currentTask.duration && (
             <span className="text-[10px] px-2 py-0.5 rounded-full glass-surface" style={{ color: 'var(--text-muted)' }}>
               ⏱ {currentTask.duration}
             </span>
           )}
         </div>
-        {currentTask.description && (
-          <div className="text-xs leading-relaxed mb-1" style={{ color: 'var(--text-secondary)' }}>
-            {currentTask.description}
-          </div>
-        )}
-        {currentTask.hints && currentTask.hints.length > 0 && (
-          <div className="text-[10px] mt-1" style={{ color: 'var(--text-muted)' }}>
-            💡 {typeof currentTask.hints[0] === 'string' ? currentTask.hints[0] : currentTask.hints[0].text}
-          </div>
-        )}
-        {currentTask.tests && currentTask.tests.length > 0 && (
-          <div className="text-[10px] mt-1 font-mono" style={{ color: 'var(--success)' }}>
-            ✅ Очікуваний результат: <span className="font-semibold">{currentTask.tests.map((t: any) => t.expected).join(', ')}</span>
-          </div>
-        )}
-      </div>
 
-      {/* Tabs */}
-      <div className="flex gap-1 px-4 py-2" style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg-panel)' }}>
-        {[
-          { id: 'editor', label: '📝 Код', },
-          ...(currentTask.demo ? [{ id: 'demo', label: '👀 Демо' }] : []),
-          ...(currentTask.review ? [{ id: 'review', label: '📖 Розбір' }] : []),
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-            style={{
-              background: activeTab === tab.id ? 'var(--accent)' : 'transparent',
-              color: activeTab === tab.id ? '#fff' : 'var(--text-secondary)',
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+        {/* Left tabs */}
+        <div className="flex gap-0 px-2 pt-2" style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg-panel)' }}>
+          {[
+            { id: 'instructions', label: '📖 Завдання' },
+            ...(currentTask.hints?.length ? [{ id: 'hints', label: `💡 Підказки (${showHints}/${currentTask.hints.length})` }] : []),
+            { id: 'output', label: '📤 Вивід' },
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setLeftTab(tab.id as any)}
+              className="px-3 py-2 text-[11px] font-medium transition-all relative"
+              style={{
+                color: leftTab === tab.id ? 'var(--accent-light)' : 'var(--text-muted)',
+              }}
+            >
+              {tab.label}
+              {leftTab === tab.id && (
+                <div className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full" style={{ background: 'var(--accent)' }} />
+              )}
+            </button>
+          ))}
+        </div>
 
-      {/* Content */}
-      <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
-        {activeTab === 'demo' && currentTask.demo && (
-          <div className="h-full overflow-y-auto p-4 space-y-4">
-            <div className="card animate-slide-up">
-              <div className="text-xs font-semibold mb-2" style={{ color: 'var(--accent-light)' }}>💡 Концепція</div>
-              <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>{currentTask.one_liner}</div>
-            </div>
-
-            <div className="card animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              <div className="text-xs font-semibold mb-3" style={{ color: 'var(--text-muted)' }}>👀 Приклад</div>
-              <div className="rounded-xl overflow-hidden" style={{ background: '#1e1e2e' }}>
-                <div className="flex items-center gap-2 px-4 py-2" style={{ background: 'rgba(0,0,0,0.3)' }}>
-                  <div className="w-3 h-3 rounded-full" style={{ background: '#ff5f57' }} />
-                  <div className="w-3 h-3 rounded-full" style={{ background: '#ffbd2e' }} />
-                  <div className="w-3 h-3 rounded-full" style={{ background: '#28c840' }} />
-                  <span className="text-[10px] ml-2 font-mono" style={{ color: 'var(--text-muted)' }}>demo.py</span>
-                </div>
-                <pre className="p-4 text-xs font-mono leading-relaxed overflow-x-auto" style={{ color: '#cdd6f4' }}>
-                  {currentTask.demo.code}
-                </pre>
+        {/* Left content */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          {leftTab === 'instructions' && (
+            <div className="space-y-3">
+              <div className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                {currentTask.description}
               </div>
-              {currentTask.demo.output && (
-                <div className="mt-3 rounded-xl overflow-hidden" style={{ background: 'rgba(0,0,0,0.2)' }}>
-                  <div className="px-4 py-2 text-[10px] font-semibold" style={{ color: 'var(--text-muted)', borderBottom: '1px solid var(--border)' }}>
-                    Вивід:
+
+              {currentTask.one_liner && (
+                <div className="p-3 rounded-xl text-xs" style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.2)' }}>
+                  <span style={{ color: 'var(--accent-light)' }}>💡</span>{' '}
+                  <span style={{ color: 'var(--text-secondary)' }}>{currentTask.one_liner}</span>
+                </div>
+              )}
+
+              {currentTask.tests && currentTask.tests.length > 0 && (
+                <div className="p-3 rounded-xl" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)' }}>
+                  <div className="text-[10px] font-semibold mb-1" style={{ color: 'var(--success)' }}>✅ Очікуваний результат</div>
+                  <div className="text-xs font-mono" style={{ color: 'var(--text-primary)' }}>
+                    {currentTask.tests.map((t: any) => t.expected).join('\n')}
                   </div>
-                  <pre className="p-4 text-xs font-mono" style={{ color: 'var(--success)' }}>{currentTask.demo.output}</pre>
+                </div>
+              )}
+
+              {currentTask.demo && (
+                <button
+                  onClick={() => setLeftTab('instructions')}
+                  className="w-full text-left p-3 rounded-xl glass-surface hover:border-[var(--accent)] border border-transparent transition-all text-xs"
+                >
+                  <span style={{ color: 'var(--accent-light)' }}>👀</span> Переглянути демо приклад
+                </button>
+              )}
+            </div>
+          )}
+
+          {leftTab === 'hints' && (
+            <div className="space-y-3">
+              {currentTask.hints?.slice(0, showHints).map((hint: any, i: number) => (
+                <div key={i} className="p-3 rounded-xl glass-surface animate-slide-up" style={{ animationDelay: `${i * 0.1}s` }}>
+                  <div className="text-[10px] font-semibold mb-1" style={{ color: 'var(--accent-light)' }}>💡 Підказка {i + 1}</div>
+                  <div className="text-xs font-mono" style={{ color: 'var(--text-secondary)' }}>
+                    {typeof hint === 'string' ? hint : hint.text}
+                  </div>
+                </div>
+              ))}
+              {showHints < (currentTask.hints?.length || 0) && (
+                <button
+                  onClick={() => setShowHints(h => h + 1)}
+                  className="w-full p-3 rounded-xl glass-surface hover:border-[var(--accent)] border border-transparent transition-all text-xs text-center"
+                  style={{ color: 'var(--accent-light)' }}
+                >
+                  Показати підказку {showHints + 1} →
+                </button>
+              )}
+              {showHints >= (currentTask.hints?.length || 0) && currentTask.hints?.length > 0 && (
+                <div className="text-center text-[10px] py-2" style={{ color: 'var(--text-muted)' }}>
+                  Всі підказки показані 🎯
                 </div>
               )}
             </div>
+          )}
 
-            {currentTask.demo.try_changes && (
-              <div className="card animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                <div className="text-xs font-semibold mb-3" style={{ color: 'var(--text-muted)' }}>🧪 Спробуй змінити</div>
+          {leftTab === 'output' && (
+            <div className="space-y-3">
+              {output && (
+                <div className="rounded-xl overflow-hidden" style={{ background: 'rgba(0,0,0,0.3)' }}>
+                  <div className="px-3 py-1.5 text-[10px] font-semibold" style={{ background: 'rgba(0,0,0,0.2)', color: 'var(--text-muted)', borderBottom: '1px solid var(--border)' }}>
+                    Вивід
+                  </div>
+                  <pre className="p-3 text-xs font-mono whitespace-pre-wrap" style={{ color: output.startsWith('❌') ? 'var(--error)' : 'var(--success)' }}>
+                    {output}
+                  </pre>
+                </div>
+              )}
+
+              {testResults && testResults.length > 0 && (
                 <div className="space-y-2">
-                  {currentTask.demo.try_changes.map((change: any, i: number) => (
-                    <button
+                  <div className="text-[10px] font-semibold" style={{ color: 'var(--text-muted)' }}>
+                    Тести: {testResults.filter(r => r.passed).length}/{testResults.length} пройдено
+                  </div>
+                  {testResults.map((r: any, i: number) => (
+                    <div
                       key={i}
-                      onClick={() => { setCode(change.change); setActiveTab('editor'); }}
-                      className="w-full text-left p-3 rounded-xl glass-surface hover:border-[var(--accent)] border border-transparent transition-all text-xs"
+                      className="p-2 rounded-lg text-[11px] font-mono"
+                      style={{
+                        background: r.passed ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)',
+                        border: `1px solid ${r.passed ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'}`,
+                        color: r.passed ? 'var(--success)' : 'var(--error)',
+                      }}
                     >
-                      <div className="font-mono mb-1" style={{ color: 'var(--accent-light)' }}>{change.change.split('\n')[0]}...</div>
-                      <div style={{ color: 'var(--text-muted)' }}>→ {change.new_output}</div>
-                    </button>
+                      {r.passed ? '✅' : '❌'} {r.expected}
+                      {!r.passed && r.got && (
+                        <div className="mt-1 opacity-70">отримано: {r.got}</div>
+                      )}
+                    </div>
                   ))}
                 </div>
-              </div>
-            )}
+              )}
 
-            {currentTask.mini_task && (
-              <div className="card animate-slide-up glow-accent" style={{ animationDelay: '0.3s' }}>
-                <div className="text-xs font-semibold mb-2" style={{ color: 'var(--accent-light)' }}>🧩 Міні-задача</div>
-                <div className="text-sm mb-3">{currentTask.mini_task.goal}</div>
-                <button onClick={() => { if (currentTask.mini_task) { setCode(currentTask.mini_task.starter); setActiveTab('editor'); } }} className="btn-primary !text-xs !py-2">
-                  Відкрити в редакторі →
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'review' && currentTask.review && (
-          <div className="h-full overflow-y-auto p-4 space-y-4">
-            <div className="card animate-slide-up">
-              <div className="text-xs font-semibold mb-3" style={{ color: 'var(--accent-light)' }}>📝 Рішення</div>
-              <div className="space-y-3">
-                {currentTask.review.solutions.map((sol: any, i: number) => (
-                  <div key={i} className="rounded-xl overflow-hidden" style={{ background: 'rgba(0,0,0,0.2)' }}>
-                    <div className="px-4 py-2 flex items-center gap-2" style={{ borderBottom: '1px solid var(--border)' }}>
-                      <span className="text-[10px] font-semibold" style={{ color: 'var(--accent-light)' }}>Варіант {i + 1}</span>
-                    </div>
-                    <pre className="p-4 text-xs font-mono leading-relaxed" style={{ color: '#cdd6f4' }}>{sol.code}</pre>
-                    <div className="px-4 py-2 text-[11px]" style={{ color: 'var(--text-secondary)', borderTop: '1px solid var(--border)' }}>{sol.comment}</div>
-                  </div>
-                ))}
-              </div>
+              {!output && (!testResults || testResults.length === 0) && (
+                <div className="text-center py-8" style={{ color: 'var(--text-muted)' }}>
+                  <div className="text-2xl mb-2">📤</div>
+                  <div className="text-xs">Натисніть "Запустити" або "Тести" щоб побачити результат</div>
+                </div>
+              )}
             </div>
-            {currentTask.review.takeaway && (
-              <div className="card animate-slide-up" style={{ animationDelay: '0.1s', background: 'rgba(139, 92, 246, 0.1)', borderColor: 'var(--accent)' }}>
-                <div className="text-xs font-semibold mb-1" style={{ color: 'var(--accent-light)' }}>💎 Головне</div>
-                <div className="text-sm" style={{ color: 'var(--text-primary)' }}>{currentTask.review.takeaway}</div>
-              </div>
-            )}
-          </div>
-        )}
+          )}
+        </div>
+      </div>
 
-        {activeTab === 'editor' && (
-          <div className="flex-1 min-h-0 relative">
+      {/* RIGHT PANE — Code editor */}
+      <div className="flex-1 flex flex-col min-h-0 min-w-0">
+        {/* Editor area */}
+        <div className="flex-1 min-h-0 relative flex">
+          <div className={`${isPython ? 'w-full' : 'w-1/2'} h-full relative`}>
             <MonacoEditor
               value={code}
-              language="python"
+              language={monacoLang}
               theme={editorTheme}
               onChange={(v) => setCode(v)}
             />
           </div>
-        )}
-      </div>
-
-      {/* Action bar */}
-      <div className="px-4 py-3 flex items-center gap-3" style={{ borderTop: '1px solid var(--border)', background: 'var(--bg-panel)' }}>
-        <button onClick={() => runCode()} disabled={running} className="btn-primary !py-2 !px-5 !text-sm !rounded-xl flex items-center gap-2" style={{ opacity: running ? 0.5 : 1 }}>
-          {running ? (
-            <><span className="animate-spin">⏳</span> Виконується...</>
-          ) : (
-            <><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Запустити</>
+          {!isPython && (
+            <div className="w-1/2 h-full" style={{ borderLeft: '1px solid var(--border)' }}>
+              <CodeSandbox
+                code={code}
+                language={lang}
+                onOutput={setSandboxOutput}
+                onTestRun={async () => []}
+                tests={currentTask?.tests}
+              />
+            </div>
           )}
-        </button>
-        {currentTask.tests && currentTask.tests.length > 0 && (
-          <button onClick={runTests} disabled={running} className="btn-ghost !py-2 !px-4 !text-sm !rounded-xl flex items-center gap-2" style={{ borderColor: 'var(--success)', color: 'var(--success)' }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            Тести ({currentTask.tests.length})
+        </div>
+
+        {/* Action bar — bottom of right pane */}
+        <div className="px-4 py-2.5 flex items-center gap-2" style={{ borderTop: '1px solid var(--border)', background: 'var(--bg-panel)' }}>
+          <button
+            onClick={() => runCode()}
+            disabled={running}
+            className="btn-primary !py-1.5 !px-4 !text-xs !rounded-lg flex items-center gap-1.5"
+            style={{ opacity: running ? 0.5 : 1 }}
+          >
+            {running ? (
+              <><span className="animate-spin">⏳</span> Запуск...</>
+            ) : (
+              <><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Запустити</>
+            )}
           </button>
-        )}
+          {currentTask.tests && currentTask.tests.length > 0 && (
+            <button
+              onClick={runTests}
+              disabled={running}
+              className="btn-ghost !py-1.5 !px-3 !text-xs !rounded-lg flex items-center gap-1.5"
+              style={{ borderColor: 'var(--success)', color: 'var(--success)' }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Тести ({currentTask.tests.length})
+            </button>
+          )}
+          {testResults && testResults.length > 0 && (
+            <span className="text-[10px] ml-1" style={{ color: testResults.every((r: any) => r.passed) ? 'var(--success)' : 'var(--error)' }}>
+              {testResults.every((r: any) => r.passed) ? '✅ Всі пройдено!' : `❌ ${testResults.filter((r: any) => !r.passed).length} помилок`}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   )

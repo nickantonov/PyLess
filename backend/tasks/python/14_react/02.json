@@ -1,0 +1,33 @@
+{
+  "id": "wd-14-02",
+  "module": "React",
+  "module_order": 14,
+  "language": "react",
+  "title": "Props та стан",
+  "difficulty": "medium",
+  "description": "Створи компонент Counter з кнопкою, яка збільшує лічильник.",
+  "starter_code": "function Counter() {\n  const [count, setCount] = React.useState(0);\n\n  return (\n    <div style={{ textAlign: 'center', padding: '20px' }}>\n      <h2>Лічильник: {count}</h2>\n      <button onClick={() => setCount(count + 1)}>+1</button>\n    </div>\n  );\n}",
+  "hints": [
+    "React.useState() створює змінну стану",
+    "setCount() оновлює стан",
+    "При зміні стану компонент перемальовується"
+  ],
+  "tests": [
+    { "input": "function Counter(){const [c,setC]=React.useState(0);return <div><h2>Лічильник: {c}</h2><button onClick={()=>setC(c+1)}>+1</button></div>}", "expected": "rendered" }
+  ],
+  "explanation": "State (стан) — дані компонента. При зміні стану React перемальовує компонент.",
+  "one_liner": "State керує даними компонента, props передають дані зверху",
+  "demo": {
+    "code": "function Counter() {\n  const [count, setCount] = React.useState(0);\n\n  return (\n    <div style={{ textAlign: 'center', padding: '20px' }}>\n      <h2 style={{ fontSize: '48px' }}>{count}</h2>\n      <button\n        onClick={() => setCount(count + 1)}\n        style={{ padding: '10px 20px', fontSize: '16px' }}\n      >\n        +1\n      </button>\n      <button\n        onClick={() => setCount(0)}\n        style={{ marginLeft: '10px', padding: '10px 20px' }}\n      >\n        Скинути\n      </button>\n    </div>\n  );\n}",
+    "output": "Лічильник з кнопками +1 та Скинути"
+  },
+  "review": {
+    "solutions": [
+      {
+        "code": "function Counter() {\n  const [count, setCount] = React.useState(0);\n  return (\n    <div>\n      <h2>Лічильник: {count}</h2>\n      <button onClick={() => setCount(count + 1)}>+1</button>\n    </div>\n  );\n}",
+        "comment": "useState для стану, onClick для обробки кліку"
+      }
+    ],
+    "takeaway": "useState повертає [значення, функцію_оновлення]. Функція_оновлення викликає перемальовування."
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "py-10-04",
+  "module": "Oop",
+  "module_order": 10,
+  "title": "Декоратори",
+  "difficulty": "medium",
+  "description": "Створи декоратор, який логує виклики функцій.",
+  "starter_code": "def log_calls(func):\n    def wrapper(*args, **kwargs):\n        print(f'→ Виклик {func.__name__}({args}, {kwargs})')\n        result = func(*args, **kwargs)\n        print(f'← Результат: {result}')\n        return result\n    return wrapper\n\n@log_calls\ndef add(a, b):\n    return a + b\n\n@log_calls\ndef multiply(a, b):\n    return a * b\n\nadd(2, 3)\nmultiply(4, 5)",
+  "hints": [
+    "Декоратор — функція що приймає функцію та повертає нову",
+    "@decorator — синтаксичний цукор для func = decorator(func)",
+    "wrapper приймає *args, **kwargs для універсальності"
+  ],
+  "tests": [
+    {"input": "@lambda f: f\nprint('Hello')", "expected": "Hello"}
+  ],
+  "explanation": "Декоратори додають поведінку до функцій без зміни їхнього коду.",
+  "one_liner": "Декоратор = обгортка, що розширює функціональність"
+}

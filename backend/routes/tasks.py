@@ -38,9 +38,13 @@ def load_all_tasks():
                                 item["difficulty"] = "easy"
                             if "module" not in item:
                                 item["module"] = module_dir.split("_", 1)[1] if "_" in module_dir else module_dir
+                            if "language" not in item:
+                                item["language"] = "python"
                             tasks.append(item)
                     else:
                         data["module_order"] = i + 1
+                        if "language" not in data:
+                            data["language"] = "python"
                         tasks.append(data)
     return tasks
 
@@ -67,6 +71,7 @@ def list_tasks(authorization: Optional[str] = Header(None), db: sqlite3.Connecti
             "title": task.get("title", task.get("concept", "")),
             "difficulty": task.get("difficulty", "easy"),
             "type": task.get("type", "task"),
+            "language": task.get("language", "python"),
             "duration": task.get("duration", ""),
         }
         row = db.execute(

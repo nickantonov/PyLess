@@ -175,10 +175,6 @@ def submit_onboarding(answers: dict, authorization: Optional[str] = Header(None)
         label = "Експерт — тобі потрібні проєкти, не завдання"
 
     db.execute(
-        "UPDATE users SET display_name = display_name WHERE id = ?",
-        (uid,),
-    )
-    db.execute(
         "INSERT INTO onboarding (user_id, answers, total_score, level, start_module, start_task) "
         "VALUES (?, ?, ?, ?, ?, ?) "
         "ON CONFLICT(user_id) DO UPDATE SET answers=?, total_score=?, level=?, start_module=?, start_task=?",

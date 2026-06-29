@@ -1,0 +1,15 @@
+services:
+  pylless:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - DB_DIR=/app/data
+      - JWT_SECRET=pylesss-secret-change-in-production
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+      - ADMIN_CODE=${ADMIN_CODE:-}
+    restart: unless-stopped

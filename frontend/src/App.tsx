@@ -3,10 +3,10 @@ import { useStore } from './store'
 import Header from './components/Header'
 import Sidebar from './components/Sidebar'
 import EditorPanel from './components/EditorPanel'
-import TestResults from './components/TestResults'
 import AiChat from './components/AiChat'
 import XpPopup from './components/XpPopup'
 import AuthPage from './components/AuthPage'
+import InvitePage from './components/InvitePage'
 
 const API = ''
 
@@ -18,6 +18,11 @@ export default function App() {
   }, [theme])
 
   useEffect(() => {
+    const path = window.location.pathname
+    if (path.startsWith('/invite/')) {
+      return
+    }
+
     const params = new URLSearchParams(window.location.search)
     const urlToken = params.get('token')
     if (urlToken) {
@@ -36,6 +41,9 @@ export default function App() {
   }, [])
 
   useEffect(() => {
+    const path = window.location.pathname
+    if (path.startsWith('/invite/')) return
+
     const headers: Record<string, string> = {}
     if (token) headers['Authorization'] = `Bearer ${token}`
 
@@ -54,6 +62,9 @@ export default function App() {
   }, [token])
 
   useEffect(() => {
+    const path = window.location.pathname
+    if (path.startsWith('/invite/')) return
+
     const headers: Record<string, string> = {}
     if (token) headers['Authorization'] = `Bearer ${token}`
 
@@ -62,6 +73,11 @@ export default function App() {
       .then(setProfile)
       .catch(() => {})
   }, [token, user])
+
+  const path = window.location.pathname
+  if (path.startsWith('/invite/')) {
+    return <InvitePage />
+  }
 
   if (view === 'auth' && !token) {
     return <AuthPage />
@@ -78,10 +94,7 @@ export default function App() {
       <div className="flex-1 flex min-h-0 overflow-hidden relative z-10">
         {sidebarOpen && <Sidebar />}
         <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-          <div className="flex-1 flex min-h-0 overflow-hidden">
-            <EditorPanel />
-            <TestResults />
-          </div>
+          <EditorPanel />
         </div>
         {aiOpen && <AiChat />}
       </div>

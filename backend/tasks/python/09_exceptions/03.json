@@ -1,0 +1,19 @@
+{
+  "id": "py-09-03",
+  "module": "Exceptions",
+  "module_order": 9,
+  "title": "Користувацькі винятки",
+  "difficulty": "hard",
+  "description": "Створи свій виняток та використай його.",
+  "starter_code": "class InsufficientFundsError(Exception):\n    def __init__(self, balance, amount):\n        self.balance = balance\n        self.amount = amount\n        super().__init__(f'Недостатньо коштів: баланс {balance}, а потрібно {amount}')\n\ndef withdraw(balance, amount):\n    if amount > balance:\n        raise InsufficientFundsError(balance, amount)\n    return balance - amount\n\ntry:\n    new_balance = withdraw(100, 150)\nexcept InsufficientFundsError as e:\n    print(f'Помилка: {e}')",
+  "hints": [
+    "class MyError(Exception) — створення кастомного винятку",
+    "raise — генерує виняток",
+    "except MyError as e — ловить конкретний тип"
+  ],
+  "tests": [
+    {"input": "print('Помилка: Недостатньо коштів: баланс 100, а потрібно 150')", "expected": "Помилка: Недостатньо коштів: баланс 100, а потрібно 150"}
+  ],
+  "explanation": "Користувацькі винятки дозволяють створювати зрозумілі помилки для бізнес-логіки.",
+  "one_liner": "Кастомний виняток = зрозуміла помилка для твоєї програми"
+}

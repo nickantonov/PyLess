@@ -1,0 +1,23 @@
+{
+  "id": "wd-16-01",
+  "module": "CLI",
+  "module_order": 16,
+  "language": "python",
+  "title": "Аргументи командного рядка",
+  "difficulty": "easy",
+  "description": "Створи скрипт, який приймає ім'я як аргумент та вітає користувача.",
+  "starter_code": "import sys\n\nname = sys.argv[1] if len(sys.argv) > 1 else 'World'\nprint(f'Привіт, {name}!')",
+  "hints": [
+    "sys.argv — список аргументів командного рядка",
+    "sys.argv[0] — назва скрипта",
+    "sys.argv[1] — перший аргумент"
+  ],
+  "tests": [
+    {
+      "input": "import sys; name = sys.argv[1] if len(sys.argv) > 1 else 'World'; print(f'Привіт, {name}!')",
+      "expected": "Привіт, World!"
+    }
+  ],
+  "explanation": "sys.argv містить аргументи командного рядка. Нульовий елемент — назва скрипта.",
+  "one_liner": "sys.argv дає доступ до аргументів командного рядка"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "l-wd-13-01",
+  "module": "JavaScript",
+  "module_order": 13,
+  "language": "javascript",
+  "type": "lesson",
+  "title": "Основи JavaScript",
+  "description": "JavaScript — мова програмування для вебу. Вона робить сторінки інтерактивними: обробляє події, змінює DOM, працює з серверами.",
+  "hints": [],
+  "tests": []
+}

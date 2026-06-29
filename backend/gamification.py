@@ -193,7 +193,6 @@ def get_daily_challenge(db: sqlite3.Connection) -> dict:
     if row:
         return {"task_id": row["task_id"], "bonus_xp": row["bonus_xp"], "date": today}
 
-    all_task_ids = [r["id"] for r in db.execute("SELECT id FROM progress WHERE 1=1").fetchall()]
     random.seed(today)
     task_id = random.choice(["py-01-01", "py-02-01", "py-03-01", "py-04-01", "py-05-01",
                               "py-01-03", "py-02-03", "py-03-02", "py-04-02", "py-06-01",

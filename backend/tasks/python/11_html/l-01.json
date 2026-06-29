@@ -1,0 +1,11 @@
+{
+  "id": "l-wd-11-01",
+  "module": "HTML",
+  "module_order": 11,
+  "language": "html",
+  "type": "lesson",
+  "title": "Основи HTML",
+  "description": "HTML (HyperText Markup Language) — мова розмітки для створення веб-сторінок. Кожна сторінка складається з тегів, які визначають структуру контенту.",
+  "hints": [],
+  "tests": []
+}

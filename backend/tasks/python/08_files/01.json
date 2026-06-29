@@ -15,5 +15,19 @@
       "expected": "Hello File!"
     }
   ],
-  "explanation": "with open() автоматично закриває файл."
+  "explanation": "with open() автоматично закриває файл.",
+  "one_liner": "with open() — безпечний спосіб роботи з файлами",
+  "demo": {
+    "code": "# Запис\nwith open('demo.txt', 'w') as f:\n    f.write('Привіт, світ!\\n')\n    f.write('Другий рядок\\n')\n\n# Читання\nwith open('demo.txt') as f:\n    content = f.read()\n    print(content)\n\n# Читання по рядках\nwith open('demo.txt') as f:\n    for line in f:\n        print(f'→ {line.strip()}')",
+    "output": "Привіт, світ!\nДругий рядок\n\n→ Привіт, світ!\n→ Другий рядок",
+    "try_changes": [
+      {"change": "f.write('Новий контент!\\n')", "new_output": "Змінив текст файлу"}
+    ]
+  },
+  "review": {
+    "solutions": [
+      {"code": "with open('test.txt', 'w') as f:\n    f.write('Hello File!')", "comment": "Простий запис рядка у файл"}
+    ],
+    "takeaway": "'w' перезаписує файл, 'a' додає в кінець, 'r' читає."
+  }
 }

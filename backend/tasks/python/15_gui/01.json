@@ -1,0 +1,24 @@
+{
+  "id": "wd-15-01",
+  "module": "GUI",
+  "module_order": 15,
+  "language": "python",
+  "title": "Вікно tkinter",
+  "difficulty": "easy",
+  "description": "Напиши код для створення простого вікна з заголовком 'Привіт!' розміром 300x200.",
+  "starter_code": "import tkinter as tk\n\n# Створи вікно з заголовком та розміром\nroot = tk.Tk()\nroot.title('Привіт!')\nroot.geometry('300x200')\nroot.mainloop()",
+  "hints": [
+    "tk.Tk() створює головне вікно",
+    "title() встановлює заголовок",
+    "geometry() встановлює розмір 'ширинаxвисота'",
+    "mainloop() запускає цикл обробки подій"
+  ],
+  "tests": [
+    {
+      "input": "import tkinter as tk; root = tk.Tk(); root.title('Привіт!'); root.geometry('300x200')",
+      "expected": "ok"
+    }
+  ],
+  "explanation": "tkinter — вбудована бібліотека GUI для Python. Tk() створює головне вікно.",
+  "one_liner": "tkinter — стандартна бібліотека для створення графічних інтерфейсів"
+}
