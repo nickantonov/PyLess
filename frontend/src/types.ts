@@ -101,6 +101,7 @@ export const MODULES = [
   { order: 20, name: 'БД: Запити', icon: '🔍' },
   { order: 21, name: 'БД: Просунуте', icon: '⚡' },
   { order: 22, name: 'API', icon: '🌐' },
+  { order: 23, name: 'ORM (SQLAlchemy)', icon: '🔗' },
 ]
 
 export const LANGUAGE_LABELS: Record<TaskLanguage, string> = {

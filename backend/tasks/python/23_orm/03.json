@@ -1,0 +1,21 @@
+{
+  "id": "py-23-03",
+  "module": "ORM",
+  "module_order": 23,
+  "language": "python",
+  "title": "Зв'язки між таблицями",
+  "difficulty": "medium",
+  "description": "Створи зв'язки One-to-Many між моделями.",
+  "starter_code": "from sqlalchemy import create_engine, Column, Integer, String, ForeignKey\nfrom sqlalchemy.orm import declarative_base, Session, relationship\n\nBase = declarative_base()\n\nclass Author(Base):\n    __tablename__ = 'authors'\n    id = Column(Integer, primary_key=True)\n    name = Column(String(50))\n    books = relationship('Book', back_populates='author')\n\nclass Book(Base):\n    __tablename__ = 'books'\n    id = Column(Integer, primary_key=True)\n    title = Column(String(100))\n    author_id = Column(Integer, ForeignKey('authors.id'))\n    author = relationship('Author', back_populates='books')\n\nengine = create_engine('sqlite:///:memory:')\nBase.metadata.create_all(engine)\n\nwith Session(engine) as s:\n    author = Author(name='Шевченко')\n    author.books.extend([\n        Book(title='Кобзар'),\n        Book(title='Заповіт')\n    ])\n    s.add(author)\n    s.commit()\n\n    a = s.query(Author).first()\n    print(f'{a.name}: {len(a.books)} книг')\n    for book in a.books:\n        print(f'  - {book.title}')",
+  "hints": [
+    "ForeignKey('table.id') — зовнішній ключ",
+    "relationship('Model', back_populates='attr') — зв'язок",
+    "author.books — доступ до пов'язаних об'єктів",
+    "One-to-Many: один автор → багато книг"
+  ],
+  "tests": [
+    {"input": "from sqlalchemy import create_engine, Column, Integer, String, ForeignKey; from sqlalchemy.orm import declarative_base; B=declarative_base(); print('ok')", "expected": "ok"}
+  ],
+  "explanation": "Зв'язки дозволяють зручно переходити між пов'язаними таблицями.",
+  "one_liner": "relationship() зв'язує моделі, ForeignKey вказує на таблицю"
+}

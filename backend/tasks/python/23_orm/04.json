@@ -1,0 +1,21 @@
+{
+  "id": "py-23-04",
+  "module": "ORM",
+  "module_order": 23,
+  "language": "python",
+  "title": "Фільтрація та сортування",
+  "difficulty": "medium",
+  "description": "Використовуй складні фільтри, сортування та агрегацію в SQLAlchemy.",
+  "starter_code": "from sqlalchemy import create_engine, Column, Integer, String, func\nfrom sqlalchemy.orm import declarative_base, Session\n\nBase = declarative_base()\n\nclass Employee(Base):\n    __tablename__ = 'employees'\n    id = Column(Integer, primary_key=True)\n    name = Column(String(50))\n    department = Column(String(30))\n    salary = Column(Integer)\n\nengine = create_engine('sqlite:///:memory:')\nBase.metadata.create_all(engine)\n\nwith Session(engine) as s:\n    s.add_all([\n        Employee(name='Іван', department='IT', salary=1500),\n        Employee(name='Оксана', department='HR', salary=1200),\n        Employee(name='Петро', department='IT', salary=1800),\n        Employee(name='Марія', department='Sales', salary=1400),\n    ])\n    s.commit()\n\n    # Фільтрація\n    it = s.query(Employee).filter(Employee.department == 'IT').all()\n    print(f'IT: {[e.name for e in it]}')\n\n    # Сортування\n    by_salary = s.query(Employee).order_by(Employee.salary.desc()).all()\n    print(f'\\nЗарплата: {[(e.name, e.salary) for e in by_salary]}')\n\n    # Агрегація\n    avg = s.query(func.avg(Employee.salary)).scalar()\n    print(f'\\nСередня: {avg:.0f}')",
+  "hints": [
+    "filter(col == val) — фільтрація",
+    "order_by(col.asc()/desc()) — сортування",
+    "func.avg/sum/count — агрегатні функції",
+    "filter(col > val), filter(col.in_([v1,v2])) — складні фільтри"
+  ],
+  "tests": [
+    {"input": "from sqlalchemy import func; print(func.avg([1,2,3]))", "expected": "avg([1, 2, 3])"}
+  ],
+  "explanation": "SQLAlchemy дозволяє писати складні запити через Python методи.",
+  "one_liner": "filter() + order_by() + func = потужна фільтрація"
+}

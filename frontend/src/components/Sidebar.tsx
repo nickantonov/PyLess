@@ -55,6 +55,7 @@ export default function Sidebar() {
     { order: 20, name: 'БД: Запити', icon: '🔍', color: '#22c55e' },
     { order: 21, name: 'БД: Просунуте', icon: '⚡', color: '#f59e0b' },
     { order: 22, name: 'API', icon: '🌐', color: '#06b6d4' },
+    { order: 23, name: 'ORM (SQLAlchemy)', icon: '🔗', color: '#ef4444' },
   ]
 
   const groupedExercises = modules.map((mod) => ({

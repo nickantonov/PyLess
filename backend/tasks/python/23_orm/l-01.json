@@ -1,0 +1,11 @@
+{
+  "id": "l-py-23-01",
+  "module": "ORM",
+  "module_order": 23,
+  "type": "lesson",
+  "language": "python",
+  "title": "Що таке ORM",
+  "description": "SQLAlchemy — найпопулярніша ORM для Python. Замість SQL запитів ви пишете Python код з класами та методами. ORM = Object-Relational Mapping — зв'язує об'єкти Python з таблицями БД.",
+  "hints": [],
+  "tests": []
+}

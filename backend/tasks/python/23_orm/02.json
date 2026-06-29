@@ -1,0 +1,21 @@
+{
+  "id": "py-23-02",
+  "module": "ORM",
+  "module_order": 23,
+  "language": "python",
+  "title": "CRUD операції",
+  "difficulty": "easy",
+  "description": "Виконай Create, Read, Update, Delete за допомогою SQLAlchemy.",
+  "starter_code": "from sqlalchemy import create_engine, Column, Integer, String\nfrom sqlalchemy.orm import declarative_base, Session\n\nBase = declarative_base()\n\nclass Product(Base):\n    __tablename__ = 'products'\n    id = Column(Integer, primary_key=True)\n    name = Column(String(50))\n    price = Column(Integer)\n\nengine = create_engine('sqlite:///:memory:')\nBase.metadata.create_all(engine)\n\nwith Session(engine) as s:\n    # CREATE\n    s.add_all([\n        Product(name='Ноутбук', price=25000),\n        Product(name='Мишка', price=500),\n        Product(name='Клавіатура', price=1500)\n    ])\n    s.commit()\n\n    # READ\n    products = s.query(Product).all()\n    for p in products:\n        print(f'{p.name}: {p.price} грн')\n\n    # UPDATE\n    mouse = s.query(Product).filter_by(name='Мишка').first()\n    mouse.price = 600\n    s.commit()\n    print(f'\\nОновлено: {mouse.name} = {mouse.price}')\n\n    # DELETE\n    s.query(Product).filter_by(name='Клавіатура').delete()\n    s.commit()\n    print(f'Залишилось: {s.query(Product).count()}')",
+  "hints": [
+    "session.add(obj) — додати об'єкт",
+    "session.query(Model).all() — отримати всі",
+    "session.query(Model).filter_by(col=val) — фільтрація",
+    "session.commit() — зберегти зміни"
+  ],
+  "tests": [
+    {"input": "from sqlalchemy import create_engine, Column, Integer, String; from sqlalchemy.orm import declarative_base, Session; B=declarative_base(); exec('class T(B):\\n __tablename__=\"t\"\\n id=Column(Integer,primary_key=True)\\n v=Column(String(10))'); e=create_engine('sqlite:///:memory:'); B.metadata.create_all(e); s=Session(e); s.add(T(v='hi')); s.commit(); print(s.query(T).first().v)", "expected": "hi"}
+  ],
+  "explanation": "CRUD — базові операції з даними: Create, Read, Update, Delete.",
+  "one_liner": "add/create, query/all, update/commit, delete"
+}

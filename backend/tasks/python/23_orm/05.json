@@ -1,0 +1,21 @@
+{
+  "id": "py-23-05",
+  "module": "ORM",
+  "module_order": 23,
+  "language": "python",
+  "title": "Міграції та налаштування",
+  "difficulty": "hard",
+  "description": "Налаштуй SQLAlchemy для продакшену: pooling, event listeners, міграції.",
+  "starter_code": "from sqlalchemy import create_engine, event, Column, Integer, String\nfrom sqlalchemy.orm import declarative_base, Session\nimport time\n\nBase = declarative_base()\n\nclass Request(Base):\n    __tablename__ = 'requests'\n    id = Column(Integer, primary_key=True)\n    path = Column(String(200))\n    duration_ms = Column(Integer)\n\n# Engine з налаштуваннями\nengine = create_engine(\n    'sqlite:///:memory:',\n    echo=False,\n    pool_pre_ping=True\n)\n\n# Event listener — логування повільних запитів\n@event.listens_for(engine, 'before_cursor_execute')\ndef log_query(conn, cursor, statement, parameters, context, executemany):\n    conn.info.setdefault('query_start', []).append(time.time())\n\n@event.listens_for(engine, 'after_cursor_execute')\ndef log_slow(conn, cursor, statement, parameters, context, executemany):\n    start = conn.info['query_start'].pop(-1)\n    duration = (time.time() - start) * 1000\n    if duration > 100:\n        print(f'⚠️ Slow query ({duration:.0f}ms): {statement[:50]}')\n\nBase.metadata.create_all(engine)\n\nwith Session(engine) as s:\n    s.add(Request(path='/api/users', duration_ms=45))\n    s.commit()\n    print(s.query(Request).first())",
+  "hints": [
+    "create_engine(url, echo=True) — логування SQL",
+    "pool_pre_ping=True — перевірка з'єднань",
+    "@event.listens_for — перехоплення подій",
+    "before/after_cursor_execute — перед/після виконання"
+  ],
+  "tests": [
+    {"input": "from sqlalchemy import create_engine; e=create_engine('sqlite:///:memory:'); print('ok')", "expected": "ok"}
+  ],
+  "explanation": "Event listeners дозволяють перехоплювати SQL запити для логування та моніторингу.",
+  "one_liner": "event.listens_for + create_engine(echo) = моніторинг SQL"
+}

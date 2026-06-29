@@ -1,0 +1,21 @@
+{
+  "id": "py-23-01",
+  "module": "ORM",
+  "module_order": 23,
+  "language": "python",
+  "title": "Моделі SQLAlchemy",
+  "difficulty": "easy",
+  "description": "Створи модель (таблицю) за допомогою SQLAlchemy declarative.",
+  "starter_code": "from sqlalchemy import create_engine, Column, Integer, String\nfrom sqlalchemy.orm import declarative_base, Session\n\nBase = declarative_base()\n\nclass User(Base):\n    __tablename__ = 'users'\n\n    id = Column(Integer, primary_key=True)\n    name = Column(String(50), nullable=False)\n    email = Column(String(100), unique=True)\n    age = Column(Integer, default=0)\n\n    def __repr__(self):\n        return f'User(name={self.name!r})'\n\nengine = create_engine('sqlite:///:memory:')\nBase.metadata.create_all(engine)\n\nwith Session(engine) as session:\n    user = User(name='Іван', email='ivan@test.com', age=25)\n    session.add(user)\n    session.commit()\n    print(session.query(User).first())",
+  "hints": [
+    "declarative_base() — базовий клас для моделей",
+    "__tablename__ — назва таблиці в БД",
+    "Column(Type, ... ) — стовпець таблиці",
+    "Session — сесія для роботи з БД"
+  ],
+  "tests": [
+    {"input": "from sqlalchemy import create_engine, Column, Integer, String; from sqlalchemy.orm import declarative_base; Base=declarative_base(); print('ok')", "expected": "ok"}
+  ],
+  "explanation": "Модель — Python клас, який відповідає таблиці в БД.",
+  "one_liner": "class Model(Base): __tablename__ = 'table'"
+}
