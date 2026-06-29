@@ -1,6 +1,6 @@
-# 🐍 PyLess — Interactive Python Learning Platform
+# 🐍 PyLess — Інтерактивна платформа вивчення Python
 
-> Free, open-source alternative to paid coding platforms like Codecademy, freeCodeCamp, and Code.org
+> Безкоштовна open-source альтернатива платним платформам навчання програмуванню
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Python 3.12+](https://img.shields.io/badge/Python-3.12+-yellow.svg)](https://python.org)
@@ -9,172 +9,172 @@
 
 ---
 
-## 📸 Screenshots
+## 📸 Скріншоти
 
-| Editor | Admin Panel | Video Chat |
-|--------|-------------|------------|
-| ![Editor](https://via.placeholder.com/400x250/1a1a2e/8b5cf6?text=Editor+%E2%9C%85) | ![Admin](https://via.placeholder.com/400x250/1a1a2e/ec4899?text=Admin+%E2%9C%85) | ![Video](https://via.placeholder.com/400x250/1a1a2e/06b6d4?text=Video+Chat+%E2%9C%85) |
-
----
-
-## ✨ Features
-
-### For Students
-- 🎯 **109+ exercises** across 23 modules (Python, HTML, CSS, JavaScript, React, SQL, API, ORM)
-- 🐍 **In-browser Python execution** via Pyodide (no server needed)
-- 🌐 **Multi-language code editor** with Monaco (20 themes)
-- 🏆 **Gamification**: XP, levels, streaks, combo multipliers, 20+ badges
-- 📱 **FreeCodeCamp-style split view**: task left, editor right
-- 💡 **Progressive hints**: reveal one at a time
-- 🔥 **Daily challenges** with countdown timer
-- 🤖 **AI tutor** powered by Groq (llama-3.3-70b-versatile)
-
-### For Teachers
-- 👥 **Student groups**: create groups, add students by email
-- 📝 **Custom task creator**: create and assign tasks to groups or individuals
-- 🎥 **Video lessons**: WebRTC P2P video chat with screen sharing
-- 📎 **Material upload**: share presentations, photos, videos
-- 📊 **Student management**: track progress, notes, stats
-
-### For Admins
-- ⚙️ **Admin panel**: overview, students, invites, tasks, settings
-- 🔐 **Google OAuth**: configure in admin panel (no env vars needed)
-- 🔗 **Invite system**: generate codes for student enrollment
-- 🌐 **Configurable**: site name, description, AI key — all in admin UI
-- 📊 **Analytics**: user count, tasks completed, uptime
+| Редактор | Адмін-панель | Відео-чат |
+|----------|-------------|-----------|
+| ![Editor](https://via.placeholder.com/400x250/1a1a2e/8b5cf6?text=Редактор+%E2%9C%85) | ![Admin](https://via.placeholder.com/400x250/1a1a2e/ec4899?text=Адмін+%E2%9C%85) | ![Video](https://via.placeholder.com/400x250/1a1a2e/06b6d4?text=Відео+%E2%9C%85) |
 
 ---
 
-## 🚀 Quick Start
+## ✨ Можливості
 
-### Option 1: One-line install (Linux server)
+### Для учнів
+- 🎯 **109+ вправ** у 23 модулях (Python, HTML, CSS, JavaScript, React, SQL, API, ORM)
+- 🐍 **Виконання Python в браузері** через Pyodide (без сервера)
+- 🌐 **Багатомовний редактор коду** з Monaco (20 тем)
+- 🏆 **Гейміфікація**: XP, рівні, стріки, комбо-множники, 20+ бейджів
+- 📱 **Split-view по freeCodeCamp**: завдання зліва, редактор справа
+- 💡 **Прогресивні підказки**: показуй по одній
+- 🔥 **Щоденні челенджі** з таймером відліку
+- 🤖 **AI-тутор** на базі Groq (llama-3.3-70b-versatile)
+
+### Для викладачів
+- 👥 **Групи учнів**: створюй групи, додавай учнів по email
+- 📝 **Створення завдань**: створюй та призначай завдання групам або окремим учням
+- 🎥 **Відео-уроки**: WebRTC P2P відео-чат з демонстрацією екрану
+- 📎 **Завантаження матеріалів**: презентації, фото, відео
+- 📊 **Управління учнями**: відстежуй прогрес, нотатки, статистику
+
+### Для адміністраторів
+- ⚙️ **Адмін-панель**: огляд, учні, запрошення, завдання, налаштування
+- 🔐 **Google OAuth**: налаштовується в адмін-панелі
+- 🔗 **Система запрошень**: генеруй коди для запису учнів
+- 🌐 **Налаштовуваний**: назва сайту, опис, AI-ключ — все в UI
+- 📊 **Аналітика**: кількість користувачів, виконані завдання, аптайм
+
+---
+
+## 🚀 Швидкий старт
+
+### Варіант 1: Встановлення однією командою (Linux сервер)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/borodachamba/PyLess/main/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/nickantonov/PyLess/main/install.sh | sudo bash
 ```
 
-### Option 2: Manual setup
+### Варіант 2: Ручне встановлення
 
 ```bash
-# Clone
-git clone https://github.com/borodachamba/PyLess.git
+# Клонування
+git clone https://github.com/nickantonov/PyLess.git
 cd PyLess
 
-# Backend
+# Бекенд
 pip install -r requirements.txt
-export GROQ_API_KEY="your-key"
+export GROQ_API_KEY="ваш-ключ"
 python3 -m uvicorn backend.main:app --host 0.0.0.0 --port 8000
 
-# Frontend (separate terminal)
+# Фронтенд (окремий термінал)
 cd frontend
 npm install
 npm run dev
 ```
 
-### Option 3: Docker
+### Варіант 3: Docker
 
 ```bash
 docker compose up --build
 ```
 
-📖 **Full installation guide**: [docs/INSTALL.md](docs/INSTALL.md)
+📖 **Повна інструкція з встановлення**: [docs/INSTALL.md](docs/INSTALL.md)
 
 ---
 
-## 📚 Documentation
+## 📚 Документація
 
-| Document | Description |
-|----------|-------------|
-| [docs/USERS.md](docs/USERS.md) | Student guide: how to use PyLess |
-| [docs/TEACHERS.md](docs/TEACHERS.md) | Teacher guide: groups, tasks, video lessons |
-| [docs/ENGINEERING.md](docs/ENGINEERING.md) | Technical docs: architecture, stack, code guide |
-| [docs/API.md](docs/API.md) | API reference |
+| Документ | Опис |
+|----------|------|
+| [docs/USERS.md](docs/USERS.md) | Гайд для учнів: як користуватися PyLess |
+| [docs/TEACHERS.md](docs/TEACHERS.md) | Гайд для викладачів: групи, завдання, відео-уроки |
+| [docs/ENGINEERING.md](docs/ENGINEERING.md) | Технічна документація: архітектура, стек, гайд по коду |
+| [docs/INSTALL.md](docs/INSTALL.md) | Інструкція з встановлення |
 
 ---
 
-## 🏗️ Tech Stack
+## 🏗️ Технологічний стек
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                    Frontend                          │
+│                    Фронтенд                          │
 │  React 18 + TypeScript + Vite + TailwindCSS         │
 │  Monaco Editor (CDN) + Pyodide (CDN)                │
-│  Zustand (state) + WebRTC (video)                   │
+│  Zustand (стан) + WebRTC (відео)                    │
 └─────────────────────┬───────────────────────────────┘
                       │ REST API + WebSocket
 ┌─────────────────────┴───────────────────────────────┐
-│                     Backend                          │
+│                     Бекенд                           │
 │  FastAPI + SQLite + Pydantic                        │
-│  Groq AI (llama-3.3-70b) + JWT Auth                │
-│  WebRTC signaling + File upload                     │
+│  Groq AI (llama-3.3-70b) + JWT автентифікація      │
+│  WebRTC signaling + Завантаження файлів             │
 └─────────────────────┬───────────────────────────────┘
                       │
 ┌─────────────────────┴───────────────────────────────┐
-│                   Infrastructure                     │
-│  Nginx (reverse proxy) + Let's Encrypt / Cloudflare │
+│                   Інфраструктура                     │
+│  Nginx (реверс-проксі) + Let's Encrypt / Cloudflare │
 │  Systemd + Docker + GitHub Actions CI/CD            │
 └─────────────────────────────────────────────────────┘
 ```
 
-### Backend
-- **FastAPI** — async Python web framework
-- **SQLite** — lightweight database (no server needed)
-- **Pydantic** — data validation
-- **JWT** — authentication (auto-generated secrets)
-- **bcrypt** — password hashing
-- **Groq API** — AI tutor (llama-3.3-70b-versatile)
+### Бекенд
+- **FastAPI** — async Python веб-фреймворк
+- **SQLite** — легка база даних (без сервера)
+- **Pydantic** — валідація даних
+- **JWT** — автентифікація (авто-генерація секретів)
+- **bcrypt** — хешування паролів
+- **Groq API** — AI-тутор (llama-3.3-70b-versatile)
 
-### Frontend
-- **React 18** — UI framework
-- **TypeScript** — type safety
-- **Vite** — fast build tool
-- **TailwindCSS** — utility-first CSS
-- **Zustand** — lightweight state management
-- **Monaco Editor** — VS Code editor (CDN)
-- **Pyodide** — Python in browser (CDN)
-- **WebRTC** — peer-to-peer video chat
+### Фронтенд
+- **React 18** — UI фреймворк
+- **TypeScript** — типізація
+- **Vite** — швидка збірка
+- **TailwindCSS** — утилітарний CSS
+- **Zustand** — легке управління станом
+- **Monaco Editor** — редактор VS Code (CDN)
+- **Pyodide** — Python в браузері (CDN)
+- **WebRTC** — P2P відео-чат
 
 ---
 
-## 📁 Project Structure
+## 📁 Структура проєкту
 
 ```
 PyLess/
 ├── backend/
-│   ├── main.py              # FastAPI app, routers, static serving
-│   ├── db.py                # SQLite schema, migrations
-│   ├── models.py            # Pydantic models
-│   ├── gamification.py      # XP, levels, badges, streak
-│   ├── video_hub.py         # WebRTC signaling server
+│   ├── main.py              # FastAPI додаток, роутери, static serving
+│   ├── db.py                # SQLite схема, міграції
+│   ├── models.py            # Pydantic моделі
+│   ├── gamification.py      # XP, рівні, бейджі, стрік
+│   ├── video_hub.py         # WebRTC signaling сервер
 │   ├── routes/
-│   │   ├── auth.py          # Register, login, Google OAuth
-│   │   ├── tasks.py         # Task CRUD, completion, XP
-│   │   ├── profile.py       # User profile, leaderboard
-│   │   ├── admin.py         # Admin/mentor panel
-│   │   ├── messages.py      # Chat system
-│   │   ├── ai.py            # Groq AI tutor
-│   │   ├── settings.py      # Key-value settings
-│   │   ├── groups.py        # Student groups
-│   │   ├── custom_tasks.py  # Teacher-created tasks
-│   │   ├── video.py         # Video rooms, materials
-│   │   └── onboarding.py    # Level assessment quiz
-│   ├── tasks/               # 109+ exercise JSON files
-│   │   ├── python/          # Python modules (00-23)
+│   │   ├── auth.py          # Реєстрація, вхід, Google OAuth
+│   │   ├── tasks.py         # CRUD завдань, виконання, XP
+│   │   ├── profile.py       # Профіль, рейтинг
+│   │   ├── admin.py         # Адмін/ментор панель
+│   │   ├── messages.py      # Чат система
+│   │   ├── ai.py            # Groq AI-тутор
+│   │   ├── settings.py      # Налаштування (key-value)
+│   │   ├── groups.py        # Групи учнів
+│   │   ├── custom_tasks.py  # Завдання від викладача
+│   │   ├── video.py         # Відео-кімнати, матеріали
+│   │   └── onboarding.py    # Визначення рівня (тест)
+│   ├── tasks/               # 109+ JSON файлів вправ
+│   │   ├── python/          # Python модулі (00-23)
 │   │   └── ...
-│   └── tests/               # 19 API tests
+│   └── tests/               # 19 API тестів
 ├── frontend/
 │   ├── src/
-│   │   ├── App.tsx          # Root component, routing
-│   │   ├── store.ts         # Zustand state management
-│   │   ├── types.ts         # TypeScript types
-│   │   └── components/      # 18 React components
+│   │   ├── App.tsx          # Кореневий компонент
+│   │   ├── store.ts         # Zustand стан
+│   │   ├── types.ts         # TypeScript типи
+│   │   └── components/      # 18 React компонентів
 │   ├── index.html
 │   └── package.json
-├── docs/                    # Documentation
-├── scripts/                 # Backup scripts
-├── install.sh               # One-line installer
-├── docker-compose.yml       # Development
-├── docker-compose.prod.yml  # Production (Nginx + SSL)
+├── docs/                    # Документація
+├── scripts/                 # Скрипти бекапу
+├── install.sh               # Авто-встановлювач
+├── docker-compose.yml       # Розробка
+├── docker-compose.prod.yml  # Продакшен (Nginx + SSL)
 ├── Dockerfile
 ├── nginx.conf
 ├── requirements.txt
@@ -183,95 +183,95 @@ PyLess/
 
 ---
 
-## 🎓 Learning Modules (23 modules, 109+ exercises)
+## 🎓 Навчальні модулі (23 модулі, 109+ вправ)
 
-| # | Module | Exercises | Topics |
-|---|--------|-----------|--------|
-| 1 | Змінні | 5 | Variables, types, input/output |
-| 2 | Оператори | 4 | Arithmetic, comparison, logic |
-| 3 | Умови | 6 | if/elif/else, ternary, nested |
+| # | Модуль | Вправи | Теми |
+|---|--------|--------|------|
+| 1 | Змінні | 5 | Змінні, типи, ввід/вивід |
+| 2 | Оператори | 4 | Арифметичні, порівняння, логічні |
+| 3 | Умови | 6 | if/elif/else, тернарний, вкладені |
 | 4 | Цикли | 4 | for, while, break/continue |
-| 5 | Функції | 6 | Parameters, return, *args, lambda |
-| 6 | Списки | 6 | Arrays, slicing, comprehension |
-| 7 | Словники | 5 | Key-value, methods, nested |
-| 8 | Файли | 4 | Read/write, context managers |
-| 9 | Винятки | 3 | try/except, custom exceptions |
-| 10 | ООП | 4 | Classes, inheritance, decorators |
-| 11 | HTML | 4 | Tags, forms, semantic |
-| 12 | CSS | 4 | Selectors, Flexbox, Grid |
-| 13 | JavaScript | 4 | Variables, functions, arrays |
-| 14 | React | 4 | Components, state, lists |
-| 15 | GUI | 4 | tkinter basics |
+| 5 | Функції | 6 | Параметри, return, *args, lambda |
+| 6 | Списки | 6 | Масиви, зрізи, comprehension |
+| 7 | Словники | 5 | Ключ-значення, методи, вкладені |
+| 8 | Файли | 4 | Читання/запис, контекстні менеджери |
+| 9 | Винятки | 3 | try/except, кастомні винятки |
+| 10 | ООП | 4 | Класи, наслідування, декоратори |
+| 11 | HTML | 4 | Теги, форми, семантика |
+| 12 | CSS | 4 | Селектори, Flexbox, Grid |
+| 13 | JavaScript | 4 | Змінні, функції, масиви |
+| 14 | React | 4 | Компоненти, стан, списки |
+| 15 | GUI | 4 | Основи tkinter |
 | 16 | CLI | 4 | sys.argv, argparse |
 | 17 | Файли (прос.) | 4 | JSON, CSV, pathlib |
-| 18 | OOP (прос.) | 4 | property, classmethod, context manager |
+| 18 | OOP (прос.) | 4 | property, classmethod, контекстні менеджери |
 | 19 | БД: Основи | 4 | CREATE, INSERT, SELECT |
 | 20 | БД: Запити | 4 | WHERE, JOIN, GROUP BY |
-| 21 | БД: Просунуте | 4 | Transactions, subqueries, indexes |
+| 21 | БД: Просунуте | 4 | Транзакції, підзапити, індекси |
 | 22 | API | 5 | requests, REST, async |
-| 23 | ORM | 5 | SQLAlchemy models, CRUD, relationships |
+| 23 | ORM | 5 | SQLAlchemy моделі, CRUD, зв'язки |
 
 ---
 
-## 🔧 Configuration
+## 🔧 Конфігурація
 
-### Environment Variables
+### Змінні середовища
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GROQ_API_KEY` | No | AI tutor key (configure in admin panel) |
-| `JWT_SECRET` | No | Auto-generated if not set |
-| `CORS_ORIGINS` | No | Comma-separated allowed origins |
-| `DB_DIR` | No | Database directory (default: backend/) |
+| Змінна | Обов'язкова | Опис |
+|--------|-------------|------|
+| `GROQ_API_KEY` | Ні | Ключ AI-тутора (налаштовується в адмін-панелі) |
+| `JWT_SECRET` | Ні | Генерується автоматично |
+| `CORS_ORIGINS` | Ні | Домени через кому |
+| `DB_DIR` | Ні | Директорія БД (за замовчуванням: backend/) |
 
-### Admin Panel Settings
+### Налаштування в адмін-панелі
 
-After first login, configure in admin panel (⚙️):
-- Groq AI API key
-- Google OAuth credentials
-- Site name and description
+Після першого входу налаштуйте в адмін-панелі (⚙️):
+- Ключ Groq AI API
+- Облікові дані Google OAuth
+- Назва та опис сайту
 
 ---
 
-## 🧪 Testing
+## 🧪 Тестування
 
 ```bash
-# Backend tests (19 tests)
+# Тести бекенду (19 тестів)
 python3 -m pytest backend/tests/ -v
 
-# Frontend build
+# Збірка фронтенду
 cd frontend && npm run build
 ```
 
 ---
 
-## 🤝 Contributing
+## 🤝 Участь у розробці
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Зробіть форк репозиторію
+2. Створіть гілку функціоналу (`git checkout -b feature/amazing-feature`)
+3. Закомітьте зміни (`git commit -m 'Add amazing feature'`)
+4. Запуште (`git push origin feature/amazing-feature`)
+5. Відкрийте Pull Request
 
 ---
 
-## 📄 License
+## 📄 Ліцензія
 
-This project is licensed under the **GNU General Public License v3.0** — see the [LICENSE](LICENSE) file for details.
+Цей проєкт ліцензується за **GNU General Public License v3.0** — див. файл [LICENSE](LICENSE).
 
 ```
 Copyright (c) 1998-2026 Nick Antonov (nick.antonov1@gmail.com)
-Borodachamba Studio. All rights reserved.
+Borodachamba Studio. Всі права захищені.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Ця програма є вільним програмним забезпеченням. Ви можете
+розповсюджувати її та/або змінювати відповідно до умов
+GNU General Public License, опублікованої Free Software Foundation,
+версії 3 цієї ліцензії або (на ваш вибір) будь-якої пізнішої версії.
 ```
 
 ---
 
-## 👤 Author
+## 👤 Автор
 
 **Nick Antonov** — [nick.antonov1@gmail.com](mailto:nick.antonov1@gmail.com)
 
@@ -279,10 +279,10 @@ the Free Software Foundation, either version 3 of the License, or
 
 ---
 
-## 🙏 Acknowledgments
+## 🙏 Подяки
 
-- [FastAPI](https://fastapi.tiangolo.com/) — modern Python web framework
-- [Pyodide](https://pyodide.org/) — Python in the browser
-- [Monaco Editor](https://microsoft.github.io/monaco-editor/) — VS Code editor
-- [Groq](https://groq.com/) — fast AI inference
-- [freeCodeCamp](https://www.freecodecamp.org/) — inspiration for the learning model
+- [FastAPI](https://fastapi.tiangolo.com/) — сучасний Python веб-фреймворк
+- [Pyodide](https://pyodide.org/) — Python в браузері
+- [Monaco Editor](https://microsoft.github.io/monaco-editor/) — редактор VS Code
+- [Groq](https://groq.com/) — швидкий AI-інференс
+- [freeCodeCamp](https://www.freecodecamp.org/) — натхнення для моделі навчання

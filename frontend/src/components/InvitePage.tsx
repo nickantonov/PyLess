@@ -179,7 +179,7 @@ export default function InvitePage() {
 
       <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-6">
-          <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center text-3xl" style={{ background: 'var(--gradient-1)' }}>🐍</div>
+          <img src="/logo.svg" alt="PyLess" className="w-16 h-16 mx-auto mb-4" />
           <h1 className="text-3xl font-bold text-gradient mb-2">PyLess</h1>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Вас запросили на навчання!</p>
         </div>

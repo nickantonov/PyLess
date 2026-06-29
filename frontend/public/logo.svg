@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="400" height="120">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#a78bfa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c4b5fd;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="120" rx="16" fill="#0f0f1a"/>
+
+  <!-- Snake icon -->
+  <g transform="translate(20, 15)">
+    <!-- Snake body -->
+    <path d="M30 20 C30 10, 45 5, 50 15 C55 25, 40 35, 30 30 C20 25, 25 40, 35 45 C45 50, 55 40, 50 30" 
+          stroke="url(#grad1)" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <!-- Snake head -->
+    <circle cx="30" cy="20" r="8" fill="url(#grad1)"/>
+    <!-- Snake eyes -->
+    <circle cx="27" cy="18" r="2" fill="#fff"/>
+    <circle cx="33" cy="18" r="2" fill="#fff"/>
+    <!-- Snake tongue -->
+    <path d="M22 20 L15 17 M22 20 L15 23" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Text "PyLess" -->
+  <text x="95" y="72" font-family="'Inter', 'Segoe UI', system-ui, sans-serif" font-size="48" font-weight="800" fill="url(#grad2)" letter-spacing="-1">PyLess</text>
+
+  <!-- Tagline -->
+  <text x="95" y="95" font-family="'Inter', 'Segoe UI', system-ui, sans-serif" font-size="12" fill="#71717a" letter-spacing="0.5">Interactive Python Learning</text>
+</svg>

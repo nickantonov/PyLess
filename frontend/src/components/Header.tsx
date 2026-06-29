@@ -20,7 +20,7 @@ export default function Header() {
       </button>
 
       <div className="flex items-center gap-2.5">
-        <div className="w-8 h-8 rounded-xl flex items-center justify-center text-lg" style={{ background: 'var(--gradient-1)' }}>🐍</div>
+        <img src="/logo.svg" alt="PyLess" className="h-8 w-auto" />
         <div>
           <span className="font-bold text-lg tracking-tight text-gradient">PyLess</span>
           <div className="text-[8px] leading-none" style={{ color: 'var(--text-muted)' }}>© 1998-2026 Nick Antonov / Borodachamba Studio</div>
