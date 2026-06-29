@@ -1,0 +1,27 @@
+{
+  "id": "py-06-05",
+  "module": "Lists",
+  "module_order": 6,
+  "title": "Вкладені списки",
+  "difficulty": "medium",
+  "description": "Створи матрицю 3x3 та виведи елемент [1][2].",
+  "starter_code": "matrix = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n]\nprint(f'Елемент [1][2]: {matrix[1][2]}')",
+  "hints": [
+    "matrix[рядок][стовпець] — доступ до елемента",
+    "len(matrix) — кількість рядків",
+    "len(matrix[0]) — кількість стовпців"
+  ],
+  "tests": [
+    {"input": "m=[[1,2,3],[4,5,6],[7,8,9]]\nprint(m[1][2])", "expected": "6"}
+  ],
+  "explanation": "Вкладені списки — списки списків, основа матриць.",
+  "one_liner": "matrix[i][j] — доступ до елемента в матриці",
+  "demo": {
+    "code": "matrix = [[1,2,3],[4,5,6],[7,8,9]]\n\nfor row in matrix:\n    print(row)\n\ndiagonal = [matrix[i][i] for i in range(3)]\nprint(f'Діагональ: {diagonal}')",
+    "output": "[1, 2, 3]\n[4, 5, 6]\n[7, 8, 9]\nДіагональ: [1, 5, 9]"
+  },
+  "review": {
+    "solutions": [{"code": "matrix[1][2]  # рядок 1, стовпець 2", "comment": "Індексація з 0"}],
+    "takeaway": "matrix[рядок][стовпець] — перший індекс = рядок, другий = стовпець."
+  }
+}

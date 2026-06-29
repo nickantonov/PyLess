@@ -1,0 +1,27 @@
+{
+  "id": "py-05-04",
+  "module": "Functions",
+  "module_order": 5,
+  "title": "За замовчуванням та ключові",
+  "difficulty": "medium",
+  "description": "Створи функцію greet з параметрами за замовчуванням та ключовими аргументами.",
+  "starter_code": "def greet(name, greeting='Привіт', punctuation='!'):\n    return f'{greeting}, {name}{punctuation}'\n\nprint(greet('Іван'))\nprint(greet('Оксана', 'Добрий'))\nprint(greet('Марія', punctuation='?'))",
+  "hints": [
+    "def func(param=default) — параметр за замовчуванням",
+    "func(name='Іван') — ключовий аргумент",
+    "Ключові аргументи можна передавати в будь-якому порядку"
+  ],
+  "tests": [
+    {"input": "def greet(name,g='Привіت'): return f'{g}, {name}!'\nprint(greet('Іван'))", "expected": "Привіт, Іван!"}
+  ],
+  "explanation": "Параметри за замовчуванням роблять функції гнучкішими.",
+  "one_liner": "Параметри за замовчуванням = менше аргументів, більша гнучкість",
+  "demo": {
+    "code": "def power(base, exp=2):\n    return base ** exp\n\nprint(power(3))      # 3² = 9\nprint(power(2, 10))  # 2¹⁰ = 1024\n\n def format_name(first, last, upper=False):\n    name = f'{first} {last}'\n    return name.upper() if upper else name\n\nprint(format_name('Іван', 'Петренко'))\nprint(format_name('Іван', 'Петренко', upper=True))",
+    "output": "9\n1024\nІван Петренко\nІВАН ПЕТРЕНКО"
+  },
+  "review": {
+    "solutions": [{"code": "def greet(name, greeting='Привіт'):\n    return f'{greeting}, {name}!'", "comment": "Параметр за замовчуванням"}],
+    "takeaway": "Параметри за замовчуванням мають бути після обов'язкових."
+  }
+}

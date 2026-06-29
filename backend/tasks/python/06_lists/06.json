@@ -1,0 +1,27 @@
+{
+  "id": "py-06-06",
+  "module": "Lists",
+  "module_order": 6,
+  "title": "Розпакування списків",
+  "difficulty": "hard",
+  "description": "Використай розпакування для обміну значень та збирання елементів.",
+  "starter_code": "a, b, c = 1, 2, 3\nprint(f'До: a={a}, b={b}, c={c}')\na, b, c = c, a, b\nprint(f'Після: a={a}, b={b}, c={c}')",
+  "hints": [
+    "a, b = b, a — обмін значень",
+    "first, *rest = [1,2,3,4] — rest = [2,3,4]",
+    "a, _, b = [1, 2, 3] — _ ігнорується"
+  ],
+  "tests": [
+    {"input": "a,b=1,2;a,b=b,a;print(a,b)", "expected": "2 1"}
+  ],
+  "explanation": "Розпакування дозволяє одночасно присвоювати кілька змінних.",
+  "one_liner": "a, b = b, a — обмін без тимчасової змінної",
+  "demo": {
+    "code": "data = [1, 2, 3, 4, 5]\nfirst, *middle, last = data\nprint(f'Перший: {first}')\nprint(f'Середина: {middle}')\nprint(f'Останній: {last}')\n\na, b = 10, 20\na, b = b, a\nprint(f'Обмін: {a}, {b}')",
+    "output": "Перший: 1\nСередина: [2, 3, 4]\nОстанній: 5\nОбмін: 20, 10"
+  },
+  "review": {
+    "solutions": [{"code": "a, b, c = c, a, b", "comment": "Паралельне присвоювання"}],
+    "takeaway": "* збирає залишок у список. _ традиційно ігнорується."
+  }
+}

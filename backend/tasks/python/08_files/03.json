@@ -1,0 +1,26 @@
+{
+  "id": "py-08-03",
+  "module": "Files",
+  "module_order": 8,
+  "title": "Читання по рядках",
+  "difficulty": "easy",
+  "description": "Прочитай файл та знайди найдовший рядок.",
+  "starter_code": "lines = ['Привіт', 'Світ', 'Python', 'Програмування']\nlongest = max(lines, key=len)\nprint(f'Найдовший: {longest} ({len(longest)} символів)')",
+  "hints": [
+    "max(list, key=len) — максимальний за довжиною",
+    ".splitlines() — розбити на рядки"
+  ],
+  "tests": [
+    {"input": "lines=['a','bb','ccc'];print(max(lines,key=len))", "expected": "ccc"}
+  ],
+  "explanation": "Читання файлу по рядках дозволяє обробляти великі файли.",
+  "one_liner": "max(lines, key=len) — найдовший рядок",
+  "demo": {
+    "code": "text = 'Рядок перший\\nРядок другий\\nДуже довгий рядок\\nКороткий'\nlines = text.split('\\n')\nprint(f'Рядків: {len(lines)}')\nprint(f'Найдовший: {max(lines, key=len)}')\nfor i, line in enumerate(lines, 1):\n    print(f'{i}. {line}')",
+    "output": "Рядків: 4\nНайдовший: Дуже довгий рядок\n1. Рядок перший\n2. Рядок другий\n3. Дуже довгий рядок\n4. Короткий"
+  },
+  "review": {
+    "solutions": [{"code": "longest = max(lines, key=len)", "comment": "max з ключем"}],
+    "takeaway": "key параметр у max/min/sorted визначає за чим порівнювати."
+  }
+}

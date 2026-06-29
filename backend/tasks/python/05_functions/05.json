@@ -1,0 +1,27 @@
+{
+  "id": "py-05-05",
+  "module": "Functions",
+  "module_order": 5,
+  "title": "Lambda функції",
+  "difficulty": "medium",
+  "description": "Використай lambda для створення коротких функцій.",
+  "starter_code": "square = lambda x: x ** 2\nadd = lambda a, b: a + b\n\nprint(square(5))\nprint(add(3, 7))",
+  "hints": [
+    "lambda x: вираз — анонімна функція з одним виразом",
+    "lambda a, b: вираз — кілька параметрів",
+    "Часто використовується з map(), filter(), sorted()"
+  ],
+  "tests": [
+    {"input": "square = lambda x: x**2\nprint(square(5))", "expected": "25"}
+  ],
+  "explanation": "lambda — однорядкова анонімна функція.",
+  "one_liner": "lambda = коротка функція без імені",
+  "demo": {
+    "code": "numbers = [4, 2, 7, 1, 9, 3]\nsorted_desc = sorted(numbers, key=lambda x: -x)\nprint(sorted_desc)\n\npairs = [(1, 'b'), (3, 'a'), (2, 'c')]\npairs.sort(key=lambda p: p[1])\nprint(pairs)",
+    "output": "[9, 7, 4, 3, 2, 1]\n[(3, 'a'), (1, 'b'), (2, 'c')]"
+  },
+  "review": {
+    "solutions": [{"code": "square = lambda x: x ** 2", "comment": "Один вираз, без return"}],
+    "takeaway": "lambda зручний для коротких функцій, але для складної ліпше def."
+  }
+}

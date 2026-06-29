@@ -1,0 +1,26 @@
+{
+  "id": "py-07-04",
+  "module": "Dicts",
+  "module_order": 7,
+  "title": "Словник comprehension",
+  "difficulty": "medium",
+  "description": "Створи словник зі списку чисел: число → квадрат.",
+  "starter_code": "numbers = [1, 2, 3, 4, 5]\nsquares = {n: n**2 for n in numbers}\nprint(squares)",
+  "hints": [
+    "{ключ: значення for елемент in iterable} — dict comprehension",
+    "Можна додати умову: {k:v for k,v in items if умова}"
+  ],
+  "tests": [
+    {"input": "nums=[1,2,3]\nsq={n:n**2 for n in nums}\nprint(sq)", "expected": "{1: 1, 2: 4, 3: 9}"}
+  ],
+  "explanation": "Dict comprehension створює словники компактно.",
+  "one_liner": "{k: v for x in list} — словник за один рядок",
+  "demo": {
+    "code": "words = ['hello', 'world', 'python']\nlengths = {w: len(w) for w in words}\nprint(lengths)\n\ntemps = {'Mon': 20, 'Tue': 25, 'Wed': 18, 'Thu': 30}\nhot_days = {d: t for d, t in temps.items() if t > 22}\nprint(hot_days)",
+    "output": "{'hello': 5, 'world': 5, 'python': 6}\n{'Tue': 25, 'Thu': 30}"
+  },
+  "review": {
+    "solutions": [{"code": "squares = {n: n**2 for n in numbers}", "comment": "Dict comprehension"}],
+    "takeaway": "Dict comprehension — аналог list comprehension для словників."
+  }
+}

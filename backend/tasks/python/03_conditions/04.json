@@ -1,0 +1,26 @@
+{
+  "id": "py-03-04",
+  "module": "Conditions",
+  "module_order": 3,
+  "title": "Тернарний оператор",
+  "difficulty": "easy",
+  "description": "Використай тернарний оператор для визначення parity числа.",
+  "starter_code": "num = 42\nresult = 'парне' if num % 2 == 0 else 'непарне'\nprint(f'{num} — {result}')",
+  "hints": [
+    "value_if_true if condition else value_if_false",
+    "% 2 == 0 перевіряє парність"
+  ],
+  "tests": [
+    {"input": "num=42;print('парне' if num%2==0 else 'непарне')", "expected": "парне"}
+  ],
+  "explanation": "Тернарний оператор: x if умова else y — коротка форма if/else.",
+  "one_liner": "Тернарний оператор — однорядковий if/else",
+  "demo": {
+    "code": "age = 15\nstatus = ' дорослий' if age >= 18 else ' підліток'\nprint(f'{age} років — {status}')\n\nx = -5\nsign = 'додатнє' if x > 0 else 'негативне' if x < 0 else 'нуль'\nprint(f'{x} — {sign}')",
+    "output": "15 років —  підліток\n-5 — негативне"
+  },
+  "review": {
+    "solutions": [{"code": "result = 'парне' if num % 2 == 0 else 'непарне'", "comment": "Один рядок замість 4"}],
+    "takeaway": "Тернарний оператор зручний для простих умов, але не зловживай складними."
+  }
+}

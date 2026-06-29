@@ -8,6 +8,7 @@ interface Store {
   authError: string | null
   tasks: Task[]
   currentTask: Task | null
+  taskStartedAt: number
   code: string
   testResults: TestResult[]
   output: string
@@ -59,6 +60,7 @@ export const useStore = create<Store>((set, get) => ({
   authError: null,
   tasks: [],
   currentTask: null,
+  taskStartedAt: 0,
   code: '',
   testResults: [],
   output: '',
@@ -82,7 +84,7 @@ export const useStore = create<Store>((set, get) => ({
     set({ user, token })
   },
   setTasks: (tasks) => set({ tasks }),
-  setCurrentTask: (task) => set({ currentTask: task, code: task?.starter_code || '', testResults: [], output: '', hintsShown: 0 }),
+  setCurrentTask: (task) => set({ currentTask: task, taskStartedAt: Date.now(), code: task?.starter_code || '', testResults: [], output: '', hintsShown: 0 }),
   setCode: (code) => set({ code }),
   setTestResults: (results) => set({ testResults: results }),
   setOutput: (output) => set({ output }),

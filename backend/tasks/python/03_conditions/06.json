@@ -1,0 +1,27 @@
+{
+  "id": "py-03-06",
+  "module": "Conditions",
+  "module_order": 3,
+  "title": "Логічні оператори в умовах",
+  "difficulty": "medium",
+  "description": "Перевір чи число знаходиться в діапазоні 1-100.",
+  "starter_code": "num = 42\nif 1 <= num <= 100:\n    print(f'{num} в діапазоні')\nelse:\n    print(f'{num} поза діапазоном')",
+  "hints": [
+    "and — обидві умови мають бути True",
+    "or — хоча б одна умова True",
+    "not — заперечення"
+  ],
+  "tests": [
+    {"input": "num=42\nif 1<=num<=100: print('в діапазоні')\nelse: print('поза діапазоном')", "expected": "в діапазоні"}
+  ],
+  "explanation": "and, or, not — логічні оператори для комбінування умов.",
+  "one_liner": "and/or/not комбінують умови в складні перевірки",
+  "demo": {
+    "code": "age = 25\nhas_id = True\n\nif age >= 18 and has_id:\n    print('Допущено')\n\nrole = 'admin'\nif role == 'admin' or role == 'mentor':\n    print('Має доступ')\n\nis_banned = False\nif not is_banned:\n    print('Не заблокований')",
+    "output": "Допущено\nМає доступ\nНе заблокований"
+  },
+  "review": {
+    "solutions": [{"code": "if 1 <= num <= 100: ...", "comment": "Python дозволяє ланцюжки порівнянь"}],
+    "takeaway": "Python дозволяє a <= b <= c замість a <= b and b <= c."
+  }
+}

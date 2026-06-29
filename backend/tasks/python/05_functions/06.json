@@ -1,0 +1,27 @@
+{
+  "id": "py-05-06",
+  "module": "Functions",
+  "module_order": 5,
+  "title": "*args та **kwargs",
+  "difficulty": "hard",
+  "description": "Створи функцію з довільною кількістю аргументів.",
+  "starter_code": "def sum_all(*args):\n    return sum(args)\n\nprint(sum_all(1, 2, 3))\nprint(sum_all(10, 20, 30, 40))",
+  "hints": [
+    "*args — кортеж з позиційних аргументів",
+    "**kwargs — словник з ключових аргументів",
+    "Можна комбінувати: func(a, b, *args, **kwargs)"
+  ],
+  "tests": [
+    {"input": "def s(*args): return sum(args)\nprint(s(1,2,3))", "expected": "6"}
+  ],
+  "explanation": "*args збирає позиційні аргументи в кортеж, **kwargs — ключові в словник.",
+  "one_liner": "*args = довільна кількість аргументів",
+  "demo": {
+    "code": "def log(level, *messages, **extra):\n    prefix = f'[{level}]'\n    for msg in messages:\n        print(f'{prefix} {msg}')\n    for k, v in extra.items():\n        print(f'  {k}={v}')\n\nlog('INFO', 'Запуск', 'Ініціалізація', user='admin', pid=1234)",
+    "output": "[INFO] Запуск\n[INFO] Ініціалізація\n  user=admin\n  pid=1234"
+  },
+  "review": {
+    "solutions": [{"code": "def sum_all(*args):\n    return sum(args)", "comment": "*args збирає все в кортеж"}],
+    "takeaway": "Порядок: обов'язкові → *args → keyword-only → **kwargs."
+  }
+}

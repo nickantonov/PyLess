@@ -1,0 +1,27 @@
+{
+  "id": "py-03-05",
+  "module": "Conditions",
+  "module_order": 3,
+  "title": "Вкладені умови",
+  "difficulty": "medium",
+  "description": "Створи систему оцінювання: A (90+), B (80-89), C (70-79), D (60-69), F (<60).",
+  "starter_code": "score = 85\nif score >= 90:\n    grade = 'A'\nelif score >= 80:\n    grade = 'B'\nelif score >= 70:\n    grade = 'C'\nelif score >= 60:\n    grade = 'D'\nelse:\n    grade = 'F'\nprint(f'{score} → {grade}')",
+  "hints": [
+    "elif — додаткова умова після if",
+    "elif можна мати скільки завгодно",
+    "else — все що не потрапило в жодну умову"
+  ],
+  "tests": [
+    {"input": "score=85\nif score>=90: g='A'\nelif score>=80: g='B'\nelif score>=70: g='C'\nelif score>=60: g='D'\nelse: g='F'\nprint(g)", "expected": "B"}
+  ],
+  "explanation": "elif (else if) дозволяє перевіряти кілька умов послідовно.",
+  "one_liner": "elif — ланцюг умов, перевіряється зверху вниз",
+  "demo": {
+    "code": "temp = 22\nif temp > 35:\n    print('🔥 Жарко!')\nelif temp > 25:\n    print('☀️ Тепло')\nelif temp > 15:\n    print('🌤 Комфортно')\nelif temp > 5:\n    print('🧥 Прохолодно')\nelse:\n    print('🥶 Холодно!')",
+    "output": "🌤 Комфортно"
+  },
+  "review": {
+    "solutions": [{"code": "if score >= 90: grade = 'A'\nelif score >= 80: grade = 'B'\n...", "comment": "elif ланцюг з 5 рівнями"}],
+    "takeaway": "Порядок elif важливий — перша виконана умова зупиняє ланцюг."
+  }
+}

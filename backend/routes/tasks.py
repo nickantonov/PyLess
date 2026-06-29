@@ -110,7 +110,7 @@ def submit_code(sub: CodeSubmission, authorization: Optional[str] = Header(None)
 
 
 @router.post("/{task_id}/complete")
-def complete_task(task_id: str, best_code: str = "",
+def complete_task(task_id: str, best_code: str = "", elapsed_seconds: float = 0,
                   authorization: Optional[str] = Header(None),
                   db: sqlite3.Connection = Depends(get_db)):
     uid = _resolve_user_id(authorization or "", db)
@@ -152,7 +152,7 @@ def complete_task(task_id: str, best_code: str = "",
     combo_info = update_combo(db, uid, passed=True)
 
     xp_result = add_xp(db, uid, base_xp, f"Task: {task_id}")
-    new_badges = check_badges(db, uid)
+    new_badges = check_badges(db, uid, elapsed_seconds)
 
     return {
         "ok": True,

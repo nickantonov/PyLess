@@ -1,0 +1,26 @@
+{
+  "id": "py-08-04",
+  "module": "Files",
+  "module_order": 8,
+  "title": "CSV файли",
+  "difficulty": "medium",
+  "description": "Прочитай CSV дані та знайди середній бал.",
+  "starter_code": "import csv\nimport io\n\ndata = 'name,score\\nІван,85\\nОксана,92\\nПетро,78'\nreader = csv.DictReader(io.StringIO(data))\nscores = [int(row['score']) for row in reader]\nprint(f'Середній: {sum(scores)/len(scores):.1f}')",
+  "hints": [
+    "csv.DictReader — читає CSV з заголовками",
+    "io.StringIO — перетворює рядок на файлоподібний об'єкт"
+  ],
+  "tests": [
+    {"input": "import csv,io\ndata='a,b\\n1,2\\n3,4'\nrows=list(csv.DictReader(io.StringIO(data)))\nprint(len(rows))", "expected": "2"}
+  ],
+  "explanation": "csv модуль автоматично парсить CSV файли.",
+  "one_liner": "csv.DictReader з заголовками = зручний доступ по іменах стовпців",
+  "demo": {
+    "code": "import csv, io\n\ncsv_data = 'product,price,qty\\nНоутбук,25000,3\\nМишка,500,10\\nКлавіатура,1500,5'\nreader = csv.DictReader(io.StringIO(csv_data))\n\ntotal = 0\nfor row in reader:\n    cost = int(row['price']) * int(row['qty'])\n    total += cost\n    print(f\"{row['product']}: {cost} грн\")\nprint(f'Загалом: {total} грн')",
+    "output": "Ноутбук: 75000 грн\nМишка: 5000 грн\nКлавіатура: 7500 грн\nЗагалом: 87500 грн"
+  },
+  "review": {
+    "solutions": [{"code": "scores = [int(row['score']) for row in reader]", "comment": "List comprehension з DictReader"}],
+    "takeaway": "DictReader автоматично використовує перший рядок як заголовки."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "py-07-05",
+  "module": "Dicts",
+  "module_order": 7,
+  "title": "Вкладені словники",
+  "difficulty": "hard",
+  "description": "Працюй з вкладеними словниками: отримай оцінку з предмету.",
+  "starter_code": "students = {\n    'Іван': {'math': 90, 'english': 85},\n    'Оксана': {'math': 95, 'english': 92},\n}\nprint(students['Оксана']['math'])",
+  "hints": [
+    "word[key1][key2] — доступ до вкладеного значення",
+    "Можна використовувати .get() для безпечного доступу"
+  ],
+  "tests": [
+    {"input": "d={'a':{'x':1,'y':2},'b':{'x':3}}\nprint(d['a']['y'])", "expected": "2"}
+  ],
+  "explanation": "Вкладені словники — потужна структура для складних даних.",
+  "one_liner": "d[key1][key2] — доступ до вкладеного значення",
+  "demo": {
+    "code": "school = {\n    '11-A': {'math': [90, 85, 92], 'eng': [88, 91]},\n    '11-B': {'math': [78, 82], 'eng': [95, 87, 90]},\n}\n\nfor cls, subjects in school.items():\n    for subj, grades in subjects.items():\n        avg = sum(grades) / len(grades)\n        print(f'{cls} {subj}: {avg:.1f}')",
+    "output": "11-A math: 89.0\n11-A eng: 89.5\n11-B math: 80.0\n11-B eng: 90.7"
+  },
+  "review": {
+    "solutions": [{"code": "students['Оксана']['math']", "comment": "Двоступеневий доступ"}],
+    "takeaway": "Вкладені словники — як JSON, зручно для ієрархічних даних."
+  }
+}

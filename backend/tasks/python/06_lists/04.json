@@ -1,0 +1,27 @@
+{
+  "id": "py-06-04",
+  "module": "Lists",
+  "module_order": 6,
+  "title": "Сортування та фільтрація",
+  "difficulty": "medium",
+  "description": "Відфільтруй парні числа та відсортуй за зростанням.",
+  "starter_code": "numbers = [5, 2, 8, 1, 9, 3, 7, 4, 6]\neven = [n for n in numbers if n % 2 == 0]\nprint(f'Парні: {sorted(even)}')",
+  "hints": [
+    "[x for x in list if умова] — list comprehension з фільтром",
+    "sorted() — повертає новий відсортований список",
+    ".sort() — сортує на місці"
+  ],
+  "tests": [
+    {"input": "nums=[5,2,8,1,9,3];evens=sorted([n for n in nums if n%2==0]);print(evens)", "expected": "[2, 8]"}
+  ],
+  "explanation": "List comprehension з умовою фільтрує елементи.",
+  "one_liner": "sorted([x for x in list if cond]) — фільтруй + сортуй",
+  "demo": {
+    "code": "words = ['Python', 'is', 'awesome', 'a', 'language']\nlong = [w for w in words if len(w) > 2]\nprint(long)\n\nnums = [1, -2, 3, -4, 5, -6]\npositive = [n for n in nums if n > 0]\nprint(positive)",
+    "output": "['Python', 'awesome', 'language']\n[1, 3, 5]"
+  },
+  "review": {
+    "solutions": [{"code": "even = [n for n in numbers if n % 2 == 0]", "comment": "List comprehension з фільтром"}],
+    "takeaway": "[x for x in list if умова] — потужний спосіб фільтрування."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "py-07-03",
+  "module": "Dicts",
+  "module_order": 7,
+  "title": "Методи словників",
+  "difficulty": "easy",
+  "description": "Використай .get(), .keys(), .values(), .items() для роботи з словником.",
+  "starter_code": "student = {'name': 'Іван', 'age': 20, 'grade': 'A'}\nprint(student.get('name'))\nprint(student.get('phone', 'Невідомо'))\nprint(list(student.keys()))\nprint(list(student.values()))",
+  "hints": [
+    ".get(key, default) — безпечний доступ (не падає при відсутності ключа)",
+    ".keys() — всі ключі",
+    ".values() — всі значення",
+    ".items() — пари (ключ, значення)"
+  ],
+  "tests": [
+    {"input": "d={'a':1,'b':2}\nprint(d.get('c','немає'))", "expected": "немає"}
+  ],
+  "explanation": "Методи словників роблять роботу з ними зручною та безпечною.",
+  "one_liner": ".get() — безпечний доступ, .items() — ітерація по парам",
+  "demo": {
+    "code": "scores = {'Іван': 85, 'Оксана': 92, 'Петро': 78}\n\nprint('Іван:', scores.get('Іван', 0))\nprint('Марія:', scores.get('Марія', 0))\n\nfor name, score in scores.items():\n    status = '✅' if score >= 80 else '❌'\n    print(f'{status} {name}: {score}')",
+    "output": "Іван: 85\nМарія: 0\n✅ Іван: 85\n✅ Оксана: 92\n❌ Петро: 78"
+  },
+  "review": {
+    "solutions": [{"code": "d.get('key', 'default')", "comment": "Безпечний доступ з дефолтом"}],
+    "takeaway": ".get() ніколи не падає з KeyError, на відміну від d[key]."
+  }
+}

@@ -31,6 +31,12 @@ BADGES = {
     "early_bird": {"name": "🌅 Рання пташка", "desc": "5 завдань між 5:00-7:00", "rarity": "uncommon"},
     "hard_conqueror": {"name": "🏔️ Підкорювач", "desc": "Всі hard-завдання модуля", "rarity": "epic"},
     "thirty_streak": {"name": "🔥🔥🔥 Місячник", "desc": "30 днів streak", "rarity": "epic"},
+    "speed_bronze": {"name": "🥉 Бронзовий", "desc": "Розв'язок за < 5 хвилин", "rarity": "common"},
+    "speed_silver": {"name": "🥈 Срібний", "desc": "Розв'язок за < 3 хвилини", "rarity": "uncommon"},
+    "speed_gold": {"name": "🥇 Золотий", "desc": "Розв'язок за < 1 хвилину", "rarity": "rare"},
+    "speed_diamond": {"name": "💎 Алмазний", "desc": "Розв'язок за < 30 секунд", "rarity": "epic"},
+    "marathon": {"name": "🏃 Марафонець", "desc": "10 завдань за один день", "rarity": "uncommon"},
+    "all_modules": {"name": "🎓 Випускник", "desc": "Заверши хоча б одне завдання в кожному модулі", "rarity": "rare"},
 }
 
 
@@ -157,7 +163,7 @@ def update_combo(db: sqlite3.Connection, user_id: int, passed: bool) -> dict:
     return {"combo": new_combo, "best": best, "multiplier": mult}
 
 
-def check_badges(db: sqlite3.Connection, user_id: int) -> list:
+def check_badges(db: sqlite3.Connection, user_id: int, elapsed_seconds: float = 0) -> list:
     earned = []
     existing = {r["badge_id"] for r in db.execute("SELECT badge_id FROM badges WHERE user_id = ?", (user_id,)).fetchall()}
 
@@ -168,6 +174,16 @@ def check_badges(db: sqlite3.Connection, user_id: int) -> list:
     total_completed = db.execute("SELECT COUNT(*) as c FROM progress WHERE user_id = ? AND status = 'completed'", (user_id,)).fetchone()["c"]
     first_try_count = db.execute("SELECT COUNT(*) as c FROM progress WHERE user_id = ? AND status = 'completed' AND first_try = 1", (user_id,)).fetchone()["c"]
 
+    today_tasks = db.execute(
+        "SELECT COUNT(*) as c FROM progress WHERE user_id = ? AND status = 'completed' AND completed_at >= date('now')",
+        (user_id,)
+    ).fetchone()["c"]
+
+    modules_done = db.execute(
+        "SELECT COUNT(DISTINCT module) as c FROM progress p JOIN tasks t ON p.task_id = t.id WHERE p.user_id = ? AND p.status = 'completed'",
+        (user_id,)
+    ).fetchone()["c"]
+
     checks = {
         "first_step": total_completed >= 1,
         "week_streak": streak >= 7,
@@ -176,7 +192,15 @@ def check_badges(db: sqlite3.Connection, user_id: int) -> list:
         "hundred_days": streak >= 100,
         "legend": level >= 10,
         "debug_master": total_completed >= 50,
+        "marathon": today_tasks >= 10,
+        "all_modules": modules_done >= 10,
     }
+
+    if elapsed_seconds > 0:
+        checks["speed_bronze"] = elapsed_seconds < 300
+        checks["speed_silver"] = elapsed_seconds < 180
+        checks["speed_gold"] = elapsed_seconds < 60
+        checks["speed_diamond"] = elapsed_seconds < 30
 
     for badge_id, condition in checks.items():
         if condition and badge_id not in existing:

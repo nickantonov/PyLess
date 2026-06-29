@@ -126,7 +126,7 @@ function MonacoEditor({ value, language = 'python', theme = 'vs-dark', onChange,
 }
 
 export default function EditorPanel() {
-  const { code, setCode, editorTheme, currentTask, running, setRunning, setTestResults, setOutput, testResults, output, markTaskCompleted, showXpPopup, token } = useStore()
+  const { code, setCode, editorTheme, currentTask, taskStartedAt, running, setRunning, setTestResults, setOutput, testResults, output, markTaskCompleted, showXpPopup, token } = useStore()
   const [leftTab, setLeftTab] = useState<'instructions' | 'hints' | 'output'>('instructions')
   const [sandboxOutput, setSandboxOutput] = useState('')
   const [showHints, setShowHints] = useState(0)
@@ -196,7 +196,7 @@ sys.stdout = __stdout
           const resp = await fetch('/api/tasks/' + currentTask.id + '/complete', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-            body: JSON.stringify({ best_code: code }),
+            body: JSON.stringify({ best_code: code, elapsed_seconds: (Date.now() - taskStartedAt) / 1000 }),
           })
           const data = await resp.json()
           if (data.xp_added > 0) showXpPopup(data)
@@ -245,7 +245,7 @@ sys.stdout = __stdout
           const resp = await fetch('/api/tasks/' + currentTask.id + '/complete', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-            body: JSON.stringify({ best_code: code }),
+            body: JSON.stringify({ best_code: code, elapsed_seconds: (Date.now() - taskStartedAt) / 1000 }),
           })
           const data = await resp.json()
           if (data.xp_added > 0) showXpPopup(data)
