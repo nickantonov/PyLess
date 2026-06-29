@@ -76,6 +76,12 @@ export default function Header() {
         </button>
       )}
 
+      {(user?.role === 'admin' || user?.role === 'teacher') && (
+        <button onClick={() => useStore.setState({ showGroups: true })} className="btn-ghost !py-2 !px-3 !text-xs !rounded-xl flex items-center gap-1.5" style={{ borderColor: 'rgba(236,72,153,0.3)', color: '#ec4899' }}>
+          👥 Групи
+        </button>
+      )}
+
       {token && (
         <button onClick={() => useStore.setState({ showChat: true })} className="btn-ghost !py-2 !px-3 !text-xs !rounded-xl flex items-center gap-1.5">
           💬 Чат

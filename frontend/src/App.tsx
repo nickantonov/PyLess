@@ -10,11 +10,12 @@ import InvitePage from './components/InvitePage'
 import AdminDashboard from './components/AdminDashboard'
 import ChatPanel from './components/ChatPanel'
 import LessonRooms from './components/LessonRooms'
+import GroupManager from './components/GroupManager'
 
 const API = ''
 
 export default function App() {
-  const { theme, token, setTasks, setCurrentTask, setUser, currentTask, sidebarOpen, aiOpen, profile, setProfile, view, user, showAdmin, showChat, showLessons } = useStore()
+  const { theme, token, setTasks, setCurrentTask, setUser, currentTask, sidebarOpen, aiOpen, profile, setProfile, view, user, showAdmin, showChat, showLessons, showGroups } = useStore()
 
   useEffect(() => {
     document.documentElement.classList.toggle('light', theme === 'light')
@@ -105,6 +106,7 @@ export default function App() {
       {showAdmin && <AdminDashboard onClose={() => useStore.setState({ showAdmin: false })} />}
       {showChat && <ChatPanel onClose={() => useStore.setState({ showChat: false })} />}
       {showLessons && <LessonRooms onClose={() => useStore.setState({ showLessons: false })} />}
+      {showGroups && <GroupManager onClose={() => useStore.setState({ showGroups: false })} />}
     </div>
   )
 }
