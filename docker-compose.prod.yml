@@ -1,0 +1,28 @@
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - pylless
+    restart: unless-stopped
+
+  pylless:
+    build: .
+    environment:
+      - DB_DIR=/app/data
+      - JWT_SECRET=${JWT_SECRET:-}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+      - ADMIN_CODE=${ADMIN_CODE:-}
+      - CORS_ORIGINS=${CORS_ORIGINS:-}
+    volumes:
+      - ./data:/app/data
+    expose:
+      - "8000"
+    restart: unless-stopped

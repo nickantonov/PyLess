@@ -180,7 +180,8 @@ def check_badges(db: sqlite3.Connection, user_id: int, elapsed_seconds: float = 
     ).fetchone()["c"]
 
     modules_done = db.execute(
-        "SELECT COUNT(DISTINCT module) as c FROM progress p JOIN tasks t ON p.task_id = t.id WHERE p.user_id = ? AND p.status = 'completed'",
+        "SELECT COUNT(DISTINCT SUBSTR(task_id, 1, INSTR(task_id, '-') - 1)) as c "
+        "FROM progress WHERE user_id = ? AND status = 'completed'",
         (user_id,)
     ).fetchone()["c"]
 
