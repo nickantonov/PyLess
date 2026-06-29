@@ -27,6 +27,7 @@ interface Store {
   view: 'app' | 'auth'
   showAdmin: boolean
   showChat: boolean
+  showLessons: boolean
 
   setUser: (user: User | null, token: string | null) => void
   setTasks: (tasks: Task[]) => void
@@ -81,6 +82,7 @@ export const useStore = create<Store>((set, get) => ({
   view: 'app',
   showAdmin: false,
   showChat: false,
+  showLessons: false,
 
   setUser: (user, token) => {
     if (token) localStorage.setItem('pylesss_token', token)

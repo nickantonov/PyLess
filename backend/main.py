@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import os
 from .db import init_db
-from .routes import auth, tasks, ai, onboarding, profile, admin, messages, settings, custom_tasks
+from .routes import auth, tasks, ai, onboarding, profile, admin, messages, settings, custom_tasks, video
 
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
 
@@ -38,6 +38,7 @@ app.include_router(admin.router)
 app.include_router(messages.router)
 app.include_router(settings.router)
 app.include_router(custom_tasks.router)
+app.include_router(video.router)
 
 
 import time

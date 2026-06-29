@@ -82,6 +82,12 @@ export default function Header() {
         </button>
       )}
 
+      {token && (
+        <button onClick={() => useStore.setState({ showLessons: true })} className="btn-ghost !py-2 !px-3 !text-xs !rounded-xl flex items-center gap-1.5" style={{ borderColor: 'rgba(6,182,212,0.3)', color: '#06b6d4' }}>
+          🎥 Уроки
+        </button>
+      )}
+
       <div className="relative">
         <button onClick={() => setShowProfile(!showProfile)} className="btn-ghost !p-2 !rounded-xl overflow-hidden">
           {profile?.avatar_url ? (

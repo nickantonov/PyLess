@@ -188,5 +188,29 @@ def init_db():
             FOREIGN KEY (creator_id) REFERENCES users(id),
             FOREIGN KEY (student_id) REFERENCES users(id)
         );
+
+        CREATE TABLE IF NOT EXISTS video_rooms (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            creator_id INTEGER NOT NULL,
+            name TEXT NOT NULL,
+            room_code TEXT NOT NULL UNIQUE,
+            scheduled_at TEXT,
+            is_active INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (creator_id) REFERENCES users(id)
+        );
+
+        CREATE TABLE IF NOT EXISTS lesson_materials (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            room_id INTEGER NOT NULL,
+            uploader_id INTEGER NOT NULL,
+            filename TEXT NOT NULL,
+            original_name TEXT NOT NULL,
+            file_type TEXT NOT NULL,
+            file_size INTEGER NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (room_id) REFERENCES video_rooms(id),
+            FOREIGN KEY (uploader_id) REFERENCES users(id)
+        );
     """)
     conn.close()
